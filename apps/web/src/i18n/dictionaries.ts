@@ -20,9 +20,7 @@ const dictionaries = {
       heroSubheading: "WHERE BRANDS TAKE SHAPE",
       mission:
         "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the full potential of brands.",
-      potentialLine1: "EVERY BRAND",
-      potentialLine2: "HAS A",
-      potentialAccent: "POTENTIAL",
+      potentialHeading: "**EVERY BRAND**\n**HAS A** *POTENTIAL*",
       method: {
         identify: {
           title: "1.IDENTIFY",
@@ -46,14 +44,12 @@ const dictionaries = {
         },
       },
       projectsTitle: "PROJECTS",
-      viewAll: "View all",
       seeAllProjects: "See all projects",
       methodologyLabel: "Methodology",
       methodology:
-        "At Urlo Creativo, we start by understanding each brand's context, goals, and audience to uncover its core potential. We then define a clear positioning and build a coherent identity that guides every creative decision. Through a flexible, multidisciplinary approach, we transform strategy into visuals, products, and communication, supporting brands with solutions that evolve over time.",
+        "At **Urlo Creativo,** we start by understanding each **brand's context**, **goals**, and **audience** to uncover its core **potential**. We then define a clear positioning and build a coherent identity that guides every creative decision. Through a flexible, **multidisciplinary** approach, we transform strategy into visuals, products, and communication, supporting brands with solutions that evolve over time.",
       whatWeDo: "What we do",
-      selectedClientsTitle: "SELECTED",
-      selectedClientsAccent: "CLIENTS",
+      selectedClients: "**SELECTED** *CLIENTS*",
       servicesTitle: "SERVICES",
       servicesIntro:
         "We develop ideas through words and images. From strategy to execution, we shape identities, campaigns and product stories with a clear point of view.",
@@ -94,9 +90,7 @@ const dictionaries = {
       heroSubheading: "WHERE BRANDS TAKE SHAPE",
       mission:
         "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the full potential of brands.",
-      potentialLine1: "EVERY BRAND",
-      potentialLine2: "HAS A",
-      potentialAccent: "POTENTIAL",
+      potentialHeading: "**EVERY BRAND**\n**HAS A** *POTENTIAL*",
       method: {
         identify: {
           title: "1.IDENTIFY",
@@ -120,14 +114,12 @@ const dictionaries = {
         },
       },
       projectsTitle: "PROJECTS",
-      viewAll: "View all",
       seeAllProjects: "See all projects",
       methodologyLabel: "Methodology",
       methodology:
-        "At Urlo Creativo, we start by understanding each brand's context, goals, and audience to uncover its core potential. We then define a clear positioning and build a coherent identity that guides every creative decision. Through a flexible, multidisciplinary approach, we transform strategy into visuals, products, and communication, supporting brands with solutions that evolve over time.",
+        "At **Urlo Creativo,** we start by understanding each **brand's context**, **goals**, and **audience** to uncover its core **potential**. We then define a clear positioning and build a coherent identity that guides every creative decision. Through a flexible, **multidisciplinary** approach, we transform strategy into visuals, products, and communication, supporting brands with solutions that evolve over time.",
       whatWeDo: "What we do",
-      selectedClientsTitle: "SELECTED",
-      selectedClientsAccent: "CLIENTS",
+      selectedClients: "**SELECTED** *CLIENTS*",
       servicesTitle: "SERVICES",
       servicesIntro:
         "We develop ideas through words and images. From strategy to execution, we shape identities, campaigns and product stories with a clear point of view.",

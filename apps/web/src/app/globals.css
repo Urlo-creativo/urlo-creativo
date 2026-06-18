@@ -65,10 +65,10 @@ a {
     gap: 10px;
     overflow: hidden;
     min-height: auto;
-    background: var(--uc-white);
+    background: transparent;
     border: 2px solid var(--uc-black);
     border-radius: 100px;
-    padding: 16px 40px;
+    padding: 10px 40px;
     color: var(--uc-black);
     font-size: 16px;
     font-weight: 400;

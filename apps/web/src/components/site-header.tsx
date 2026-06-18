@@ -8,12 +8,13 @@ import {
   type Locale,
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { NavLink } from "@/components/nav-link";
 
 const navItems = [
   { key: "home", href: "/" },
+  { key: "services", href: "/services" },
   { key: "projects", href: "/projects" },
   { key: "about", href: "/about" },
-  { key: "services", href: "/services" },
   { key: "contact", href: "/contact" },
 ] as const;
 
@@ -28,51 +29,50 @@ export function SiteHeader({
   locale,
   localeLabel,
 }: SiteHeaderProps) {
+  const otherLocales = locales.filter((l) => l !== locale);
+
   return (
-    <header className="fixed left-0 right-0 top-[31px] z-50 px-4">
-      <nav className="mx-auto flex h-[38px] w-full max-w-[857px] items-center gap-4 rounded-pill bg-[#ebebeb]/70 px-3 text-black backdrop-blur-md">
+    <header className="fixed left-0 right-0 top-[31px] z-50 px-[var(--page-gutter)]">
+      <nav
+        className="mx-auto grid h-[50px] w-full max-w-content grid-cols-[auto_1fr_auto] items-center rounded-pill bg-[rgba(235,235,235,0.75)] px-3 text-black backdrop-blur-md"
+        aria-label="Main navigation"
+      >
+        {/* Logo — left */}
         <Link
           href={localizedPath(locale)}
           aria-label="Urlo Creativo home"
-          className="hidden shrink-0"
+          className="shrink-0 transition-opacity hover:opacity-70"
         >
           <Image
             src="/brand/logo-mark.png"
-            alt=""
-            width={31}
-            height={31}
+            alt="Urlo Creativo"
+            width={42}
+            height={42}
             priority
           />
         </Link>
-        <div className="hidden flex-1 items-center justify-between text-[16px] md:flex">
+
+        {/* Nav links — center */}
+        <div className="hidden items-center justify-center md:flex">
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={localizedPath(locale, item.href)}
-              className="px-[10px] py-[9px] leading-none transition-opacity hover:opacity-70"
-            >
+            <NavLink key={item.href} href={localizedPath(locale, item.href)}>
               {dictionary[item.key]}
-            </Link>
+            </NavLink>
           ))}
         </div>
-        <div
-          className="ml-auto flex items-center gap-2 text-[14px] tracking-[0.04em] md:text-[15px]"
-          aria-label="Language"
-        >
-          <span className="font-bold">{localeLabel}</span>
-          <span className="text-black/35">/</span>
-          {locales
-            .filter((item) => item !== locale)
-            .map((item) => (
-              <Link
-                key={item}
-                href={localizedPath(item)}
-                className="text-black/60 transition-colors hover:text-black"
-                hrefLang={item}
-              >
-                {localeLabels[item]}
-              </Link>
-            ))}
+
+        {/* Language switcher — right */}
+        <div className="flex items-center justify-end">
+          {otherLocales.map((l) => (
+            <Link
+              key={l}
+              href={localizedPath(l)}
+              hrefLang={l}
+              className="flex h-[34px] w-[52px] items-center justify-center rounded-full text-[16px] leading-none transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
+            >
+              {localeLabels[l].toUpperCase()}
+            </Link>
+          ))}
         </div>
       </nav>
     </header>
