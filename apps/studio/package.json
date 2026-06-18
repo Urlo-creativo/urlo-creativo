@@ -8,9 +8,9 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
-    "@sanity/vision": "latest",
-    "sanity": "latest",
-    "styled-components": "latest"
+    "@sanity/vision": "6.1.0",
+    "sanity": "6.1.0",
+    "styled-components": "6.4.2"
   },
   "devDependencies": {
     "@types/node": "latest",
