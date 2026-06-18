@@ -1,0 +1,67 @@
+/* ============================================================
+   URLO CREATIVO — Color tokens
+   A warm, paper-white Swiss palette: near-black ink, a precise
+   gray ladder, and a set of soft pastel accents lifted straight
+   from the studio's process diagram. Signature accent = pale
+   highlighter yellow.
+   ============================================================ */
+:root {
+  /* — Ink & paper — */
+  --uc-black: #000000;       /* primary text, strokes */
+  --uc-ink: #0f0f0f;         /* near-black headings */
+  --uc-ink-2: #15140e;       /* warm near-black */
+  --uc-navy: #0c1c2c;        /* logo / coming-soon ink */
+  --uc-white: #ffffff;
+  --uc-paper: #fefdf9;       /* warm page background */
+  --uc-paper-2: #fafafa;     /* faint panel fill */
+
+  /* — Gray ladder — */
+  --uc-gray-900: #3b3b3b;
+  --uc-gray-800: #424242;
+  --uc-gray-700: #595959;
+  --uc-gray-600: #6b6b6b;
+  --uc-gray-500: #707070;    /* the workhorse mid-gray */
+  --uc-gray-400: #888888;
+  --uc-gray-300: #c1c0c0;
+  --uc-gray-200: #d9d9d9;
+  --uc-gray-150: #e5e5e5;
+  --uc-gray-100: #eaeaea;
+  --uc-gray-50:  #ebebeb;
+
+  /* — Accents (the process palette) — */
+  --uc-yellow: #efebab;      /* SIGNATURE highlighter / panels */
+  --uc-yellow-deep: #ebe48b; /* yellow underline / shadow */
+  --uc-pink: #eaafb1;        /* discovery */
+  --uc-blue: #92b9d0;        /* strategy / production */
+  --uc-blue-deep: #4171a9;   /* identity */
+  --uc-sage: #a5bf8f;        /* accent green */
+  --uc-coral: #e1503c;       /* development */
+  --uc-orange: #e2a14b;      /* growth */
+
+  /* ── Semantic aliases ── */
+  --text-primary: var(--uc-black);
+  --text-heading: var(--uc-ink);
+  --text-secondary: var(--uc-gray-500);
+  --text-muted: var(--uc-gray-400);
+  --text-inverse: var(--uc-paper);
+
+  --surface-page: var(--uc-paper);
+  --surface-panel: var(--uc-paper-2);
+  --surface-accent: var(--uc-yellow);
+  --surface-ink: var(--uc-black);
+
+  --border-strong: var(--uc-black);
+  --border-default: var(--uc-gray-200);
+  --border-subtle: var(--uc-gray-100);
+
+  --highlight: var(--uc-yellow);
+  --highlight-underline: var(--uc-yellow-deep);
+
+  /* process-stage colours, in order */
+  --stage-discovery: var(--uc-pink);
+  --stage-strategy: var(--uc-blue);
+  --stage-identity: var(--uc-blue-deep);
+  --stage-development: var(--uc-coral);
+  --stage-production: var(--uc-blue);
+  --stage-growth: var(--uc-orange);
+}

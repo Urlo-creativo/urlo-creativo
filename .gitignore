@@ -1,0 +1,12 @@
+.DS_Store
+node_modules
+.next
+dist
+build
+.turbo
+.sanity
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+!.env.example

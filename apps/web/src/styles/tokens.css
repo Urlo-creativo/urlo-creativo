@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap");
+
+:root {
+  --uc-black: #000000;
+  --uc-ink: #0f0f0f;
+  --uc-ink-2: #15140e;
+  --uc-navy: #0c1c2c;
+  --uc-white: #ffffff;
+  --uc-paper: #fefdf9;
+  --uc-paper-2: #fafafa;
+
+  --uc-gray-900: #3b3b3b;
+  --uc-gray-800: #424242;
+  --uc-gray-700: #595959;
+  --uc-gray-600: #6b6b6b;
+  --uc-gray-500: #707070;
+  --uc-gray-400: #888888;
+  --uc-gray-300: #c1c0c0;
+  --uc-gray-200: #d9d9d9;
+  --uc-gray-150: #e5e5e5;
+  --uc-gray-100: #eaeaea;
+  --uc-gray-50: #ebebeb;
+
+  --uc-yellow: #efebab;
+  --uc-yellow-deep: #ebe48b;
+  --uc-pink: #eaafb1;
+  --uc-blue: #92b9d0;
+  --uc-blue-deep: #4171a9;
+  --uc-sage: #a5bf8f;
+  --uc-coral: #e1503c;
+  --uc-orange: #e2a14b;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
+
+  --page-max: 1728px;
+  --page-gutter: clamp(24px, 4.8vw, 96px);
+  --content-max: 1164px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 220ms;
+}

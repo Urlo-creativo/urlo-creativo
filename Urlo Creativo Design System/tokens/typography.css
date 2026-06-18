@@ -1,0 +1,45 @@
+/* ============================================================
+   URLO CREATIVO — Typography tokens
+   One family, used with conviction. Bold grotesque for almost
+   everything; oblique/italic of the same face for accent words
+   ("POTENTIAL", "CLIENTS"). Tight 100% leading on display, a
+   hair of positive tracking (~0.02em).
+   ============================================================ */
+:root {
+  /* Families — real Helvetica first, Arimo webfont fallback */
+  --font-sans: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
+
+  /* Weights */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+
+  /* Display / heading scale (px) — tight, Swiss */
+  --fs-display: 96px;   /* COMING SOON, CONTACT, PEOPLE */
+  --fs-h1: 64px;
+  --fs-h2: 48px;
+  --fs-h3: 36px;        /* section statements, "EVERY BRAND…" rows */
+  --fs-h4: 24px;        /* sub-labels, list leads */
+  --fs-body: 16px;      /* body copy, nav, captions-large */
+  --fs-caption: 12px;   /* fine print */
+
+  /* Line heights — display is locked to 100% */
+  --lh-display: 1; /* @kind font */
+  --lh-tight: 1.05; /* @kind font */
+  --lh-snug: 1.2; /* @kind font */
+  --lh-body: 1.4; /* @kind font */
+
+  /* Tracking */
+  --ls-tight: -0.01em;
+  --ls-normal: 0.02em;  /* the house default */
+  --ls-wide: 0.04em;
+
+  /* ── Semantic type roles ── */
+  --type-display: var(--fw-bold) var(--fs-display)/var(--lh-display) var(--font-display);
+  --type-h3: var(--fw-bold) var(--fs-h3)/var(--lh-display) var(--font-display);
+  --type-h4: var(--fw-bold) var(--fs-h4)/var(--lh-snug) var(--font-sans);
+  --type-body: var(--fw-regular) var(--fs-body)/var(--lh-body) var(--font-sans);
+  --type-body-bold: var(--fw-bold) var(--fs-body)/var(--lh-body) var(--font-sans);
+  --type-caption: var(--fw-regular) var(--fs-caption)/var(--lh-body) var(--font-sans);
+}

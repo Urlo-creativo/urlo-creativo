@@ -1,0 +1,14 @@
+<!-- @dsCard group="Spacing" viewport="700x160" name="Radii & outline ring" subtitle="Sharp 0 everywhere; the one round form is the pill" -->
+<!doctype html><html><head><meta charset="utf8"><link rel="stylesheet" href="../styles.css">
+<style>body{margin:0;background:var(--uc-paper);font-family:var(--font-sans);color:var(--uc-ink)}
+.w{padding:26px 32px;display:flex;align-items:center;gap:30px}
+.c{display:flex;flex-direction:column;gap:10px;align-items:center}
+.n{font-size:10px;letter-spacing:.04em;color:var(--uc-gray-500)}
+.box{width:96px;height:60px;box-shadow:var(--ring-ink);background:transparent}
+.pill{height:46px;padding:0 26px;display:flex;align-items:center;border-radius:130px;box-shadow:var(--ring-ink);font-size:15px}</style></head>
+<body><div class="w">
+<div class="c"><div class="box" style="border-radius:0"></div><div class="n">0 — default</div></div>
+<div class="c"><div class="box" style="border-radius:2px"></div><div class="n">2 — sm</div></div>
+<div class="c"><div class="pill">Pill · 130</div><div class="n">fully round</div></div>
+<div class="c"><div class="box" style="box-shadow:var(--ring-ink);border-radius:0"></div><div class="n">2px inset ink = elevation</div></div>
+</div></body></html>

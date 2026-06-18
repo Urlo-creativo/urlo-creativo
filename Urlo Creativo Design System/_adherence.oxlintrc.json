@@ -1,0 +1,358 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/brand/**",
+              "components/content/**",
+              "components/core/**",
+              "components/navigation/**",
+              "ui_kits/website/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Arimo))/i]",
+        "message": "Font not provided by the design system. Available: Arimo."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|size|as|style|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: children, variant, size, as, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:outline|solid|ghost)$/]",
+        "message": "<Button> variant must be one of 'outline' | 'solid' | 'ghost'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ContactFooter'] > JSXAttribute > JSXIdentifier[name!=/^(?:address|phone|email|socials|cta|onCta|style|key|ref|className|style|children)$/]",
+        "message": "<ContactFooter> doesn't accept that prop. Declared props: address, phone, email, socials, cta, onCta, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Highlight'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|mode|color|style|key|ref|className|style|children)$/]",
+        "message": "<Highlight> doesn't accept that prop. Declared props: children, mode, color, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Highlight'] > JSXAttribute[name.name='mode'] > Literal[value!=/^(?:fill|underline|text)$/]",
+        "message": "<Highlight> mode must be one of 'fill' | 'underline' | 'text'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Logo'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|height|basePath|style|key|ref|className|style|children)$/]",
+        "message": "<Logo> doesn't accept that prop. Declared props: variant, height, basePath, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Logo'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:lockup|wordmark|mark)$/]",
+        "message": "<Logo> variant must be one of 'lockup' | 'wordmark' | 'mark'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:items|active|lang|onNavigate|basePath|style|key|ref|className|style|children)$/]",
+        "message": "<NavBar> doesn't accept that prop. Declared props: items, active, lang, onNavigate, basePath, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ProcessStage'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|color|key|ref|className|style|children)$/]",
+        "message": "<ProcessStage> doesn't accept that prop. Declared props: label, color."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ProjectCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:image|title|year|bw|href|style|key|ref|className|style|children)$/]",
+        "message": "<ProjectCard> doesn't accept that prop. Declared props: image, title, year, bw, href, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='SectionTitle'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|accent|underline|size|color|as|style|key|ref|className|style|children)$/]",
+        "message": "<SectionTitle> doesn't accept that prop. Declared props: children, accent, underline, size, color, as, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ServiceRow'] > JSXAttribute > JSXIdentifier[name!=/^(?:number|title|children|defaultOpen|style|key|ref|className|style|children)$/]",
+        "message": "<ServiceRow> doesn't accept that prop. Declared props: number, title, children, defaultOpen, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tag'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|style|key|ref|className|style|children)$/]",
+        "message": "<Tag> doesn't accept that prop. Declared props: children, variant, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Tag'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:outline|fill|muted)$/]",
+        "message": "<Tag> variant must be one of 'outline' | 'fill' | 'muted'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TeamMember'] > JSXAttribute > JSXIdentifier[name!=/^(?:photo|name|role|style|key|ref|className|style|children)$/]",
+        "message": "<TeamMember> doesn't accept that prop. Declared props: photo, name, role, style."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Button": {
+        "replaces": []
+      },
+      "ContactFooter": {
+        "replaces": []
+      },
+      "Highlight": {
+        "replaces": []
+      },
+      "Logo": {
+        "replaces": []
+      },
+      "NavBar": {
+        "replaces": []
+      },
+      "ProcessStage": {
+        "replaces": []
+      },
+      "ProjectCard": {
+        "replaces": []
+      },
+      "SectionTitle": {
+        "replaces": []
+      },
+      "ServiceRow": {
+        "replaces": []
+      },
+      "Tag": {
+        "replaces": []
+      },
+      "TeamMember": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--border-default",
+      "--border-hair",
+      "--border-ink-2",
+      "--border-rule",
+      "--border-strong",
+      "--border-subtle",
+      "--content-max",
+      "--dur",
+      "--dur-fast",
+      "--dur-slow",
+      "--ease-out",
+      "--font-display",
+      "--font-sans",
+      "--fs-body",
+      "--fs-caption",
+      "--fs-display",
+      "--fs-h1",
+      "--fs-h2",
+      "--fs-h3",
+      "--fs-h4",
+      "--fw-bold",
+      "--fw-medium",
+      "--fw-regular",
+      "--highlight",
+      "--highlight-underline",
+      "--lh-body",
+      "--lh-display",
+      "--lh-snug",
+      "--lh-tight",
+      "--ls-normal",
+      "--ls-tight",
+      "--ls-wide",
+      "--page-gutter",
+      "--page-max",
+      "--radius-none",
+      "--radius-pill",
+      "--radius-sm",
+      "--ring-ink",
+      "--ring-ink-1",
+      "--sp-1",
+      "--sp-10",
+      "--sp-11",
+      "--sp-2",
+      "--sp-3",
+      "--sp-4",
+      "--sp-5",
+      "--sp-6",
+      "--sp-7",
+      "--sp-8",
+      "--sp-9",
+      "--stage-development",
+      "--stage-discovery",
+      "--stage-growth",
+      "--stage-identity",
+      "--stage-production",
+      "--stage-strategy",
+      "--surface-accent",
+      "--surface-ink",
+      "--surface-page",
+      "--surface-panel",
+      "--text-heading",
+      "--text-inverse",
+      "--text-muted",
+      "--text-primary",
+      "--text-secondary",
+      "--type-body",
+      "--type-body-bold",
+      "--type-caption",
+      "--type-display",
+      "--type-h3",
+      "--type-h4",
+      "--uc-black",
+      "--uc-blue",
+      "--uc-blue-deep",
+      "--uc-coral",
+      "--uc-gray-100",
+      "--uc-gray-150",
+      "--uc-gray-200",
+      "--uc-gray-300",
+      "--uc-gray-400",
+      "--uc-gray-50",
+      "--uc-gray-500",
+      "--uc-gray-600",
+      "--uc-gray-700",
+      "--uc-gray-800",
+      "--uc-gray-900",
+      "--uc-ink",
+      "--uc-ink-2",
+      "--uc-navy",
+      "--uc-orange",
+      "--uc-paper",
+      "--uc-paper-2",
+      "--uc-pink",
+      "--uc-sage",
+      "--uc-white",
+      "--uc-yellow",
+      "--uc-yellow-deep"
+    ],
+    "tokenKinds": {
+      "--uc-black": "color",
+      "--uc-ink": "color",
+      "--uc-ink-2": "color",
+      "--uc-navy": "color",
+      "--uc-white": "color",
+      "--uc-paper": "color",
+      "--uc-paper-2": "color",
+      "--uc-gray-900": "color",
+      "--uc-gray-800": "color",
+      "--uc-gray-700": "color",
+      "--uc-gray-600": "color",
+      "--uc-gray-500": "color",
+      "--uc-gray-400": "color",
+      "--uc-gray-300": "color",
+      "--uc-gray-200": "color",
+      "--uc-gray-150": "color",
+      "--uc-gray-100": "color",
+      "--uc-gray-50": "color",
+      "--uc-yellow": "color",
+      "--uc-yellow-deep": "color",
+      "--uc-pink": "color",
+      "--uc-blue": "color",
+      "--uc-blue-deep": "color",
+      "--uc-sage": "color",
+      "--uc-coral": "color",
+      "--uc-orange": "color",
+      "--text-primary": "font",
+      "--text-heading": "font",
+      "--text-secondary": "font",
+      "--text-muted": "font",
+      "--text-inverse": "font",
+      "--surface-page": "color",
+      "--surface-panel": "color",
+      "--surface-accent": "color",
+      "--surface-ink": "color",
+      "--border-strong": "color",
+      "--border-default": "color",
+      "--border-subtle": "color",
+      "--highlight": "color",
+      "--highlight-underline": "color",
+      "--stage-discovery": "color",
+      "--stage-strategy": "color",
+      "--stage-identity": "color",
+      "--stage-development": "color",
+      "--stage-production": "color",
+      "--stage-growth": "color",
+      "--font-sans": "font",
+      "--font-display": "font",
+      "--fw-regular": "font",
+      "--fw-medium": "font",
+      "--fw-bold": "font",
+      "--fs-display": "spacing",
+      "--fs-h1": "spacing",
+      "--fs-h2": "spacing",
+      "--fs-h3": "spacing",
+      "--fs-h4": "spacing",
+      "--fs-body": "spacing",
+      "--fs-caption": "spacing",
+      "--lh-display": "font",
+      "--lh-tight": "font",
+      "--lh-snug": "font",
+      "--lh-body": "font",
+      "--ls-tight": "spacing",
+      "--ls-normal": "spacing",
+      "--ls-wide": "spacing",
+      "--type-display": "font",
+      "--type-h3": "font",
+      "--type-h4": "font",
+      "--type-body": "font",
+      "--type-body-bold": "font",
+      "--type-caption": "font",
+      "--sp-1": "spacing",
+      "--sp-2": "spacing",
+      "--sp-3": "spacing",
+      "--sp-4": "spacing",
+      "--sp-5": "spacing",
+      "--sp-6": "spacing",
+      "--sp-7": "spacing",
+      "--sp-8": "spacing",
+      "--sp-9": "spacing",
+      "--sp-10": "spacing",
+      "--sp-11": "spacing",
+      "--page-max": "spacing",
+      "--page-gutter": "spacing",
+      "--content-max": "spacing",
+      "--radius-none": "radius",
+      "--radius-sm": "radius",
+      "--radius-pill": "radius",
+      "--border-hair": "color",
+      "--border-rule": "color",
+      "--border-ink-2": "color",
+      "--ring-ink": "color",
+      "--ring-ink-1": "color",
+      "--ease-out": "other",
+      "--dur-fast": "other",
+      "--dur": "other",
+      "--dur-slow": "other"
+    },
+    "fontFamilies": [
+      "Arimo"
+    ]
+  }
+}

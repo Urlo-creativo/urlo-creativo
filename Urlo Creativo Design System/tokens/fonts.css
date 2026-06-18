@@ -1,0 +1,15 @@
+/* ============================================================
+   URLO CREATIVO — Fonts
+   The studio sets everything in Helvetica (Bold / Regular /
+   Oblique). Helvetica is a licensed desktop face and not on the
+   web, so we ship ARIMO — a metric-compatible grotesque that
+   matches Helvetica/Arial advance widths almost exactly — as the
+   webfont fallback, behind the real Helvetica stack for users
+   who have it installed.
+
+   ⚠ SUBSTITUTION: Arimo stands in for Helvetica Neue / Helvetica.
+   Swap in the licensed Helvetica web kit for production if owned.
+   Big display moments occasionally used Neue Haas Grotesk Display
+   — visually equivalent to the bold Helvetica below.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap');

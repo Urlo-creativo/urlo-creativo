@@ -1,0 +1,46 @@
+/* ============================================================
+   URLO CREATIVO — Spacing, radii, borders, layout
+   Generous editorial whitespace on an 8px base. Corners are
+   almost always SHARP (0) — the one exception is the fully-round
+   pill button. Borders are hairline-to-2px solid ink. No drop
+   shadows; "elevation" is a 2px inset ink stroke (outline pill).
+   ============================================================ */
+:root {
+  /* 8px spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+  --sp-10: 128px;
+  --sp-11: 160px;
+
+  /* Page layout (1440 canvas) */
+  --page-max: 1440px;
+  --page-gutter: 138px;   /* the signature side margin */
+  --content-max: 1164px;
+
+  /* Radii — Swiss-sharp by default */
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-pill: 130px;   /* outline buttons / tags */
+
+  /* Borders */
+  --border-hair: 1px solid var(--border-default);
+  --border-rule: 1px solid var(--uc-black);
+  --border-ink-2: 2px solid var(--uc-black);
+
+  /* "Elevation" — outline, not shadow */
+  --ring-ink: inset 0 0 0 2px var(--uc-black);
+  --ring-ink-1: inset 0 0 0 1px var(--uc-black);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur: 220ms; /* @kind other */
+  --dur-slow: 420ms; /* @kind other */
+}
