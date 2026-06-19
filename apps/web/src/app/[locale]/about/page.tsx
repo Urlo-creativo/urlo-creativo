@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ProcessSection } from "@/components/process-section";
 import { StructuredRichText } from "@/components/rich-text";
+import { SiteFooter } from "@/components/site-footer";
 import { TeamCoreSection } from "@/components/team-core-section";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
@@ -34,7 +35,7 @@ export default async function AboutPage({
 
   const locale: Locale = localeParam;
   const dictionary = getDictionary(locale);
-  const { about, home } = dictionary;
+  const { about, footer } = dictionary;
 
   return (
     <main className="overflow-hidden bg-paper pt-[154px] text-black md:pt-[204px]">
@@ -183,44 +184,7 @@ export default async function AboutPage({
         </div>
       </section>
 
-      <section className="bg-yellow py-20 md:py-[180px]">
-        <div className="page-shell">
-          <h2 className="mb-16 text-[clamp(64px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
-            {home.contactTitle}
-          </h2>
-
-          <div className="grid gap-12 md:grid-cols-2">
-            <p className="whitespace-pre-line text-[24px] leading-normal tracking-normal">
-              {home.contactAddress}
-            </p>
-            <div className="flex flex-col gap-8 text-[24px] font-bold leading-none tracking-normal">
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-opacity hover:opacity-60"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-opacity hover:opacity-60"
-              >
-                Instagram
-              </a>
-            </div>
-          </div>
-
-          <a
-            href="mailto:info@consulenzecreativeperetto.com"
-            className="pill-button mt-16"
-          >
-            {home.consultationCta}
-          </a>
-        </div>
-      </section>
+      <SiteFooter footer={footer} />
     </main>
   );
 }

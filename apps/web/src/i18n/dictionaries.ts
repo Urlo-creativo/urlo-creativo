@@ -111,11 +111,7 @@ const dictionaries = {
         ],
       ] satisfies RichTextToken[][],
       learnMore: "Learn More",
-      contactTitle: "CONTACT",
-      contactAddress:
-        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
       contactCta: "Contact",
-      consultationCta: "Book a consultation",
       discoverServices: "Discover our services",
     },
     projects: {
@@ -139,6 +135,28 @@ const dictionaries = {
           description:
             "Refresh and modernize the men’s and women’s skiwear collections.",
         },
+      ],
+    },
+    contact: {
+      title: "Let’s get in touch!",
+      address:
+        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      ctaLabel: "Book a consultation",
+      emailHref: "mailto:info@consulenzecreativeperetto.com",
+      socials: [
+        { label: "LinkedIn", href: "https://www.linkedin.com" },
+        { label: "Instagram", href: "https://www.instagram.com" },
+      ],
+    },
+    footer: {
+      title: "Contact",
+      address:
+        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      ctaLabel: "Book a consultation",
+      emailHref: "mailto:info@consulenzecreativeperetto.com",
+      socials: [
+        { label: "LinkedIn", href: "https://www.linkedin.com" },
+        { label: "Instagram", href: "https://www.instagram.com" },
       ],
     },
     about: {
@@ -366,11 +384,7 @@ const dictionaries = {
         ],
       ] satisfies RichTextToken[][],
       learnMore: "Learn More",
-      contactTitle: "CONTACT",
-      contactAddress:
-        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
       contactCta: "Contact",
-      consultationCta: "Book a consultation",
       discoverServices: "Discover our services",
     },
     projects: {
@@ -394,6 +408,28 @@ const dictionaries = {
           description:
             "Refresh and modernize the men’s and women’s skiwear collections.",
         },
+      ],
+    },
+    contact: {
+      title: "Let’s get in touch!",
+      address:
+        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      ctaLabel: "Book a consultation",
+      emailHref: "mailto:info@consulenzecreativeperetto.com",
+      socials: [
+        { label: "LinkedIn", href: "https://www.linkedin.com" },
+        { label: "Instagram", href: "https://www.instagram.com" },
+      ],
+    },
+    footer: {
+      title: "Contact",
+      address:
+        "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      ctaLabel: "Book a consultation",
+      emailHref: "mailto:info@consulenzecreativeperetto.com",
+      socials: [
+        { label: "LinkedIn", href: "https://www.linkedin.com" },
+        { label: "Instagram", href: "https://www.instagram.com" },
       ],
     },
     about: {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { PotentialSection } from "@/components/potential-heading";
+import { SiteFooter } from "@/components/site-footer";
 import {
   StructuredRichText,
 } from "@/components/rich-text";
@@ -185,6 +186,7 @@ export default async function Home({
         </div>
 
         <StructuredRichText
+          as="p"
           lines={dictionary.home.methodology}
           className="max-w-content text-[clamp(22px,2.5vw,36px)] leading-[1.2]"
         />
@@ -275,44 +277,7 @@ export default async function Home({
         </div>
       </section>
 
-      <section className="bg-yellow py-20 md:py-[180px]">
-        <div className="page-shell">
-          <h2 className="mb-16 text-[clamp(64px,6.7vw,96px)] font-bold uppercase leading-none">
-            {dictionary.home.contactTitle}
-          </h2>
-
-          <div className="grid gap-12 md:grid-cols-2">
-            <p className="whitespace-pre-line text-[24px] leading-normal">
-              {dictionary.home.contactAddress}
-            </p>
-            <div className="flex flex-col gap-8 text-[24px] font-bold leading-none">
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-opacity hover:opacity-60"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-opacity hover:opacity-60"
-              >
-                Instagram
-              </a>
-            </div>
-          </div>
-
-          <a
-            href="mailto:info@consulenzecreativeperetto.com"
-            className="pill-button mt-16"
-          >
-            {dictionary.home.consultationCta}
-          </a>
-        </div>
-      </section>
+      <SiteFooter footer={dictionary.footer} />
     </main>
   );
 }

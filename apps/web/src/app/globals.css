@@ -9,7 +9,9 @@
 }
 
 html {
+  overflow-y: scroll;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -37,6 +39,12 @@ a {
 ::selection {
   background: var(--uc-yellow);
   color: var(--uc-black);
+}
+
+.bg-yellow::selection,
+.bg-yellow ::selection {
+  background: var(--uc-blue-deep);
+  color: white;
 }
 
 @keyframes client-marquee {
