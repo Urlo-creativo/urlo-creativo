@@ -99,7 +99,7 @@ export function MethodSteps({ steps }: MethodStepsProps) {
             ref={(el) => {
               headingRefs.current[index] = el;
             }}
-            className="relative z-10 text-[clamp(24px,2.5vw,36px)] font-bold leading-none text-black"
+            className="type-heading-md relative z-10 font-bold text-black"
             style={{ "--step-progress-width": "0%" } as CSSProperties}
           >
             <span>{step.title}</span>
@@ -117,7 +117,7 @@ export function MethodSteps({ steps }: MethodStepsProps) {
       <div className="mt-6 grid gap-12 md:grid-cols-3 md:gap-20">
         {steps.map((step) => (
           <div key={step.title}>
-            <ul className="space-y-5 text-[clamp(18px,1.7vw,24px)] leading-none">
+            <ul className="type-body-lg space-y-5">
               {step.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}

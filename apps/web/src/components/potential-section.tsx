@@ -29,7 +29,7 @@ export function PotentialSection({
       <StructuredRichText
         as="h2"
         lines={heading}
-        className="text-[clamp(56px,6.7vw,96px)] uppercase leading-none tracking-normal"
+        className="type-display uppercase"
       />
 
       <MethodSteps steps={steps} />

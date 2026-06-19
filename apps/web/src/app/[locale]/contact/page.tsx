@@ -23,15 +23,15 @@ export default async function ContactPage({
   const { contact } = getDictionary(locale);
 
   return (
-    <main className="min-h-screen bg-yellow pt-[154px] text-black md:pt-[204px]">
+    <main className="page-top min-h-screen bg-yellow text-black">
       <section className="page-shell pb-20 md:pb-[126px]">
-        <h1 className="text-[clamp(56px,7vw,112px)] font-bold uppercase leading-none tracking-normal">
+        <h1 className="type-display font-bold uppercase">
           {contact.title}
         </h1>
 
-        <div className="mt-16 grid gap-16 border-t border-black pt-8 md:mt-[142px] md:grid-cols-2 md:gap-[96px] md:pt-10">
+        <div className="grid-gap-lg mt-16 grid border-t border-black pt-8 md:mt-[142px] md:grid-cols-2 md:pt-10">
           <div>
-            <p className="whitespace-pre-line text-[clamp(20px,2vw,30px)] leading-[1.18] tracking-normal">
+            <p className="type-body-lg whitespace-pre-line">
               {contact.address}
             </p>
 
@@ -43,7 +43,7 @@ export default async function ContactPage({
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 text-[clamp(24px,2.7vw,40px)] font-bold leading-none tracking-normal md:items-start md:justify-start">
+          <div className="type-heading-xl flex flex-col gap-8 font-bold md:items-start md:justify-start">
             {contact.socials.map((social) => (
               <a
                 key={social.label}

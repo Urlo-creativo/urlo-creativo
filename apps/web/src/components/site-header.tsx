@@ -34,7 +34,7 @@ export function SiteHeader({
   return (
     <header className="fixed left-0 right-0 top-[31px] z-50 px-[var(--page-gutter)]">
       <nav
-        className="mx-auto grid h-[50px] w-full max-w-content grid-cols-[auto_1fr_auto] items-center rounded-pill bg-[rgba(235,235,235,0.75)] px-3 text-black backdrop-blur-md"
+        className="mx-auto grid h-[50px] w-full max-w-content grid-cols-[auto_1fr_auto] items-center rounded-pill bg-[var(--color-nav-bg)] px-3 text-black backdrop-blur-md"
         aria-label="Main navigation"
       >
         {/* Logo — left */}
@@ -68,7 +68,7 @@ export function SiteHeader({
               key={l}
               href={localizedPath(l)}
               hrefLang={l}
-              className="flex h-[34px] w-[52px] items-center justify-center rounded-full text-[16px] leading-none transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
+              className="type-nav flex h-[34px] w-[52px] items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
             >
               {localeLabels[l].toUpperCase()}
             </Link>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PotentialSection } from "@/components/potential-heading";
+import { PotentialSection } from "@/components/potential-section";
 import { SiteFooter } from "@/components/site-footer";
 import {
   StructuredRichText,
@@ -79,14 +79,14 @@ export default async function Home({
         />
 
         <div className="page-shell relative z-20 flex h-full min-h-[820px] flex-col justify-center pb-20 pt-28 md:min-h-0">
-          <p className="absolute left-[var(--page-gutter)] top-[92px] whitespace-pre-line text-[16px] leading-normal">
+          <p className="type-body-md absolute left-[var(--page-gutter)] top-[92px] whitespace-pre-line">
             {dictionary.home.heroKicker}
           </p>
           <div className="mt-28 text-center md:mt-20">
-            <h1 className="text-[clamp(56px,8vw,96px)] font-bold uppercase leading-none tracking-normal">
+            <h1 className="type-display-xl font-bold uppercase">
               {dictionary.home.heroTitle}
             </h1>
-            <p className="mt-8 text-center text-[clamp(18px,2vw,24px)] italic">
+            <p className="type-body-lg mt-8 text-center italic">
               {dictionary.home.heroSubheading}
             </p>
           </div>
@@ -95,7 +95,7 @@ export default async function Home({
 
       <section className="page-shell py-24 md:py-[90px]">
         <div className="max-w-[1182px]">
-          <p className="text-[clamp(28px,2.5vw,36px)] font-bold leading-normal tracking-normal">
+          <p className="type-body-xl font-bold">
             {dictionary.home.mission}
           </p>
           <a
@@ -120,7 +120,7 @@ export default async function Home({
 
       <section className="page-shell py-20 md:pb-[88px] md:pt-[72px]">
         <div className="mb-12 md:mb-[68px]">
-          <h2 className="text-[clamp(56px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
+          <h2 className="type-display font-bold uppercase">
             {dictionary.home.projectsTitle}
           </h2>
         </div>
@@ -134,7 +134,7 @@ export default async function Home({
 
               {/* Image grows from the top-left anchor on hover */}
               <div
-                className="relative aspect-square overflow-hidden md:aspect-[357/440]
+                className="relative aspect-square overflow-hidden md:media-portrait
                            origin-top-left transition-transform duration-500 ease-out
                            group-hover:scale-[1.1]"
               >
@@ -154,14 +154,13 @@ export default async function Home({
                   auto-contrasts wherever the scaled image overlaps it. */}
               <div className="relative mt-4">
                 <h3
-                  className="text-[clamp(20px,2.5vw,36px)] font-bold uppercase leading-none
-                             text-ink transition-colors duration-500
+                  className="type-heading-md font-bold uppercase text-ink transition-colors duration-500
                              group-hover:text-white group-hover:mix-blend-difference"
                 >
                   {project.title}
                 </h3>
                 <p
-                  className="mt-1 text-[clamp(20px,2.5vw,36px)] leading-none text-gray-500"
+                  className="type-heading-md mt-1 text-[var(--color-text-subtle)]"
                 >
                   {project.year}
                 </p>
@@ -181,14 +180,14 @@ export default async function Home({
         <div className="mb-12">
           <StructuredRichText
             lines={dictionary.home.methodologyLabel}
-            className="text-[clamp(24px,2.5vw,36px)]"
+            className="type-body-xl"
           />
         </div>
 
         <StructuredRichText
           as="p"
           lines={dictionary.home.methodology}
-          className="max-w-content text-[clamp(22px,2.5vw,36px)] leading-[1.2]"
+          className="type-body-xl max-w-content"
         />
 
         <Link
@@ -199,12 +198,12 @@ export default async function Home({
         </Link>
       </section>
 
-      <section className="py-16 md:py-[150px]">
+      <section className="section-y">
         <div className="page-shell">
           <StructuredRichText
             as="h2"
             lines={dictionary.home.selectedClients}
-            className="text-[clamp(48px,6.7vw,96px)] uppercase leading-none tracking-normal"
+            className="type-display uppercase"
           />
         </div>
         <div className="mt-16 overflow-hidden bg-yellow py-8 md:py-[40px]">
@@ -245,7 +244,7 @@ export default async function Home({
       <section className="py-20 md:pb-[180px] md:pt-[190px]">
         {/* Heading */}
         <div className="page-shell">
-          <h2 className="text-[clamp(56px,6.7vw,96px)] font-bold uppercase leading-none">
+          <h2 className="type-display font-bold uppercase">
             {dictionary.home.teamTitle}
           </h2>
         </div>
@@ -266,7 +265,7 @@ export default async function Home({
           <StructuredRichText
             as="p"
             lines={dictionary.home.teamIntro}
-            className="text-[clamp(20px,2.2vw,32px)] leading-[1.4]"
+            className="type-body-xl"
           />
           <Link
             href={localizedPath(locale, "/about")}

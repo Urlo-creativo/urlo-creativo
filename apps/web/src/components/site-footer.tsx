@@ -6,17 +6,17 @@ type SiteFooterProps = {
 
 export function SiteFooter({ footer }: SiteFooterProps) {
   return (
-    <section className="bg-yellow py-20 md:py-[180px]">
+    <section className="section-y-lg bg-yellow">
       <div className="page-shell">
-        <h2 className="mb-16 text-[clamp(64px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
+        <h2 className="type-display mb-16 font-bold uppercase">
           {footer.title}
         </h2>
 
         <div className="grid gap-12 md:grid-cols-2">
-          <p className="whitespace-pre-line text-[24px] leading-normal tracking-normal">
+          <p className="type-body-lg whitespace-pre-line">
             {footer.address}
           </p>
-          <div className="flex flex-col gap-8 text-[24px] font-bold leading-none tracking-normal">
+          <div className="type-body-lg flex flex-col gap-8 font-bold">
             {footer.socials.map((social) => (
               <a
                 key={social.label}
@@ -31,7 +31,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
           </div>
         </div>
 
-        <a href={footer.emailHref} className="pill-button mt-16">
+        <a href={footer.emailHref} className="pill-button stack-lg">
           {footer.ctaLabel}
         </a>
       </div>

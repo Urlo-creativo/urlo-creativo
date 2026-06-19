@@ -21,14 +21,55 @@
   --uc-gray-100: #eaeaea;
   --uc-gray-50: #ebebeb;
 
-  --uc-yellow: #efebab;
+  /* Brand palette — aligned to client Figma selection colors (HSL). */
+  --uc-yellow: hsla(56, 69%, 81%, 1);
   --uc-yellow-deep: #ebe48b;
-  --uc-pink: #eaafb1;
-  --uc-blue: #92b9d0;
-  --uc-blue-deep: #4171a9;
+  --uc-pink: hsla(358, 58%, 80%, 1);
+  --uc-blue: hsla(204, 39%, 70%, 1);
+  --uc-blue-deep: hsla(212, 44%, 46%, 1);
   --uc-sage: #a5bf8f;
-  --uc-coral: #e1503c;
+  --uc-coral: hsla(10, 73%, 61%, 1);
+  /* Outside the client 5-colour palette — kept as the 6th process-step accent. */
   --uc-orange: #e2a14b;
+
+  /* ===== Semantic color tokens =====
+     Map structural roles to the raw palette. Decorative brand-colour accents
+     (filter chips, button fill animation) may reference the palette directly. */
+  --color-bg-page: var(--uc-paper);
+  --color-bg-muted: var(--uc-paper-2);
+  --color-bg-inverse: var(--uc-black);
+  --color-bg-section: var(--uc-yellow);
+  --color-text-primary: var(--uc-black);
+  --color-text-inverse: var(--uc-white);
+  --color-text-muted: var(--uc-gray-600);
+  --color-text-subtle: var(--uc-gray-500);
+  --color-border-primary: var(--uc-black);
+  --color-selection-bg: var(--uc-yellow);
+  --color-selection-fg: var(--uc-black);
+  --color-selection-on-yellow-bg: var(--uc-blue-deep);
+  --color-selection-on-yellow-fg: var(--uc-white);
+  --color-highlight-yellow: var(--uc-yellow);
+  --color-highlight-pink: var(--uc-pink);
+  /* CTA pill button — two-tone: rest yellow, hover pink. */
+  --color-button-border: var(--uc-black);
+  --color-button-text: var(--uc-black);
+  --color-button-fill: var(--uc-yellow);
+  --color-button-fill-hover: var(--uc-pink);
+  /* Toggle filter variants — monochrome brand fills, black text (neutral = black/white). */
+  --color-button-yellow: var(--uc-yellow);
+  --color-button-pink: var(--uc-pink);
+  --color-button-blue: var(--uc-blue);
+  --color-button-neutral: var(--uc-black);
+  --color-button-neutral-text: var(--uc-white);
+  --color-hover-soft: rgba(0, 0, 0, 0.07);
+  --color-nav-bg: rgba(235, 235, 235, 0.75);
+  --color-rail-blue: var(--uc-blue-deep);
+  --color-process-1: var(--uc-pink);
+  --color-process-2: var(--uc-blue-deep);
+  --color-process-3: var(--uc-yellow);
+  --color-process-4: var(--uc-coral);
+  --color-process-5: var(--uc-blue);
+  --color-process-6: var(--uc-orange);
 
   --font-sans: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
   --font-display: "Helvetica Neue", Helvetica, Arimo, Arial, sans-serif;
@@ -36,6 +77,27 @@
   --page-max: 1728px;
   --page-gutter: clamp(24px, 4.8vw, 96px);
   --content-max: 1164px;
+
+  /* ===== Spacing scale =====
+     Vertical page rhythm. Section paddings that are symmetric map to
+     --space-section-y*; asymmetric Figma sections keep bespoke pt/pb. */
+  --space-page-top: clamp(154px, 14vw, 204px);
+  --space-section-y: clamp(80px, 9vw, 150px);
+  --space-section-y-sm: clamp(64px, 7vw, 120px);
+  --space-section-y-lg: clamp(96px, 12vw, 190px);
+  --space-stack-sm: 16px;
+  --space-stack-md: clamp(24px, 3vw, 48px);
+  --space-stack-lg: clamp(40px, 5vw, 80px);
+  --space-grid-md: clamp(32px, 4vw, 72px);
+  --space-grid-lg: clamp(48px, 6vw, 96px);
+
+  /* ===== Layout scale =====
+     Page/content containers are already tokenized (page-shell + maxW.content).
+     These cover the repeating editorial measures & the portrait media ratio.
+     Wider one-off measures (1080/1182) and unique ratios stay inline. */
+  --layout-text-max: 980px;
+  --layout-narrow-max: 760px;
+  --layout-aspect-portrait: 357 / 440;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 220ms;

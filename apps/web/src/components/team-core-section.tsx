@@ -32,12 +32,12 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
 
   return (
     <section className="page-shell py-20 md:pb-[148px] md:pt-[172px]">
-      <h2 className="text-[clamp(48px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
+      <h2 className="type-display font-bold uppercase">
         {title}
       </h2>
 
       <div className="relative mt-9 flex">
-        <AnimatedBar className="w-[18px] shrink-0 bg-[var(--uc-blue-deep)]" />
+        <AnimatedBar className="w-[18px] shrink-0 bg-[var(--color-rail-blue)]" />
 
         {/* Roles list */}
         <div className="flex flex-col md:w-1/2">
@@ -48,7 +48,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
               onMouseEnter={() => setActiveIndex(i)}
               onMouseLeave={() => setActiveIndex(null)}
             >
-              <span className="inline-block w-fit border-y border-black py-2 text-[clamp(20px,2vw,32px)] uppercase leading-none tracking-normal text-black">
+              <span className="type-heading-md inline-block w-fit border-y border-black py-2 uppercase text-black">
                 {role}
               </span>
             </div>

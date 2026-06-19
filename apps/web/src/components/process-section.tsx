@@ -3,21 +3,23 @@
 import { useState } from "react";
 
 const processColors = [
-  "var(--uc-pink)",
-  "var(--uc-blue-deep)",
-  "var(--uc-yellow)",
-  "var(--uc-coral)",
-  "var(--uc-blue)",
-  "var(--uc-orange)",
+  "var(--color-process-1)",
+  "var(--color-process-2)",
+  "var(--color-process-3)",
+  "var(--color-process-4)",
+  "var(--color-process-5)",
+  "var(--color-process-6)",
 ] as const;
 
+// Foreground per block, chosen for WCAG contrast against each fill.
+// Only blue-deep (process-2) is dark enough to need white; the rest are light.
 const textColors = [
   "text-black",
   "text-white",
   "text-black",
-  "text-white",
-  "text-white",
-  "text-white",
+  "text-black",
+  "text-black",
+  "text-black",
 ] as const;
 
 type ProcessSectionProps = {
@@ -31,11 +33,11 @@ export function ProcessSection({ title, stages, descriptions }: ProcessSectionPr
 
   return (
     <section className="page-shell py-20 md:pb-[136px] md:pt-[96px]">
-      <h2 className="text-[clamp(56px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
+      <h2 className="type-display font-bold uppercase">
         {title}
       </h2>
       <div className="mt-10 md:mt-[58px]">
-        <div className="grid grid-cols-6 pb-1 text-[10px] font-bold uppercase leading-none tracking-normal md:text-[13px]">
+        <div className="type-caption grid grid-cols-6 pb-1 font-bold uppercase">
           {stages.map((stage) => (
             <span key={stage}>{stage}</span>
           ))}
@@ -60,7 +62,7 @@ export function ProcessSection({ title, stages, descriptions }: ProcessSectionPr
                 }}
               >
                 <p
-                  className={`px-4 text-[12px] leading-[1.4] transition-opacity duration-200 md:text-[14px] ${textColors[i]} ${
+                  className={`type-body-sm px-4 transition-opacity duration-200 ${textColors[i]} ${
                     activeIndex === i ? "opacity-100 delay-100" : "opacity-0 delay-0"
                   }`}
                 >
