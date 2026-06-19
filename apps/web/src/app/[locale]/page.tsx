@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { MethodologyLabel } from "@/components/methodology-label";
-import { PeopleText } from "@/components/people-text";
 import { PotentialSection } from "@/components/potential-heading";
-import { RichText } from "@/components/rich-text";
+import {
+  StructuredRichText,
+} from "@/components/rich-text";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -116,7 +116,7 @@ export default async function Home({
       <section className="relative py-20 md:pb-[128px] md:pt-[170px]">
         <div className="page-shell">
           <PotentialSection
-            heading={dictionary.home.potentialHeading}
+            heading={dictionary.home.potentialTitle}
             ctaHref={localizedPath(locale, "/services")}
             ctaLabel={dictionary.home.discoverServices}
             steps={methodSteps}
@@ -185,11 +185,14 @@ export default async function Home({
 
       <section className="page-shell py-16 md:pb-[120px] md:pt-[80px]">
         <div className="mb-12">
-          <MethodologyLabel label={dictionary.home.methodologyLabel} />
+          <StructuredRichText
+            lines={dictionary.home.methodologyLabel}
+            className="text-[clamp(24px,2.5vw,36px)]"
+          />
         </div>
 
-        <RichText
-          text={dictionary.home.methodology}
+        <StructuredRichText
+          lines={dictionary.home.methodology}
           className="max-w-content text-[clamp(22px,2.5vw,36px)] leading-[1.2]"
         />
 
@@ -203,9 +206,9 @@ export default async function Home({
 
       <section className="py-16 md:py-[150px]">
         <div className="page-shell">
-          <RichText
+          <StructuredRichText
             as="h2"
-            text={dictionary.home.selectedClients}
+            lines={dictionary.home.selectedClients}
             className="text-[clamp(48px,6.7vw,96px)] uppercase leading-none tracking-normal"
           />
         </div>
@@ -265,7 +268,11 @@ export default async function Home({
 
         {/* Body text + button */}
         <div className="page-shell mt-16 md:mt-24">
-          <PeopleText text={dictionary.home.teamIntro} />
+          <StructuredRichText
+            as="p"
+            lines={dictionary.home.teamIntro}
+            className="text-[clamp(20px,2.2vw,32px)] leading-[1.4]"
+          />
           <Link
             href={localizedPath(locale, "/about")}
             className="pill-button mt-10"

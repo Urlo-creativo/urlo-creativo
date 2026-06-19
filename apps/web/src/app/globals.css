@@ -49,6 +49,16 @@ a {
   }
 }
 
+@keyframes highlight-reveal {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @layer components {
   .page-shell {
     width: min(100%, var(--page-max));
@@ -106,31 +116,48 @@ a {
     outline-offset: 3px;
   }
 
-  .scroll-highlight {
+  .highlight-text {
     position: relative;
     display: inline-block;
     isolation: isolate;
   }
 
-  .scroll-highlight::before {
+  .highlight-text::before {
     position: absolute;
     z-index: -1;
-    top: 0.08em;
     bottom: 0.08em;
     left: -0.05em;
     display: block;
     width: calc(100% + 0.1em);
+    height: 0.5em;
     content: "";
     transform: scaleX(var(--highlight-progress, 0));
     transform-origin: left center;
     will-change: transform;
   }
 
-  .scroll-highlight-pink::before {
+  .highlight-text-controlled::before,
+  .highlight-text-scroll::before {
+    transform: scaleX(var(--highlight-progress, 0));
+  }
+
+  .highlight-text-load::before {
+    transform: scaleX(0);
+  }
+
+  .highlight-text-load.highlight-text-revealed::before {
+    animation: highlight-reveal 1200ms ease-in-out 220ms forwards;
+  }
+
+  .highlight-text-static::before {
+    transform: scaleX(1);
+  }
+
+  .highlight-text-pink::before {
     background: var(--uc-pink);
   }
 
-  .scroll-highlight-yellow::before {
+  .highlight-text-yellow::before {
     background: var(--uc-yellow);
   }
 
@@ -152,5 +179,12 @@ a {
     transform-origin: left center;
     pointer-events: none;
     will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlight-text-load.highlight-text-revealed::before {
+    animation: none;
+    transform: scaleX(1);
   }
 }
