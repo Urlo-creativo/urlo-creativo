@@ -2,7 +2,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ProcessSection } from "@/components/process-section";
 import { StructuredRichText } from "@/components/rich-text";
+import { TeamCoreSection } from "@/components/team-core-section";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 
@@ -10,22 +12,13 @@ export const metadata: Metadata = {
   title: "About Us",
 };
 
-const processColors = [
-  "var(--uc-pink)",
-  "var(--uc-blue-deep)",
-  "var(--uc-yellow)",
-  "var(--uc-coral)",
-  "var(--uc-blue)",
-  "var(--uc-orange)",
-] as const;
-
 const teamPhotos = [
-  "/about/giulia.jpg",
-  "/about/federica.jpg",
-  "/about/martina.jpg",
-  "/about/margherita.jpg",
-  "/about/valentina.jpg",
-  "/about/camilla.jpg",
+  "/about/GUILIA.png",
+  "/about/FEDERICA.png",
+  "/about/MARTINA.png",
+  "/about/MARGHERITA.png",
+  "/about/VALENTINA.png",
+  "/about/CAMILLA.png",
 ] as const;
 
 export default async function AboutPage({
@@ -79,50 +72,19 @@ export default async function AboutPage({
         </div>
       </section>
 
-      <section className="page-shell py-20 md:pb-[148px] md:pt-[172px]">
-        <h2 className="text-[clamp(48px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
-          {about.teamCoreTitle}
-        </h2>
-        <div className="mt-9 flex max-w-[420px] flex-col items-start">
-          {about.coreRoles.map((role) => (
-            <span
-              key={role}
-              className="border border-[var(--uc-blue-deep)] px-2 py-1 text-[12px] uppercase leading-none tracking-normal text-gray-600 md:text-[14px]"
-            >
-              {role}
-            </span>
-          ))}
-        </div>
-      </section>
+      <TeamCoreSection title={about.teamCoreTitle} roles={about.coreRoles} />
 
-      <section className="page-shell py-20 md:pb-[136px] md:pt-[96px]">
-        <h2 className="max-w-[620px] text-[clamp(56px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
-          {about.processTitle}
-        </h2>
-        <div className="mt-10 max-w-[1180px] overflow-x-auto pb-2 md:mt-[58px]">
-          <div className="min-w-[620px]">
-            <div className="grid grid-cols-6 border-t border-black pt-3 text-[10px] font-bold uppercase leading-none tracking-normal md:text-[13px]">
-              {about.processStages.map((stage) => (
-                <span key={stage}>{stage}</span>
-              ))}
-            </div>
-            <div className="mt-3 grid h-4 grid-cols-6">
-              {about.processStages.map((stage, index) => (
-                <div
-                  key={stage}
-                  style={{ backgroundColor: processColors[index] }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <ProcessSection
+        title={about.processTitle}
+        stages={about.processStages}
+        descriptions={about.processDescriptions}
+      />
 
       <section className="page-shell py-20 md:pb-[170px] md:pt-[96px]">
         <h2 className="text-[clamp(56px,6.7vw,96px)] font-bold uppercase leading-none tracking-normal">
           {about.missionTitle}
         </h2>
-        <div className="mt-8 grid max-w-[1096px] gap-8 md:grid-cols-[minmax(0,440px)_minmax(320px,1fr)] md:items-end md:gap-[92px]">
+        <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-start md:gap-[140px]">
           <p className="text-[clamp(22px,2.5vw,36px)] leading-[1.12] tracking-normal">
             {about.mission}
           </p>
@@ -136,50 +98,60 @@ export default async function AboutPage({
             />
           </div>
         </div>
-        <p className="mt-4 inline bg-yellow px-2 text-[clamp(18px,2vw,32px)] font-bold uppercase leading-[1.08] tracking-normal">
-          {about.missionHighlight}
-        </p>
+        <StructuredRichText
+          as="p"
+          lines={about.missionHighlight}
+          className="mt-1 text-[clamp(28px,3.2vw,52px)] uppercase leading-[1.08] tracking-normal"
+        />
       </section>
 
       <section className="page-shell pb-20 pt-8 md:pb-[168px] md:pt-[92px]">
-        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_310px] md:items-end">
-          <div>
-            <h2 className="inline bg-yellow px-1 text-[clamp(20px,2vw,32px)] font-bold uppercase leading-none tracking-normal">
-              {about.historyTitle}
-            </h2>
-            <div className="mt-6 grid grid-cols-2 border-y border-black py-3">
-              <div>
-                <p className="text-[clamp(18px,1.9vw,30px)] font-bold leading-none tracking-normal">
-                  {about.historyStart}
-                </p>
-                <p className="mt-3 text-right text-[10px] leading-none tracking-normal text-gray-600">
-                  {about.historyStartYear}
-                </p>
-              </div>
-              <div className="border-l border-black pl-4">
-                <p className="text-[clamp(18px,1.9vw,30px)] font-bold leading-none tracking-normal">
-                  {about.historyNow}
-                </p>
-                <p className="mt-3 text-right text-[10px] leading-none tracking-normal text-gray-600">
-                  {about.historyNowYear}
-                </p>
-              </div>
-            </div>
-            <p className="mt-4 max-w-[830px] text-[12px] leading-[1.28] tracking-normal md:text-[14px]">
-              {about.history}
-            </p>
+        <div className="grid md:grid-cols-2 md:items-end md:gap-[80px]">
+          <StructuredRichText
+            as="h2"
+            lines={about.historyTitle}
+            className="text-[clamp(30px,3.2vw,50px)] uppercase leading-none tracking-normal"
+          />
+          <div className="relative z-10 ml-auto aspect-[310/244] w-[220px] origin-top-left cursor-pointer overflow-hidden transition-transform duration-500 ease-out hover:scale-[1.1] md:w-[310px] md:self-start lg:w-[360px]">
+            <Image
+              src="/about/history-value.png"
+              alt=""
+              fill
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover object-center"
+            />
           </div>
-          <div className="relative ml-auto w-[220px] md:w-full">
-            <span className="absolute -left-8 -top-6 h-3 w-24 rotate-[-45deg] bg-yellow" />
-            <div className="relative aspect-[310/244] overflow-hidden">
-              <Image
-                src="/about/history-value.jpg"
-                alt=""
-                fill
-                sizes="310px"
-                className="object-cover object-center"
-              />
+        </div>
+        <div className="mt-6 grid grid-cols-2 gap-4 md:gap-6">
+          <div className="group/history-item relative cursor-pointer border-y border-black py-2 outline-none" tabIndex={0}>
+            <div className="flex min-h-[48px] items-center justify-between gap-4 md:min-h-[60px]">
+              <p className="text-[clamp(30px,3.2vw,50px)] font-bold leading-none tracking-normal">
+                {about.historyStart}
+              </p>
+              <p className="self-end pb-1 text-right text-[clamp(14px,1.1vw,18px)] leading-none tracking-normal text-black">
+                {about.historyStartYear}
+              </p>
             </div>
+            <StructuredRichText
+              as="p"
+              lines={about.historyStartDescription}
+              className="pointer-events-none absolute left-0 top-full z-20 mt-6 max-w-[760px] translate-y-2 text-[14px] leading-[1.18] tracking-normal opacity-0 transition-all duration-300 ease-out group-hover/history-item:translate-y-0 group-hover/history-item:opacity-100 group-focus/history-item:translate-y-0 group-focus/history-item:opacity-100 md:text-[16px]"
+            />
+          </div>
+          <div className="group/history-item relative cursor-pointer border-y border-black py-2 outline-none" tabIndex={0}>
+            <div className="flex min-h-[48px] items-center justify-between gap-4 md:min-h-[60px]">
+              <p className="text-[clamp(30px,3.2vw,50px)] font-bold leading-none tracking-normal">
+                {about.historyNow}
+              </p>
+              <p className="self-end pb-1 text-right text-[clamp(14px,1.1vw,18px)] leading-none tracking-normal text-black">
+                {about.historyNowYear}
+              </p>
+            </div>
+            <StructuredRichText
+              as="p"
+              lines={about.historyNowDescription}
+              className="pointer-events-none absolute left-0 top-full z-20 mt-6 max-w-[760px] translate-y-2 text-[14px] leading-[1.18] tracking-normal opacity-0 transition-all duration-300 ease-out group-hover/history-item:translate-y-0 group-hover/history-item:opacity-100 group-focus/history-item:translate-y-0 group-focus/history-item:opacity-100 md:text-[16px]"
+            />
           </div>
         </div>
       </section>
@@ -200,10 +172,10 @@ export default async function AboutPage({
                   className="object-cover object-center"
                 />
               </div>
-              <h3 className="mt-4 text-[13px] font-bold uppercase leading-none tracking-normal">
+              <h3 className="mt-4 text-[clamp(18px,1.45vw,24px)] font-bold uppercase leading-none tracking-normal">
                 {member.name}
               </h3>
-              <p className="mt-2 max-w-[260px] text-[11px] uppercase leading-[1.25] tracking-normal text-gray-600">
+              <p className="mt-2 w-full text-[clamp(14px,1vw,18px)] uppercase leading-[1.25] tracking-normal text-gray-600">
                 {member.role}
               </p>
             </article>

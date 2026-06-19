@@ -183,17 +183,51 @@ const dictionaries = {
         "Production",
         "Growth",
       ],
+      processDescriptions: [
+        "Brand, context and objective analysis.",
+        "Positioning, narrative and communication strategy.",
+        "Visual and verbal identity system.",
+        "Design and production of brand materials.",
+        "Execution across all touchpoints.",
+        "Ongoing support and brand evolution.",
+      ],
       missionTitle: "MISSION",
       mission:
         "We love brands with personality. This is why we dig deep to bring it to the surface.",
-      missionHighlight: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.",
-      historyTitle: "HISTORY/VALUE",
+      missionHighlight: [
+        [{ text: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.", bold: true, highlight: "yellow", trigger: "scroll" }],
+      ] satisfies RichTextToken[][],
+      historyTitle: [
+        [{ text: "HISTORY/VALUE", bold: true, highlight: "yellow", trigger: "scroll" }],
+      ] satisfies RichTextToken[][],
       historyStart: "Begin",
       historyNow: "Now",
-      historyStartYear: "2014",
+      historyStartYear: "2024",
       historyNowYear: "2026",
-      history:
-        "Urlo Creativo was founded as a clothing design studio based on Giulia Peretto's vision. The studio is rooted in traditional work methods and creates an ecosystem of projects, brands, and related people.",
+      historyStartDescription: [
+        [
+          {
+            text: "Urlo Creativo was founded as a clothing design studio based on Giulia Peretto's vision. The idea was to ",
+          },
+          { text: "subvert traditional work methods", bold: true },
+          {
+            text: " and create an ecosystem of capable, flexible, and ",
+          },
+          { text: "ethical people", bold: true },
+          { text: "." },
+        ],
+      ] satisfies RichTextToken[][],
+      historyNowDescription: [
+        [
+          { text: "Today it is a " },
+          { text: "multidisciplinary hub", bold: true },
+          {
+            text: " with all the know-how necessary for ",
+          },
+          { text: "brand development", bold: true },
+          { text: "." },
+        ],
+      ] satisfies RichTextToken[][],
       peopleTitle: "PEOPLE",
       team: [
         {
@@ -404,17 +438,51 @@ const dictionaries = {
         "Production",
         "Growth",
       ],
+      processDescriptions: [
+        "Brand, context and objective analysis.",
+        "Positioning, narrative and communication strategy.",
+        "Visual and verbal identity system.",
+        "Design and production of brand materials.",
+        "Execution across all touchpoints.",
+        "Ongoing support and brand evolution.",
+      ],
       missionTitle: "MISSION",
       mission:
         "We love brands with personality. This is why we dig deep to bring it to the surface.",
-      missionHighlight: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.",
-      historyTitle: "HISTORY/VALUE",
+      missionHighlight: [
+        [{ text: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.", bold: true, highlight: "yellow", trigger: "scroll" }],
+      ] satisfies RichTextToken[][],
+      historyTitle: [
+        [{ text: "HISTORY/VALUE", bold: true, highlight: "yellow", trigger: "scroll" }],
+      ] satisfies RichTextToken[][],
       historyStart: "Begin",
       historyNow: "Now",
-      historyStartYear: "2014",
+      historyStartYear: "2024",
       historyNowYear: "2026",
-      history:
-        "Urlo Creativo was founded as a clothing design studio based on Giulia Peretto's vision. The studio is rooted in traditional work methods and creates an ecosystem of projects, brands, and related people.",
+      historyStartDescription: [
+        [
+          {
+            text: "Urlo Creativo was founded as a clothing design studio based on Giulia Peretto's vision. The idea was to ",
+          },
+          { text: "subvert traditional work methods", bold: true },
+          {
+            text: " and create an ecosystem of capable, flexible, and ",
+          },
+          { text: "ethical people", bold: true },
+          { text: "." },
+        ],
+      ] satisfies RichTextToken[][],
+      historyNowDescription: [
+        [
+          { text: "Today it is a " },
+          { text: "multidisciplinary hub", bold: true },
+          {
+            text: " with all the know-how necessary for ",
+          },
+          { text: "brand development", bold: true },
+          { text: "." },
+        ],
+      ] satisfies RichTextToken[][],
       peopleTitle: "PEOPLE",
       team: [
         {
