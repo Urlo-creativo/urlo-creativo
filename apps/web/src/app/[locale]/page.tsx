@@ -61,7 +61,7 @@ export default async function Home({
 
   return (
     <main className="overflow-hidden bg-paper">
-      <section className="relative min-h-[820px] bg-black text-[var(--color-text-on-hero)] md:h-[1018px]">
+      <section className="relative h-dvh bg-black text-[var(--color-text-on-hero)]">
         <Image
           src="/hero/hero-mountain.png"
           alt=""
@@ -78,7 +78,7 @@ export default async function Home({
           }}
         />
 
-        <div className="page-shell relative z-20 flex h-full min-h-[820px] flex-col justify-center pb-20 pt-28 md:min-h-0">
+        <div className="page-shell relative z-20 flex h-full flex-col justify-center pb-20 pt-28">
           <p className="type-body-md absolute left-[var(--page-gutter)] top-[92px] whitespace-pre-line">
             {dictionary.home.heroKicker}
           </p>
