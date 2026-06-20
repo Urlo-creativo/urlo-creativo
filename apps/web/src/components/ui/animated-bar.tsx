@@ -41,7 +41,7 @@ export function AnimatedBar({ className }: AnimatedBarProps) {
       style={{
         transform: revealed ? "scaleY(1)" : "scaleY(0)",
         transformOrigin: "top",
-        transition: "transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
+        transition: "transform var(--dur-reveal) var(--ease-reveal)",
         willChange: "transform",
       } as CSSProperties}
     />

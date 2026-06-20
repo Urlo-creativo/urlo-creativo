@@ -231,7 +231,7 @@ a {
     min-height: auto;
     background: var(--pill-button-bg);
     border: 2px solid var(--pill-button-border);
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     padding: 10px 40px;
     color: var(--pill-button-text);
     font-size: 16px;
@@ -243,13 +243,13 @@ a {
 
   .pill-button::before {
     position: absolute;
-    z-index: -1;
+    z-index: var(--z-below);
     top: 50%;
     left: 0;
     width: 100%;
     aspect-ratio: 1;
     background: var(--pill-button-fill);
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     content: "";
     opacity: 0;
     transform: translate(-60%, -50%) scale(0.04);
@@ -317,7 +317,7 @@ a {
 
   .highlight-text::before {
     position: absolute;
-    z-index: -1;
+    z-index: var(--z-below);
     bottom: 0.08em;
     left: -0.05em;
     display: block;
@@ -370,7 +370,7 @@ a {
 
   .method-rail::after {
     position: absolute;
-    z-index: -1;
+    z-index: var(--z-below);
     inset-block: 0;
     left: 50%;
     width: 100vw;

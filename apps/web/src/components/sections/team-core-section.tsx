@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-import { AnimatedBar } from "@/components/animated-bar";
+import { AnimatedBar } from "@/components/ui/animated-bar";
 
 // Each image has its own position + size for a scattered editorial layout
 const imageStyles = [
@@ -15,11 +15,11 @@ const imageStyles = [
 ] as const;
 
 const coreImages = [
-  "/about/Team core1.png",
-  "/about/Team core2.png",
-  "/about/Team core3.png",
-  "/about/Team core4.png",
-  "/about/Team core5.png",
+  "/about/team-core-1.png",
+  "/about/team-core-2.png",
+  "/about/team-core-3.png",
+  "/about/team-core-4.png",
+  "/about/team-core-5.png",
 ];
 
 type TeamCoreSectionProps = {

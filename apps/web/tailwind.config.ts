@@ -27,15 +27,10 @@ const config: Config = {
         display: ["var(--font-display)"]
       },
       borderRadius: {
-        none: "0",
-        pill: "130px"
+        pill: "var(--radius-pill)"
       },
       maxWidth: {
-        page: "1440px",
-        content: "1164px"
-      },
-      screens: {
-        xs: "420px"
+        content: "var(--content-max)"
       }
     },
   },

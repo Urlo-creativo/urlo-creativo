@@ -3,8 +3,6 @@
 :root {
   --uc-black: #000000;
   --uc-ink: #0f0f0f;
-  --uc-ink-2: #15140e;
-  --uc-navy: #0c1c2c;
   --uc-white: #ffffff;
   --uc-paper: #fefdf9;
   --uc-paper-2: #fafafa;
@@ -27,7 +25,6 @@
   --uc-pink: hsla(358, 58%, 80%, 1);
   --uc-blue: hsla(204, 39%, 70%, 1);
   --uc-blue-deep: hsla(212, 44%, 46%, 1);
-  --uc-sage: #a5bf8f;
   --uc-coral: hsla(10, 73%, 61%, 1);
   /* Outside the client 5-colour palette — kept as the 6th process-step accent. */
   --uc-orange: #e2a14b;
@@ -43,6 +40,8 @@
   --color-text-inverse: var(--uc-white);
   --color-text-muted: var(--uc-gray-600);
   --color-text-subtle: var(--uc-gray-500);
+  /* Light copy over the dark hero image (slightly off-white, by design). */
+  --color-text-on-hero: #f4f4f4;
   --color-border-primary: var(--uc-black);
   --color-selection-bg: var(--uc-yellow);
   --color-selection-fg: var(--uc-black);
@@ -99,6 +98,25 @@
   --layout-narrow-max: 760px;
   --layout-aspect-portrait: 357 / 440;
 
+  /* ===== Radius scale =====
+     pill = nav pill + CTA buttons (any value > height/2 reads as a full pill).
+     full = circles and the button fill blob. */
+  --radius-pill: 130px;
+  --radius-full: 9999px;
+
+  /* ===== Z-index scale =====
+     Only the app-shell layers are tokenized; self-contained stacking contexts
+     (hero overlay, isolated cards) keep their local z values. */
+  --z-below: -1;
+  --z-overlay: 40;
+  --z-header: 50;
+
+  /* ===== Motion =====
+     --dur/--ease-out are the default UI transition; the others name the two
+     recurring choreographies: panel open/close and scroll/viewport reveals. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 220ms;
+  --dur-panel: 500ms;
+  --dur-reveal: 900ms;
 }

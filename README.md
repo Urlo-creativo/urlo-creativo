@@ -47,6 +47,8 @@ npm run dev:studio
 Set these values in `.env.local`:
 
 ```bash
+# Canonical origin for metadata, sitemap.xml, robots.txt (defaults to localhost in dev)
+NEXT_PUBLIC_SITE_URL=https://www.urlocreativo.com
 NEXT_PUBLIC_SANITY_PROJECT_ID=gerfjp7t
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2026-06-18

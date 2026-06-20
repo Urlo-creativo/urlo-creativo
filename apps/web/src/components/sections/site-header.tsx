@@ -8,8 +8,8 @@ import {
   type Locale,
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { NavLink } from "@/components/nav-link";
-import { MobileMenu } from "@/components/mobile-menu";
+import { NavLink } from "@/components/ui/nav-link";
+import { MobileMenu } from "@/components/sections/mobile-menu";
 
 const navItems = [
   { key: "home", href: "/" },
@@ -43,14 +43,14 @@ export function SiteHeader({
   }));
 
   return (
-    <header className="fixed left-0 right-0 top-[31px] z-50">
+    <header className="fixed left-0 right-0 top-[31px] z-[var(--z-header)]">
       {/* page-shell so the logo's left edge aligns with page content (e.g. the hero kicker) */}
       <div className="page-shell flex items-center justify-between gap-3 text-black">
         {/* Logo — standalone pill, aligned to content left */}
         <Link
           href={localizedPath(locale)}
           aria-label="Urlo Creativo home"
-          className="relative z-50 grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
+          className="relative z-[var(--z-header)] grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
         >
           <Image
             src="/brand/logo-mark.png"

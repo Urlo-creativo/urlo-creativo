@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { StructuredRichText } from "@/components/rich-text";
-import { ServiceAccordion } from "@/components/service-accordion";
-import { SiteFooter } from "@/components/site-footer";
+import { StructuredRichText } from "@/components/ui/rich-text";
+import { ServiceAccordion } from "@/components/sections/service-accordion";
+import { SiteFooter } from "@/components/sections/site-footer";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 

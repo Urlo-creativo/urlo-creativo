@@ -9,21 +9,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sanity/client": "latest",
-    "@sanity/image-url": "latest",
-    "clsx": "latest",
-    "next": "latest",
-    "next-sanity": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "@sanity/client": "^7.23.0",
+    "@sanity/image-url": "^2.1.1",
+    "clsx": "^2.1.1",
+    "next": "^16.2.9",
+    "next-sanity": "^13.1.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
+    "@types/node": "^25.9.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "typescript": "latest"
+    "typescript": "^6.0.3"
   }
 }

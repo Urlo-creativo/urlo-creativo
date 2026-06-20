@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ProjectFilterButtons } from "@/components/project-filter-buttons";
-import { SiteFooter } from "@/components/site-footer";
+import { ProjectFilterButtons } from "@/components/sections/project-filter-buttons";
+import { SiteFooter } from "@/components/sections/site-footer";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 

@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { PotentialSection } from "@/components/potential-section";
-import { SiteFooter } from "@/components/site-footer";
+import { PotentialSection } from "@/components/sections/potential-section";
+import { SiteFooter } from "@/components/sections/site-footer";
 import {
   StructuredRichText,
-} from "@/components/rich-text";
+} from "@/components/ui/rich-text";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -23,17 +23,17 @@ const clients: Client[] = [
 
 const projectImages = [
   {
-    src: "/projects/project_kappa_ducati.png",
+    src: "/projects/project-kappa-ducati.png",
     title: "KAPPA X DUCATI",
     year: "2026",
   },
   {
-    src: "/projects/project_colmar.png",
+    src: "/projects/project-colmar.png",
     title: "COLMAR SPORT",
     year: "2026",
   },
   {
-    src: "/projects/project_rossignol.png",
+    src: "/projects/project-rossignol.png",
     title: "JCC X ROSSIGNOL",
     year: "2026",
   },
@@ -61,7 +61,7 @@ export default async function Home({
 
   return (
     <main className="overflow-hidden bg-paper">
-      <section className="relative min-h-[820px] bg-black text-[#f4f4f4] md:h-[1018px]">
+      <section className="relative min-h-[820px] bg-black text-[var(--color-text-on-hero)] md:h-[1018px]">
         <Image
           src="/hero/hero-mountain.png"
           alt=""
@@ -129,8 +129,15 @@ export default async function Home({
         <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-[80px]">
           {projectImages.map((project) => (
             /* `isolate` creates a shared compositing group so the text's
-               mix-blend-difference blends against the image that overlaps it */
-            <article key={project.src} className="group relative isolate cursor-pointer">
+               mix-blend-difference blends against the image that overlaps it.
+               The visible title below is the link's accessible name, so the
+               image stays alt="" (decorative) to avoid a duplicate announcement. */
+            <Link
+              key={project.src}
+              href={localizedPath(locale, "/projects")}
+              aria-label={`${project.title} (${project.year})`}
+              className="group relative isolate block"
+            >
 
               {/* Image grows from the top-left anchor on hover */}
               <div
@@ -165,7 +172,7 @@ export default async function Home({
                   {project.year}
                 </p>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
         <Link
@@ -208,7 +215,7 @@ export default async function Home({
         </div>
         <div className="mt-16 overflow-hidden bg-yellow py-8 md:py-[40px]">
           {/* 4 copies + mr- (not gap-) so -50% always has content on screen.
-              With 6 clients × ~182px each = 1092px < 1440px viewport,
+              With 6 clients × ~182px each = 1092px < the page-max width,
               2 copies would expose empty space at the loop point. */}
           <div className="flex min-w-max animate-[client-marquee_24s_linear_infinite] items-center">
             {[...clients, ...clients, ...clients, ...clients].map((c, i) => {
@@ -253,7 +260,7 @@ export default async function Home({
         <div className="relative mt-8 aspect-[1440/1029] w-full overflow-hidden">
           <Image
             src="/projects/people-team.jpg"
-            alt=""
+            alt="The Urlo Creativo team"
             fill
             sizes="100vw"
             className="object-cover"

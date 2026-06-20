@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import { MethodSteps } from "@/components/method-steps";
+import { MethodSteps } from "@/components/sections/method-steps";
 import {
   StructuredRichText,
   type RichTextToken,
-} from "@/components/rich-text";
+} from "@/components/ui/rich-text";
 
 type MethodStep = {
   items: string[];

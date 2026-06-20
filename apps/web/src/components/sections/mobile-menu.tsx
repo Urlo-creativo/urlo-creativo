@@ -37,7 +37,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="relative z-50 grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md"
+        className="relative z-[var(--z-header)] grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md"
       >
         <span className="relative block h-3.5 w-6" aria-hidden>
           <span
@@ -59,7 +59,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-paper text-black">
+        <div className="fixed inset-0 z-[var(--z-overlay)] bg-paper text-black">
           <nav
             className="page-shell page-top flex h-full flex-col gap-1 pb-16"
             aria-label="Mobile navigation"

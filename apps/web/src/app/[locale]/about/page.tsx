@@ -2,10 +2,10 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ProcessSection } from "@/components/process-section";
-import { StructuredRichText } from "@/components/rich-text";
-import { SiteFooter } from "@/components/site-footer";
-import { TeamCoreSection } from "@/components/team-core-section";
+import { ProcessSection } from "@/components/sections/process-section";
+import { StructuredRichText } from "@/components/ui/rich-text";
+import { SiteFooter } from "@/components/sections/site-footer";
+import { TeamCoreSection } from "@/components/sections/team-core-section";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 
@@ -14,12 +14,12 @@ export const metadata: Metadata = {
 };
 
 const teamPhotos = [
-  "/about/GUILIA.png",
-  "/about/FEDERICA.png",
-  "/about/MARTINA.png",
-  "/about/MARGHERITA.png",
-  "/about/VALENTINA.png",
-  "/about/CAMILLA.png",
+  "/about/giulia.png",
+  "/about/federica.png",
+  "/about/martina.png",
+  "/about/margherita.png",
+  "/about/valentina.png",
+  "/about/camilla.png",
 ] as const;
 
 export default async function AboutPage({
@@ -167,7 +167,7 @@ export default async function AboutPage({
               <div className="media-portrait relative overflow-hidden bg-gray-100">
                 <Image
                   src={teamPhotos[index]}
-                  alt=""
+                  alt={`Portrait of ${member.name}`}
                   fill
                   sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
                   className="object-cover object-center"

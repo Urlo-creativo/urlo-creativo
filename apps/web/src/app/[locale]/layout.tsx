@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { SiteHeader } from "@/components/site-header";
-import { localeLabels } from "@/i18n/config";
+import { SiteHeader } from "@/components/sections/site-header";
 import { getDictionary } from "@/i18n/dictionaries";
-import { isLocale, locales, type Locale } from "@/i18n/config";
+import {
+  defaultLocale,
+  isLocale,
+  localeLabels,
+  locales,
+  type Locale,
+} from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 
 import "../globals.css";
 
@@ -22,15 +28,24 @@ export async function generateMetadata({
   const dictionary = getDictionary(locale);
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: "Urlo Creativo",
       template: "%s | Urlo Creativo",
     },
     description: dictionary.metadata.description,
     alternates: {
-      languages: Object.fromEntries(
-        locales.map((item) => [item, `/${item}`]),
-      ),
+      canonical: `/${locale}`,
+      languages: {
+        ...Object.fromEntries(locales.map((item) => [item, `/${item}`])),
+        "x-default": `/${defaultLocale}`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Urlo Creativo",
+      locale,
+      url: `/${locale}`,
     },
   };
 }

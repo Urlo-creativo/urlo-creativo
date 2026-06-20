@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { StructuredRichText } from "@/components/rich-text";
+import { StructuredRichText } from "@/components/ui/rich-text";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 type ServiceItem = Dictionary["services"]["items"][number];

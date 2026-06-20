@@ -1,4 +1,4 @@
-import { HighlightText, type HighlightTextProps } from "@/components/highlight-text";
+import { HighlightText, type HighlightTextProps } from "@/components/ui/highlight-text";
 
 export type RichTextToken = {
   bold?: boolean;
