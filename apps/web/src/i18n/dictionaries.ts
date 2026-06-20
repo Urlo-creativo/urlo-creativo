@@ -274,6 +274,18 @@ const dictionaries = {
         },
       ],
     },
+    services: {
+      title: "SERVICES",
+      items: [
+        { number: "01", title: "Brand Identity & Communication" },
+        { number: "02", title: "Design & Product Development" },
+        { number: "03", title: "Styling / Shooting & Art Direction" },
+      ],
+      collaborationTitle: "Collaboration",
+      collaboration:
+        "We suggest the right atmospheres, settings and faces for launch shootings.",
+      season: "FW 25/26",
+    },
   },
   en: {
     metadata: {
@@ -546,6 +558,18 @@ const dictionaries = {
           role: "Stylist",
         },
       ],
+    },
+    services: {
+      title: "SERVICES",
+      items: [
+        { number: "01", title: "Brand Identity & Communication" },
+        { number: "02", title: "Design & Product Development" },
+        { number: "03", title: "Styling / Shooting & Art Direction" },
+      ],
+      collaborationTitle: "Collaboration",
+      collaboration:
+        "We suggest the right atmospheres, settings and faces for launch shootings.",
+      season: "FW 25/26",
     },
   },
 } satisfies Record<Locale, object>;

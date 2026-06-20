@@ -33,15 +33,12 @@ export function SiteHeader({
 
   return (
     <header className="fixed left-0 right-0 top-[31px] z-50 px-[var(--page-gutter)]">
-      <nav
-        className="mx-auto grid h-[50px] w-full max-w-content grid-cols-[auto_1fr_auto] items-center rounded-pill bg-[var(--color-nav-bg)] px-3 text-black backdrop-blur-md"
-        aria-label="Main navigation"
-      >
-        {/* Logo — left */}
+      <div className="mx-auto grid w-full max-w-content grid-cols-[auto_1fr_auto] items-center gap-3 text-black">
+        {/* Logo — its own pill, left */}
         <Link
           href={localizedPath(locale)}
           aria-label="Urlo Creativo home"
-          className="shrink-0 transition-opacity hover:opacity-70"
+          className="grid h-[50px] w-[50px] place-items-center justify-self-start rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
         >
           <Image
             src="/brand/logo-mark.png"
@@ -52,29 +49,32 @@ export function SiteHeader({
           />
         </Link>
 
-        {/* Nav links — center */}
-        <div className="hidden items-center justify-center md:flex">
+        {/* Nav links — its own pill, centered */}
+        <nav
+          className="hidden h-[50px] items-center justify-self-center rounded-pill bg-[var(--color-nav-bg)] px-3 backdrop-blur-md md:flex"
+          aria-label="Main navigation"
+        >
           {navItems.map((item) => (
             <NavLink key={item.href} href={localizedPath(locale, item.href)}>
               {dictionary[item.key]}
             </NavLink>
           ))}
-        </div>
+        </nav>
 
-        {/* Language switcher — right */}
-        <div className="flex items-center justify-end">
+        {/* Language switcher — its own pill, right */}
+        <div className="flex h-[50px] items-center justify-self-end rounded-full bg-[var(--color-nav-bg)] px-1 backdrop-blur-md">
           {otherLocales.map((l) => (
             <Link
               key={l}
               href={localizedPath(l)}
               hrefLang={l}
-              className="type-nav flex h-[34px] w-[52px] items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
+              className="type-nav flex h-[40px] w-[52px] items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
             >
               {localeLabels[l].toUpperCase()}
             </Link>
           ))}
         </div>
-      </nav>
+      </div>
     </header>
   );
 }
