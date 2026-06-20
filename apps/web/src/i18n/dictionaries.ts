@@ -277,14 +277,68 @@ const dictionaries = {
     services: {
       title: "SERVICES",
       items: [
-        { number: "01", title: "Brand Identity & Communication" },
-        { number: "02", title: "Design & Product Development" },
-        { number: "03", title: "Styling / Shooting & Art Direction" },
+        {
+          number: "01",
+          title: "Brand Identity & Communication",
+          details: [
+            {
+              title: [
+                [{ text: "Brand strategy", highlight: "blue", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Brand analysis and context",
+                "Positioning definition",
+                "Tone of voice construction",
+              ],
+            },
+            {
+              title: [
+                [{ text: "Visual identity", highlight: "pink", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Logo development",
+                "Visual systems",
+                "Guidelines",
+                "Brand book",
+              ],
+            },
+            {
+              title: [
+                [{ text: "Communication", highlight: "yellow", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Website",
+                "Newsletter",
+                "Editorial content",
+                "Digital and social communication",
+              ],
+            },
+          ],
+        },
+        {
+          number: "02",
+          title: "Design & Product Development",
+          details: ["TREND RESEARCH AND POSITIONING", "COLLECTION STRUCTURE", "MOODBOARD", "FABRIC, PRODUCT AND MATERIAL RESEARCH", "GRAPHIC DEVELOPMENT", "SOURCING AND SUPPLIER FOLLOW-UP"],
+        },
+        {
+          number: "03",
+          title: "Styling / Shooting & Art Direction",
+          details: ["PRODUCTION", "ART DIRECTION", "STYLING", "PHOTO AND VIDEO SHOOTINGS"],
+        },
       ],
-      collaborationTitle: "Collaboration",
+      statement: [
+        [
+          { text: "We " },
+          { text: "identify", highlight: "blue", trigger: "load" },
+          { text: " the brand and define its " },
+          { text: "personality.", highlight: "pink", trigger: "load" },
+        ],
+      ] satisfies RichTextToken[][],
+      collaborationTitle: [
+        [{ text: "Collaboration", highlight: "coral", trigger: "load" }],
+      ] satisfies RichTextToken[][],
       collaboration:
         "We suggest the right atmospheres, settings and faces for launch shootings.",
-      season: "FW 25/26",
     },
   },
   en: {
@@ -562,14 +616,68 @@ const dictionaries = {
     services: {
       title: "SERVICES",
       items: [
-        { number: "01", title: "Brand Identity & Communication" },
-        { number: "02", title: "Design & Product Development" },
-        { number: "03", title: "Styling / Shooting & Art Direction" },
+        {
+          number: "01",
+          title: "Brand Identity & Communication",
+          details: [
+            {
+              title: [
+                [{ text: "Brand strategy", highlight: "blue", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Brand analysis and context",
+                "Positioning definition",
+                "Tone of voice construction",
+              ],
+            },
+            {
+              title: [
+                [{ text: "Visual identity", highlight: "pink", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Logo development",
+                "Visual systems",
+                "Guidelines",
+                "Brand book",
+              ],
+            },
+            {
+              title: [
+                [{ text: "Communication", highlight: "yellow", trigger: "load" }],
+              ] satisfies RichTextToken[][],
+              items: [
+                "Website",
+                "Newsletter",
+                "Editorial content",
+                "Digital and social communication",
+              ],
+            },
+          ],
+        },
+        {
+          number: "02",
+          title: "Design & Product Development",
+          details: ["TREND RESEARCH AND POSITIONING", "COLLECTION STRUCTURE", "MOODBOARD", "FABRIC, PRODUCT AND MATERIAL RESEARCH", "GRAPHIC DEVELOPMENT", "SOURCING AND SUPPLIER FOLLOW-UP"],
+        },
+        {
+          number: "03",
+          title: "Styling / Shooting & Art Direction",
+          details: ["PRODUCTION", "ART DIRECTION", "STYLING", "PHOTO AND VIDEO SHOOTINGS"],
+        },
       ],
-      collaborationTitle: "Collaboration",
+      statement: [
+        [
+          { text: "We " },
+          { text: "identify", highlight: "blue", trigger: "load" },
+          { text: " the brand and define its " },
+          { text: "personality.", highlight: "pink", trigger: "load" },
+        ],
+      ] satisfies RichTextToken[][],
+      collaborationTitle: [
+        [{ text: "Collaboration", highlight: "coral", trigger: "load" }],
+      ] satisfies RichTextToken[][],
       collaboration:
         "We suggest the right atmospheres, settings and faces for launch shootings.",
-      season: "FW 25/26",
     },
   },
 } satisfies Record<Locale, object>;

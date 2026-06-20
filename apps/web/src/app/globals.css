@@ -346,6 +346,14 @@ a {
     transform: scaleX(1);
   }
 
+  .highlight-text-blue::before {
+    background: var(--uc-blue);
+  }
+
+  .highlight-text-coral::before {
+    background: var(--uc-coral);
+  }
+
   .highlight-text-pink::before {
     background: var(--color-highlight-pink);
   }

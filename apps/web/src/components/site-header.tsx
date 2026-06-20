@@ -9,6 +9,7 @@ import {
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { NavLink } from "@/components/nav-link";
+import { MobileMenu } from "@/components/mobile-menu";
 
 const navItems = [
   { key: "home", href: "/" },
@@ -31,14 +32,25 @@ export function SiteHeader({
 }: SiteHeaderProps) {
   const otherLocales = locales.filter((l) => l !== locale);
 
+  const navLinks = navItems.map((item) => ({
+    label: dictionary[item.key],
+    href: localizedPath(locale, item.href),
+  }));
+  const localeLinks = otherLocales.map((l) => ({
+    label: localeLabels[l].toUpperCase(),
+    href: localizedPath(l),
+    hrefLang: l,
+  }));
+
   return (
-    <header className="fixed left-0 right-0 top-[31px] z-50 px-[var(--page-gutter)]">
-      <div className="mx-auto grid w-full max-w-content grid-cols-[auto_1fr_auto] items-center gap-3 text-black">
-        {/* Logo — its own pill, left */}
+    <header className="fixed left-0 right-0 top-[31px] z-50">
+      {/* page-shell so the logo's left edge aligns with page content (e.g. the hero kicker) */}
+      <div className="page-shell flex items-center justify-between gap-3 text-black">
+        {/* Logo — standalone pill, aligned to content left */}
         <Link
           href={localizedPath(locale)}
           aria-label="Urlo Creativo home"
-          className="grid h-[50px] w-[50px] place-items-center justify-self-start rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
+          className="relative z-50 grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
         >
           <Image
             src="/brand/logo-mark.png"
@@ -49,20 +61,18 @@ export function SiteHeader({
           />
         </Link>
 
-        {/* Nav links — its own pill, centered */}
-        <nav
-          className="hidden h-[50px] items-center justify-self-center rounded-pill bg-[var(--color-nav-bg)] px-3 backdrop-blur-md md:flex"
-          aria-label="Main navigation"
-        >
-          {navItems.map((item) => (
-            <NavLink key={item.href} href={localizedPath(locale, item.href)}>
-              {dictionary[item.key]}
-            </NavLink>
-          ))}
-        </nav>
+        {/* Pages + language in one pill */}
+        <div className="hidden h-[50px] items-center rounded-pill bg-[var(--color-nav-bg)] px-3 backdrop-blur-md md:flex">
+          <nav className="flex items-center" aria-label="Main navigation">
+            {navItems.map((item) => (
+              <NavLink key={item.href} href={localizedPath(locale, item.href)}>
+                {dictionary[item.key]}
+              </NavLink>
+            ))}
+          </nav>
 
-        {/* Language switcher — its own pill, right */}
-        <div className="flex h-[50px] items-center justify-self-end rounded-full bg-[var(--color-nav-bg)] px-1 backdrop-blur-md">
+          <span aria-hidden className="mx-2 h-5 w-px bg-black/15" />
+
           {otherLocales.map((l) => (
             <Link
               key={l}
@@ -74,6 +84,9 @@ export function SiteHeader({
             </Link>
           ))}
         </div>
+
+        {/* Mobile: hamburger + full-screen menu */}
+        <MobileMenu navLinks={navLinks} localeLinks={localeLinks} />
       </div>
     </header>
   );
