@@ -318,12 +318,78 @@ const dictionaries = {
         {
           number: "02",
           title: "Design & Product Development",
-          details: ["TREND RESEARCH AND POSITIONING", "COLLECTION STRUCTURE", "MOODBOARD", "FABRIC, PRODUCT AND MATERIAL RESEARCH", "GRAPHIC DEVELOPMENT", "SOURCING AND SUPPLIER FOLLOW-UP"],
+          details: [
+            "TREND RESEARCH AND POSITIONING",
+            "COLLECTION STRUCTURE",
+            "MOODBOARD",
+            "FABRIC, PRODUCT AND MATERIAL RESEARCH",
+            "GRAPHIC DEVELOPMENT",
+            "SOURCING AND SUPPLIER FOLLOW-UP",
+          ],
+          media: {
+            image: "/services/design-development-detail.png",
+            alt: "",
+          },
+          statement: [
+            [
+              { text: "We " },
+              { text: "design", highlight: "pink", trigger: "load" },
+              { text: " collections," },
+            ],
+            [
+              { text: "from the " },
+              { text: "idea", bold: true },
+              { text: " to " },
+              { text: "product", bold: true },
+            ],
+            [{ text: "development.", bold: true }],
+          ] satisfies RichTextToken[][],
         },
         {
           number: "03",
           title: "Styling / Shooting & Art Direction",
-          details: ["PRODUCTION", "ART DIRECTION", "STYLING", "PHOTO AND VIDEO SHOOTINGS"],
+          details: [
+            "PRODUCTION",
+            "ART DIRECTION",
+            "STYLING",
+            "PHOTO AND VIDEO SHOOTINGS",
+          ],
+          statement: [
+            [
+              { text: "We ", bold: true, italic: true },
+              {
+                text: "define",
+                bold: true,
+                italic: true,
+                highlight: "coral",
+                trigger: "load",
+              },
+              { text: " the brand’s", bold: true, italic: true },
+            ],
+            [{ text: "visual identity.", bold: true, italic: true }],
+          ] satisfies RichTextToken[][],
+          gallery: [
+            {
+              label: "PRODUCTION",
+              image: "/services/styling-production.png",
+              alt: "",
+            },
+            {
+              label: "ART DIRECTION",
+              image: "/services/styling-art-direction.png",
+              alt: "",
+            },
+            {
+              label: "STYLING",
+              image: "/services/styling-styling.png",
+              alt: "",
+            },
+            {
+              label: "PHOTO AND VIDEO SHOOTINGS",
+              image: "/services/styling-photo-video.png",
+              alt: "",
+            },
+          ],
         },
       ],
       statement: [
@@ -657,12 +723,78 @@ const dictionaries = {
         {
           number: "02",
           title: "Design & Product Development",
-          details: ["TREND RESEARCH AND POSITIONING", "COLLECTION STRUCTURE", "MOODBOARD", "FABRIC, PRODUCT AND MATERIAL RESEARCH", "GRAPHIC DEVELOPMENT", "SOURCING AND SUPPLIER FOLLOW-UP"],
+          details: [
+            "TREND RESEARCH AND POSITIONING",
+            "COLLECTION STRUCTURE",
+            "MOODBOARD",
+            "FABRIC, PRODUCT AND MATERIAL RESEARCH",
+            "GRAPHIC DEVELOPMENT",
+            "SOURCING AND SUPPLIER FOLLOW-UP",
+          ],
+          media: {
+            image: "/services/design-development-detail.png",
+            alt: "",
+          },
+          statement: [
+            [
+              { text: "We " },
+              { text: "design", highlight: "pink", trigger: "load" },
+              { text: " collections," },
+            ],
+            [
+              { text: "from the " },
+              { text: "idea", bold: true },
+              { text: " to " },
+              { text: "product", bold: true },
+            ],
+            [{ text: "development.", bold: true }],
+          ] satisfies RichTextToken[][],
         },
         {
           number: "03",
           title: "Styling / Shooting & Art Direction",
-          details: ["PRODUCTION", "ART DIRECTION", "STYLING", "PHOTO AND VIDEO SHOOTINGS"],
+          details: [
+            "PRODUCTION",
+            "ART DIRECTION",
+            "STYLING",
+            "PHOTO AND VIDEO SHOOTINGS",
+          ],
+          statement: [
+            [
+              { text: "We ", bold: true, italic: true },
+              {
+                text: "define",
+                bold: true,
+                italic: true,
+                highlight: "coral",
+                trigger: "load",
+              },
+              { text: " the brand’s", bold: true, italic: true },
+            ],
+            [{ text: "visual identity.", bold: true, italic: true }],
+          ] satisfies RichTextToken[][],
+          gallery: [
+            {
+              label: "PRODUCTION",
+              image: "/services/styling-production.png",
+              alt: "",
+            },
+            {
+              label: "ART DIRECTION",
+              image: "/services/styling-art-direction.png",
+              alt: "",
+            },
+            {
+              label: "STYLING",
+              image: "/services/styling-styling.png",
+              alt: "",
+            },
+            {
+              label: "PHOTO AND VIDEO SHOOTINGS",
+              image: "/services/styling-photo-video.png",
+              alt: "",
+            },
+          ],
         },
       ],
       statement: [

@@ -388,4 +388,10 @@ a {
     animation: none;
     transform: scaleX(1);
   }
+
+  /* Service accordion resizes instantly so a single scroll correction suffices. */
+  .service-accordion *,
+  .service-accordion *::before {
+    transition-duration: 0.01ms !important;
+  }
 }
