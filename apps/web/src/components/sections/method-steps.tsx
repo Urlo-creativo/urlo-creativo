@@ -92,7 +92,22 @@ export function MethodSteps({ steps }: MethodStepsProps) {
       className="method-block mt-20"
       style={{ "--rail-progress": 0 } as CSSProperties}
     >
-      <div ref={railRef} className="method-rail grid gap-8 md:grid-cols-3 md:gap-20">
+      <div className="space-y-8 md:hidden">
+        {steps.map((step, index) => (
+          <section key={step.title} className="border-t border-black pt-4">
+            <h3 className="type-heading-md font-bold text-black">
+              {index + 1}. {step.title}
+            </h3>
+            <ul className="type-body-md mt-4 space-y-3">
+              {step.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <div ref={railRef} className="method-rail hidden gap-8 md:grid md:grid-cols-3 md:gap-20">
         {steps.map((step, index) => (
           <h3
             key={step.title}
@@ -114,7 +129,7 @@ export function MethodSteps({ steps }: MethodStepsProps) {
         ))}
       </div>
 
-      <div className="mt-6 grid gap-12 md:grid-cols-3 md:gap-20">
+      <div className="mt-6 hidden gap-12 md:grid md:grid-cols-3 md:gap-20">
         {steps.map((step) => (
           <div key={step.title}>
             <ul className="type-body-lg space-y-5">

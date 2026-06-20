@@ -143,7 +143,7 @@ export default async function Home({
               <div
                 className="relative aspect-square overflow-hidden md:media-portrait
                            origin-top-left transition-transform duration-500 ease-out
-                           group-hover:scale-[1.1]"
+                           md:group-hover:scale-[1.1]"
               >
                 <Image
                   src={project.src}
@@ -151,8 +151,8 @@ export default async function Home({
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   className="object-cover transition-all duration-500 ease-out
-                             grayscale blur-[3px]
-                             group-hover:grayscale-0 group-hover:blur-0"
+                             md:grayscale md:blur-[3px]
+                             md:group-hover:grayscale-0 md:group-hover:blur-0"
                 />
               </div>
 
@@ -162,7 +162,7 @@ export default async function Home({
               <div className="relative mt-4">
                 <h3
                   className="type-heading-md font-bold uppercase text-ink transition-colors duration-500
-                             group-hover:text-white group-hover:mix-blend-difference"
+                             md:group-hover:text-white md:group-hover:mix-blend-difference"
                 >
                   {project.title}
                 </h3>

@@ -76,6 +76,7 @@
   --page-max: 1728px;
   --page-gutter: clamp(24px, 4.8vw, 96px);
   --content-max: 1164px;
+  --mobile-page-gutter: 28px;
 
   /* ===== Spacing scale =====
      Vertical page rhythm. Section paddings that are symmetric map to
@@ -84,11 +85,24 @@
   --space-section-y: clamp(80px, 9vw, 150px);
   --space-section-y-sm: clamp(64px, 7vw, 120px);
   --space-section-y-lg: clamp(96px, 12vw, 190px);
+  --mobile-space-page-top: 132px;
+  --mobile-space-section-y: 72px;
+  --mobile-space-section-y-sm: 56px;
+  --mobile-space-section-y-lg: 80px;
   --space-stack-sm: 16px;
   --space-stack-md: clamp(24px, 3vw, 48px);
   --space-stack-lg: clamp(40px, 5vw, 80px);
   --space-grid-md: clamp(32px, 4vw, 72px);
   --space-grid-lg: clamp(48px, 6vw, 96px);
+
+  /* ===== Mobile typography overrides =====
+     Desktop/tablet typography remains fluid. Below md, cap the largest
+     editorial sizes so long headings stay readable on 390px-class screens. */
+  --mobile-type-display-xl: clamp(48px, 16vw, 64px);
+  --mobile-type-display: clamp(42px, 14vw, 56px);
+  --mobile-type-heading-xl: clamp(26px, 8vw, 34px);
+  --mobile-type-heading-md: clamp(20px, 6.4vw, 26px);
+  --mobile-type-body-xl: clamp(21px, 6.1vw, 28px);
 
   /* ===== Layout scale =====
      Page/content containers are already tokenized (page-shell + maxW.content).
@@ -103,6 +117,11 @@
      full = circles and the button fill blob. */
   --radius-pill: 130px;
   --radius-full: 9999px;
+
+  /* ===== Interaction scale ===== */
+  --touch-target-min: 44px;
+  --pill-button-x: 32px;
+  --mobile-pill-button-x: 28px;
 
   /* ===== Z-index scale =====
      Only the app-shell layers are tokenized; self-contained stacking contexts

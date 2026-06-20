@@ -59,7 +59,7 @@ export default async function AboutPage({
           fill
           priority
           sizes="100vw"
-          className="scale-[1.06] object-cover object-center blur-[8px]"
+          className="object-cover object-center blur-[8px] md:scale-[1.06]"
         />
       </section>
 
@@ -123,8 +123,8 @@ export default async function AboutPage({
             />
           </div>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-4 md:gap-6">
-          <div className="group/history-item relative cursor-pointer border-y border-black py-2 outline-none" tabIndex={0}>
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <div className="group/history-item relative border-y border-black py-2 outline-none md:cursor-pointer" tabIndex={0}>
             <div className="flex min-h-[48px] items-center justify-between gap-4 md:min-h-[60px]">
               <p className="type-heading-xl font-bold">
                 {about.historyStart}
@@ -136,10 +136,10 @@ export default async function AboutPage({
             <StructuredRichText
               as="p"
               lines={about.historyStartDescription}
-              className="type-body-sm text-measure-narrow pointer-events-none absolute left-0 top-full z-20 mt-6 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover/history-item:translate-y-0 group-hover/history-item:opacity-100 group-focus/history-item:translate-y-0 group-focus/history-item:opacity-100"
+              className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-all md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100"
             />
           </div>
-          <div className="group/history-item relative cursor-pointer border-y border-black py-2 outline-none" tabIndex={0}>
+          <div className="group/history-item relative border-y border-black py-2 outline-none md:cursor-pointer" tabIndex={0}>
             <div className="flex min-h-[48px] items-center justify-between gap-4 md:min-h-[60px]">
               <p className="type-heading-xl font-bold">
                 {about.historyNow}
@@ -151,7 +151,7 @@ export default async function AboutPage({
             <StructuredRichText
               as="p"
               lines={about.historyNowDescription}
-              className="type-body-sm text-measure-narrow pointer-events-none absolute left-0 top-full z-20 mt-6 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover/history-item:translate-y-0 group-hover/history-item:opacity-100 group-focus/history-item:translate-y-0 group-focus/history-item:opacity-100"
+              className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-all md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100"
             />
           </div>
         </div>

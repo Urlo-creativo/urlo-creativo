@@ -62,6 +62,19 @@ Available utilities:
 - `type-nav` — `font-size: 16px`; `line-height: 1`;
   `font-weight: 400`; `letter-spacing: 0`. Used for header navigation.
 
+Mobile overrides below `md` are also tokenized in `src/styles/tokens.css` and
+applied from `src/app/globals.css`:
+
+- `--mobile-type-display-xl: clamp(48px, 16vw, 64px)`
+- `--mobile-type-display: clamp(42px, 14vw, 56px)`
+- `--mobile-type-heading-xl: clamp(26px, 8vw, 34px)`
+- `--mobile-type-heading-md: clamp(20px, 6.4vw, 26px)`
+- `--mobile-type-body-xl: clamp(21px, 6.1vw, 28px)`
+
+These mobile caps keep editorial headings readable on 390px-class screens.
+Do not add page-specific mobile heading sizes unless a specific word or phrase
+still fails to fit.
+
 Typography tokens are rhythm-only:
 
 - They define font size, line height, and letter spacing.
@@ -116,6 +129,10 @@ Available utilities:
 Other spacing variables:
 
 - `--space-stack-sm: 16px`
+- `--mobile-space-page-top: 132px`
+- `--mobile-space-section-y: 72px`
+- `--mobile-space-section-y-sm: 56px`
+- `--mobile-space-section-y-lg: 80px`
 
 Use these for repeated section rhythm. Do not force asymmetric Figma sections
 into symmetric tokens.
@@ -151,6 +168,10 @@ Available utilities:
 Use these before adding inline widths such as `max-w-[980px]` or
 `aspect-[357/440]`.
 
+Mobile layout token:
+
+- `--mobile-page-gutter: 28px` — replaces `--page-gutter` below `md`.
+
 Acceptable one-offs:
 
 - Unique image ratios such as mission, history, or hero media.
@@ -161,6 +182,30 @@ Acceptable one-offs:
 
 Do not abstract a layout pattern just because it appears similar. Abstract only
 when the value and behavior repeat without changing the design intent.
+
+## Mobile Responsiveness
+
+Mobile styles should preserve the editorial visual language while removing
+hover-only dependencies and compressed multi-column layouts.
+
+Current mobile rules:
+
+- Below `md`, `page-shell`, `page-top`, and symmetric section spacing use the
+  mobile tokens listed above.
+- Below `md`, the largest typography utilities use the mobile type tokens
+  listed above.
+- Touch targets use `--touch-target-min: 44px`.
+- `.pill-button` uses `--mobile-pill-button-x: 28px` for mobile horizontal
+  padding.
+- Hover-only reveals must have a readable mobile fallback. Examples:
+  homepage project images are clear by default on mobile; About history text is
+  visible by default on mobile; desktop hover/focus behavior starts at `md`.
+- Dense desktop diagrams or rails should become direct stacked content on
+  mobile. Examples: homepage method steps and About process steps.
+
+When adding a mobile-only alternative, keep the desktop component behavior in
+place at `md` and above, and prefer the same content/order rather than a
+separate copy source.
 
 ## Colors
 
@@ -246,6 +291,12 @@ Accessibility rules:
 
 Pill buttons use `.pill-button` plus an optional color variant. The base is a
 two-tone CTA; the color variants are monochrome toggles.
+
+Interaction tokens:
+
+- `--touch-target-min: 44px` — minimum interactive target height.
+- `--pill-button-x: 32px` — default horizontal CTA/filter padding.
+- `--mobile-pill-button-x: 28px` — mobile horizontal padding below `md`.
 
 The base derives every fill from a single `--pill-button-color`. A color variant
 sets that one variable (and overrides `--pill-button-fill-hover` to the same

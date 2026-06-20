@@ -18,7 +18,7 @@ export function ProjectFilterButtons({ filters }: ProjectFilterButtonsProps) {
 
   return (
     <div
-      className="mt-12 flex flex-wrap gap-3 md:mt-[70px]"
+      className="mt-10 flex flex-wrap gap-3 md:mt-[70px]"
       aria-label="Project categories"
     >
       {filters.map((filter, index) => (
@@ -30,7 +30,7 @@ export function ProjectFilterButtons({ filters }: ProjectFilterButtonsProps) {
             setSelectedIndex((current) => (current === index ? null : index));
           }}
           className={[
-            "pill-button min-h-8 px-5 py-1 md:min-w-[144px] md:px-8",
+            "pill-button min-h-11 px-5 py-2 text-center md:min-w-[144px] md:px-8",
             index > 0 ? "md:min-w-[348px]" : "",
             filterStyles[index],
           ].join(" ")}

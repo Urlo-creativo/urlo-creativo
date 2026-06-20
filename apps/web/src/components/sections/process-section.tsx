@@ -36,7 +36,28 @@ export function ProcessSection({ title, stages, descriptions }: ProcessSectionPr
       <h2 className="type-display font-bold uppercase">
         {title}
       </h2>
-      <div className="mt-10 md:mt-[58px]">
+      <div className="mt-9 space-y-3 md:hidden">
+        {stages.map((stage, i) => (
+          <div key={stage} className="border-t border-black pt-3">
+            <div className="flex gap-3">
+              <span
+                aria-hidden
+                className="mt-1 h-12 w-4 shrink-0"
+                style={{ backgroundColor: processColors[i] }}
+              />
+              <div>
+                <p className="type-caption font-bold uppercase">
+                  {stage}
+                </p>
+                <p className="type-body-sm mt-2">
+                  {descriptions[i]}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-10 hidden md:block md:mt-[58px]">
         <div className="type-caption grid grid-cols-6 pb-1 font-bold uppercase">
           {stages.map((stage) => (
             <span key={stage}>{stage}</span>

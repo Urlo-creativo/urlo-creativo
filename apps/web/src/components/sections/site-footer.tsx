@@ -23,7 +23,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="transition-opacity hover:opacity-60"
+                className="flex min-h-11 items-center transition-opacity hover:opacity-60"
               >
                 {social.label}
               </a>
