@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ClientMarquee } from "@/components/sections/client-marquee";
 import { PotentialSection } from "@/components/sections/potential-section";
 import { SiteFooter } from "@/components/sections/site-footer";
 import {
@@ -213,39 +214,7 @@ export default async function Home({
             className="type-display uppercase"
           />
         </div>
-        <div className="mt-16 overflow-hidden bg-yellow py-8 md:py-[40px]">
-          {/* 4 copies + mr- (not gap-) so -50% always has content on screen.
-              With 6 clients × ~182px each = 1092px < the page-max width,
-              2 copies would expose empty space at the loop point. */}
-          <div className="flex min-w-max animate-[client-marquee_24s_linear_infinite] items-center">
-            {[...clients, ...clients, ...clients, ...clients].map((c, i) => {
-              const img = (
-                <Image
-                  src={c.logo}
-                  alt={c.name}
-                  width={240}
-                  height={80}
-                  className="h-[80px] w-auto object-contain"
-                />
-              );
-              return c.url ? (
-                <a
-                  key={`${c.name}-${i}`}
-                  href={c.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mr-16 block shrink-0 transition-opacity duration-300 hover:opacity-60 md:mr-[118px]"
-                >
-                  {img}
-                </a>
-              ) : (
-                <div key={`${c.name}-${i}`} className="mr-16 shrink-0 md:mr-[118px]">
-                  {img}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <ClientMarquee clients={clients} />
       </section>
 
       <section className="py-20 md:pb-[180px] md:pt-[190px]">

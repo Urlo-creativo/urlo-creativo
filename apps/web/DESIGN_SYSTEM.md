@@ -164,6 +164,10 @@ Available utilities:
   `--layout-narrow-max: 760px`. Narrow reading width.
 - `media-portrait` — `aspect-ratio: var(--layout-aspect-portrait)`;
   `--layout-aspect-portrait: 357 / 440`. Shared portrait card ratio.
+- `client-marquee-logo` — height is controlled by
+  `--client-marquee-logo-height: 96px`; horizontal rhythm uses
+  `--client-marquee-gap: 64px` and `--client-marquee-gap-md: 118px`.
+  Used only for the Selected Clients marquee.
 
 Use these before adding inline widths such as `max-w-[980px]` or
 `aspect-[357/440]`.

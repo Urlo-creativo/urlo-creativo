@@ -111,6 +111,9 @@
   --layout-text-max: 980px;
   --layout-narrow-max: 760px;
   --layout-aspect-portrait: 357 / 440;
+  --client-marquee-logo-height: 96px;
+  --client-marquee-gap: 64px;
+  --client-marquee-gap-md: 118px;
 
   /* ===== Radius scale =====
      pill = nav pill + CTA buttons (any value > height/2 reads as a full pill).

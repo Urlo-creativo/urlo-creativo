@@ -47,16 +47,6 @@ a {
   color: var(--color-selection-on-yellow-fg);
 }
 
-@keyframes client-marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes highlight-reveal {
   from {
     background-size: 0 0.5em;
@@ -121,6 +111,38 @@ a {
 
   .media-portrait {
     aspect-ratio: var(--layout-aspect-portrait);
+  }
+
+  .client-marquee-track {
+    display: flex;
+    width: max-content;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .client-marquee-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-width: max-content;
+  }
+
+  .client-marquee-item {
+    flex: 0 0 auto;
+    margin-right: var(--client-marquee-gap);
+  }
+
+  .client-marquee-logo {
+    height: var(--client-marquee-logo-height);
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+  }
+
+  @screen md {
+    .client-marquee-item {
+      margin-right: var(--client-marquee-gap-md);
+    }
   }
 
   /* ===== Typography scale =====
