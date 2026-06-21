@@ -4,8 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { LocaleLink } from "@/components/ui/locale-link";
+import type { Locale } from "@/i18n/config";
+
 type LinkItem = { label: string; href: string };
-type LocaleItem = LinkItem & { hrefLang: string };
+type LocaleItem = { label: string; hrefLang: Locale };
 
 type MobileMenuProps = {
   navLinks: LinkItem[];
@@ -82,15 +85,14 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
 
             <div className="mt-auto flex items-center gap-5">
               {localeLinks.map((l) => (
-                <Link
+                <LocaleLink
                   key={l.hrefLang}
-                  href={l.href}
                   hrefLang={l.hrefLang}
                   onClick={() => setOpen(false)}
                   className="type-nav uppercase opacity-60 transition-opacity hover:opacity-100"
                 >
                   {l.label}
-                </Link>
+                </LocaleLink>
               ))}
             </div>
           </nav>

@@ -206,6 +206,7 @@ export function ServiceAccordion({
               style={{
                 clipPath: "inset(0 -100vw)",
                 gridTemplateRows: isOpen ? "1fr" : "0fr",
+                overflow: isOpen && index === 0 ? "visible" : "hidden",
               }}
             >
               <div

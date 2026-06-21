@@ -8,6 +8,7 @@ import {
   type Locale,
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { LocaleLink } from "@/components/ui/locale-link";
 import { NavLink } from "@/components/ui/nav-link";
 import { MobileMenu } from "@/components/sections/mobile-menu";
 
@@ -38,7 +39,6 @@ export function SiteHeader({
   }));
   const localeLinks = otherLocales.map((l) => ({
     label: localeLabels[l].toUpperCase(),
-    href: localizedPath(l),
     hrefLang: l,
   }));
 
@@ -74,14 +74,13 @@ export function SiteHeader({
           <span aria-hidden className="mx-2 h-5 w-px bg-black/15" />
 
           {otherLocales.map((l) => (
-            <Link
+            <LocaleLink
               key={l}
-              href={localizedPath(l)}
               hrefLang={l}
               className="type-nav flex h-[40px] w-[52px] items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
             >
               {localeLabels[l].toUpperCase()}
-            </Link>
+            </LocaleLink>
           ))}
         </div>
 

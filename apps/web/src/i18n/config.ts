@@ -17,3 +17,14 @@ export function localizedPath(locale: Locale, pathname = "/") {
   const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
   return `/${locale}${normalizedPath === "/" ? "" : normalizedPath}`;
 }
+
+export function switchLocalePath(pathname: string, locale: Locale) {
+  const segments = pathname.split("/");
+  const [, firstSegment, ...restSegments] = segments;
+
+  if (isLocale(firstSegment)) {
+    return localizedPath(locale, `/${restSegments.join("/")}`);
+  }
+
+  return localizedPath(locale, pathname);
+}
