@@ -15,6 +15,72 @@ export function MethodSteps({ steps }: MethodStepsProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const headingRefs = useRef<Array<HTMLHeadingElement | null>>([]);
+  const mobileTitleRefs = useRef<Array<HTMLHeadingElement | null>>([]);
+
+  // Mobile equivalent of the desktop rail: each stacked title gets its own
+  // full-width blue band that fills with scroll progress (same start/end mapping
+  // as the desktop rail), turning the title white where the band covers it.
+  useEffect(() => {
+    const titles = mobileTitleRefs.current.filter(
+      (el): el is HTMLHeadingElement => el !== null,
+    );
+    if (titles.length === 0) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reduceMotion) {
+      titles.forEach((title) => {
+        title.style.setProperty("--method-rail-progress", "1");
+        title.style.setProperty("--method-text-progress", "1");
+      });
+      return;
+    }
+
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const vh = window.innerHeight;
+      const start = vh;
+      const end = vh * 0.5;
+
+      titles.forEach((title) => {
+        const rect = title.getBoundingClientRect();
+        const progress = Math.min(
+          Math.max((start - rect.top) / (start - end), 0),
+          1,
+        );
+        const fullWidth = title.clientWidth;
+        const textWidth =
+          title.querySelector<HTMLElement>(".method-mobile-text")?.offsetWidth ??
+          fullWidth;
+        // The band fills the full divider width; the white text only needs to
+        // reveal up to where the band's right edge has reached the text.
+        const textProgress =
+          fullWidth > 0 ? Math.min(progress, textWidth / fullWidth) : 0;
+
+        title.style.setProperty("--method-rail-progress", progress.toFixed(3));
+        title.style.setProperty("--method-text-progress", textProgress.toFixed(3));
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, []);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -95,8 +161,25 @@ export function MethodSteps({ steps }: MethodStepsProps) {
       <div className="space-y-8 md:hidden">
         {steps.map((step, index) => (
           <section key={step.title} className="border-t border-black pt-4">
-            <h3 className="type-heading-md font-bold text-black">
-              {index + 1}. {step.title}
+            <h3
+              ref={(el) => {
+                mobileTitleRefs.current[index] = el;
+              }}
+              className="method-mobile-title type-heading-md relative z-10 block w-full font-bold text-black"
+            >
+              <span
+                aria-hidden
+                className="method-mobile-rail pointer-events-none absolute left-0"
+              />
+              <span className="method-mobile-text relative inline-block">
+                {step.title}
+              </span>
+              <span
+                aria-hidden
+                className="method-mobile-cover pointer-events-none absolute left-0 top-0 overflow-hidden whitespace-nowrap"
+              >
+                {step.title}
+              </span>
             </h3>
             <ul className="type-body-md mt-4 space-y-3">
               {step.items.map((item) => (

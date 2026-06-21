@@ -59,11 +59,11 @@ a {
 
 @keyframes highlight-reveal {
   from {
-    transform: scaleX(0);
+    background-size: 0 0.5em;
   }
 
   to {
-    transform: scaleX(1);
+    background-size: 100% 0.5em;
   }
 }
 
@@ -309,57 +309,55 @@ a {
     --pill-button-selected-text: var(--color-button-neutral-text);
   }
 
+  /* The highlight is painted as a wrapping background rather than a single
+     absolutely-positioned bar, so it follows the text across every line when
+     the phrase wraps (e.g. multi-line headings/body on mobile). */
   .highlight-text {
-    position: relative;
-    display: inline-block;
-    isolation: isolate;
+    display: inline;
+    background-repeat: no-repeat;
+    background-position: left 0 bottom 0.08em;
+    background-size: calc(var(--highlight-progress, 0) * 100%) 0.5em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
-  .highlight-text::before {
-    position: absolute;
-    z-index: var(--z-below);
-    bottom: 0.08em;
-    left: -0.05em;
-    display: block;
-    width: calc(100% + 0.1em);
-    height: 0.5em;
-    content: "";
-    transform: scaleX(var(--highlight-progress, 0));
-    transform-origin: left center;
-    will-change: transform;
+  .highlight-text-controlled,
+  .highlight-text-scroll {
+    background-size: calc(var(--highlight-progress, 0) * 100%) 0.5em;
   }
 
-  .highlight-text-controlled::before,
-  .highlight-text-scroll::before {
-    transform: scaleX(var(--highlight-progress, 0));
+  .highlight-text-load {
+    background-size: 0 0.5em;
   }
 
-  .highlight-text-load::before {
-    transform: scaleX(0);
-  }
-
-  .highlight-text-load.highlight-text-revealed::before {
+  .highlight-text-load.highlight-text-revealed {
     animation: highlight-reveal 1200ms ease-in-out 220ms forwards;
   }
 
-  .highlight-text-static::before {
-    transform: scaleX(1);
+  .highlight-text-static {
+    background-size: 100% 0.5em;
   }
 
-  .highlight-text-blue::before {
-    background: var(--uc-blue);
+  .highlight-text-blue {
+    background-image: linear-gradient(var(--uc-blue), var(--uc-blue));
   }
 
-  .highlight-text-coral::before {
-    background: var(--uc-coral);
+  .highlight-text-coral {
+    background-image: linear-gradient(var(--uc-coral), var(--uc-coral));
   }
 
-  .highlight-text-pink::before {
-    background: var(--color-highlight-pink);
+  .highlight-text-pink {
+    background-image: linear-gradient(
+      var(--color-highlight-pink),
+      var(--color-highlight-pink)
+    );
   }
 
-  .highlight-text-yellow::before {
-    background: var(--color-highlight-yellow);
+  .highlight-text-yellow {
+    background-image: linear-gradient(
+      var(--color-highlight-yellow),
+      var(--color-highlight-yellow)
+    );
   }
 
   .method-rail {
@@ -380,6 +378,26 @@ a {
     transform-origin: left center;
     pointer-events: none;
     will-change: transform;
+  }
+
+  /* Mobile counterpart of the rail: a per-title blue band that fills with scroll
+     progress, with a clipped white text clone so the title reads white where the
+     band covers it. Both widths are driven by the --method-*-progress vars that
+     MethodSteps sets on scroll, mirroring the desktop rail's --rail-progress. */
+  .method-mobile-title {
+    isolation: isolate;
+  }
+
+  .method-mobile-rail {
+    z-index: var(--z-below);
+    inset-block: 0;
+    width: calc(var(--method-rail-progress, 0) * 100%);
+    background: var(--color-rail-blue);
+  }
+
+  .method-mobile-cover {
+    width: calc(var(--method-text-progress, 0) * 100%);
+    color: var(--color-text-inverse);
   }
 }
 
@@ -420,9 +438,9 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .highlight-text-load.highlight-text-revealed::before {
+  .highlight-text-load.highlight-text-revealed {
     animation: none;
-    transform: scaleX(1);
+    background-size: 100% 0.5em;
   }
 
   /* Service accordion resizes instantly so a single scroll correction suffices. */
