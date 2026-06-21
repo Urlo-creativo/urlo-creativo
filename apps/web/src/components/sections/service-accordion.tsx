@@ -197,7 +197,12 @@ export function ServiceAccordion({
             <div
               id={panelId}
               aria-hidden={!isOpen}
-              className="grid transition-[grid-template-rows] duration-500 ease-out"
+              className={[
+                "grid transition-[grid-template-rows] duration-500 ease-out",
+                isOpen && index === 0 ? "" : "overflow-hidden",
+              ]
+                .filter(Boolean)
+                .join(" ")}
               style={{
                 clipPath: "inset(0 -100vw)",
                 gridTemplateRows: isOpen ? "1fr" : "0fr",
