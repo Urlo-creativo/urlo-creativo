@@ -71,7 +71,10 @@ export function SiteHeader({
             ))}
           </nav>
 
-          <span aria-hidden className="mx-2 h-5 w-px bg-black/15" />
+          <span
+            aria-hidden
+            className="mx-3 h-7 w-px bg-[var(--color-nav-divider)]"
+          />
 
           {otherLocales.map((l) => (
             <LocaleLink

@@ -62,6 +62,7 @@
   --color-button-neutral-text: var(--uc-white);
   --color-hover-soft: rgba(0, 0, 0, 0.07);
   --color-nav-bg: rgba(235, 235, 235, 0.75);
+  --color-nav-divider: rgba(0, 0, 0, 0.28);
   --color-rail-blue: var(--uc-blue-deep);
   --color-process-1: var(--uc-pink);
   --color-process-2: var(--uc-blue-deep);
