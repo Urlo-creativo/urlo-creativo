@@ -2,37 +2,38 @@ import { defineField, defineType } from "sanity";
 
 export const clientType = defineType({
   name: "client",
-  title: "Selected Client",
+  title: "Cliente selezionato / Selected client",
   type: "document",
   fields: [
     defineField({
       name: "name",
-      title: "Name",
+      title: "Nome / Name",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "logo",
-      title: "Logo",
+      title: "Logo / Logo",
       type: "image",
       options: { hotspot: false },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "url",
-      title: "Website URL",
+      title: "URL sito web / Website URL",
       type: "url",
     }),
     defineField({
       name: "order",
-      title: "Order",
+      title: "Ordine / Order",
       type: "number",
-      description: "Controls position in the marquee. Lower number = appears first.",
+      description:
+        "Controlla la posizione nel marquee. Numero piu basso = prima posizione. / Controls position in the marquee.",
     }),
   ],
   orderings: [
     {
-      title: "Order",
+      title: "Ordine / Order",
       name: "orderAsc",
       by: [{ field: "order", direction: "asc" }],
     },

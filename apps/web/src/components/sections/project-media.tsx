@@ -1,0 +1,198 @@
+import { SanityImage } from "@/components/ui/sanity-image";
+import { hasImageAsset } from "@/lib/sanity/image";
+import type {
+  ProjectMediaItem,
+  ProjectMediaSection,
+} from "@/lib/sanity/queries";
+
+// --- Video helpers ---------------------------------------------------------
+
+function getEmbedUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, "");
+
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      const id = parsed.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if (host === "youtu.be") {
+      const id = parsed.pathname.slice(1);
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if (host === "vimeo.com") {
+      const id = parsed.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://player.vimeo.com/video/${id}` : null;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function MediaCaption({ caption }: { caption: string | null }) {
+  if (!caption) return null;
+  return (
+    <figcaption className="type-body-sm mt-3 text-[var(--color-text-muted)]">
+      {caption}
+    </figcaption>
+  );
+}
+
+// --- Single media item -----------------------------------------------------
+
+type MediaItemProps = {
+  item: ProjectMediaItem;
+  sizes?: string;
+  priority?: boolean;
+};
+
+export function ProjectMediaItemView({ item, sizes, priority }: MediaItemProps) {
+  if (item.mediaType === "image") {
+    if (!hasImageAsset(item.image)) return null;
+    return (
+      <figure>
+        <SanityImage
+          image={item.image}
+          sizes={sizes}
+          priority={priority}
+          className="h-auto w-full"
+        />
+        <MediaCaption caption={item.caption} />
+      </figure>
+    );
+  }
+
+  // Video
+  const directUrl = item.videoFile?.url ?? null;
+  const externalUrl = item.videoUrl ?? null;
+  const embedUrl = externalUrl ? getEmbedUrl(externalUrl) : null;
+  const posterProps = hasImageAsset(item.poster) ? item.poster : null;
+
+  if (embedUrl) {
+    return (
+      <figure>
+        <div className="relative aspect-video w-full overflow-hidden bg-black">
+          <iframe
+            src={embedUrl}
+            title={item.caption ?? "Project video"}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+          />
+        </div>
+        <MediaCaption caption={item.caption} />
+      </figure>
+    );
+  }
+
+  const playableUrl = directUrl ?? externalUrl;
+  if (!playableUrl) return null;
+
+  return (
+    <figure>
+      <video
+        controls
+        playsInline
+        preload="metadata"
+        poster={posterProps?.asset?.url}
+        className="h-auto w-full bg-black"
+      >
+        <source
+          src={playableUrl}
+          type={item.videoFile?.mimeType ?? undefined}
+        />
+      </video>
+      <MediaCaption caption={item.caption} />
+    </figure>
+  );
+}
+
+// --- Layout variants -------------------------------------------------------
+
+function renderItems(
+  items: ProjectMediaItem[],
+  sizes: string,
+): React.ReactNode[] {
+  return items.map((item) => (
+    <ProjectMediaItemView key={item._key} item={item} sizes={sizes} />
+  ));
+}
+
+function LayoutBody({ section }: { section: ProjectMediaSection }) {
+  const items = section.mediaItems ?? [];
+  if (items.length === 0) return null;
+
+  switch (section.layout) {
+    case "oneColumnCollage":
+      return (
+        <div className="mx-auto flex max-w-content flex-col grid-gap-lg">
+          {items.map((item, index) => (
+            <div
+              key={item._key}
+              className={[
+                "w-full md:w-[78%]",
+                index % 3 === 1 ? "md:self-end" : "",
+                index % 3 === 2 ? "md:self-center" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <ProjectMediaItemView
+                item={item}
+                sizes="(min-width: 768px) 70vw, 100vw"
+              />
+            </div>
+          ))}
+        </div>
+      );
+
+    case "masonry":
+      return (
+        <div className="columns-1 grid-gap-md md:columns-2 lg:columns-3">
+          {items.map((item) => (
+            <div key={item._key} className="mb-[var(--space-grid-md)] break-inside-avoid">
+              <ProjectMediaItemView
+                item={item}
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              />
+            </div>
+          ))}
+        </div>
+      );
+
+    case "compactThreeColumnGrid":
+      return (
+        <div className="grid grid-cols-2 grid-gap-md md:grid-cols-3">
+          {renderItems(
+            items,
+            "(min-width: 768px) 33vw, 50vw",
+          )}
+        </div>
+      );
+
+    case "twoColumnGrid":
+    default:
+      return (
+        <div className="grid grid-cols-1 grid-gap-md md:grid-cols-2">
+          {renderItems(items, "(min-width: 768px) 50vw, 100vw")}
+        </div>
+      );
+  }
+}
+
+// --- Section wrapper -------------------------------------------------------
+
+export function ProjectMediaSectionBlock({
+  section,
+}: {
+  section: ProjectMediaSection;
+}) {
+  if (!section.mediaItems || section.mediaItems.length === 0) return null;
+
+  return (
+    <section className="page-shell">
+      <LayoutBody section={section} />
+    </section>
+  );
+}

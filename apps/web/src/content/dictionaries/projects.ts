@@ -1,53 +1,43 @@
-// ⚠️ IT — Italian copy. Currently an English placeholder; translate each string.
-// Filter buttons are presentational only today (items carry no category) —
-// wiring real filtering means adding a `category` field to each item.
+// Projects page UI chrome. Project content comes from Sanity; fixed labels,
+// filters and empty states stay in the app dictionary. Category labels are
+// derived from the single source in `@/lib/sanity/categories`.
+import { categoryLabelsFor } from "@/lib/sanity/categories";
+
 const projectsIt = {
-  title: "PROJECTS",
-  filters: [
-    "ALL",
-    "BRAND IDENTITY & COMMUNICATION",
-    "DESIGN & PRODUCT DEVELOPMENT",
-    "STYLING / SHOOTING & ART DIRECTION",
-  ],
-  items: [
-    {
-      title: "Velasca: Capsule Collection “Silene”",
-      year: "2025",
-      description:
-        "Create a poetic and meaningful clothing capsule for a brand traditionally known for its craftsmanship and informal Italian identity.",
-    },
-    {
-      title: "Colmar Sport: Skiwear Redesign",
-      year: "2025",
-      description:
-        "Refresh and modernize the men’s and women’s skiwear collections.",
-    },
-  ],
+  title: "PROGETTI",
+  allLabel: "TUTTI",
+  emptyAll: "Nessun progetto ancora.",
+  emptyCategory: "Nessun progetto in questa categoria.",
+  categoryLabels: categoryLabelsFor("it"),
+  detailLabels: {
+    rolesServices: "Ruoli / Servizi",
+    challenge: "Sfida",
+    concept: "Concept",
+    process: "Processo",
+    responsibilities: "Responsabilita",
+    outcome: "Risultato",
+    credits: "Crediti",
+    behindTheScenes: "Dietro le quinte",
+  },
 };
 
 // EN — English copy.
 const projectsEn = {
   title: "PROJECTS",
-  filters: [
-    "ALL",
-    "BRAND IDENTITY & COMMUNICATION",
-    "DESIGN & PRODUCT DEVELOPMENT",
-    "STYLING / SHOOTING & ART DIRECTION",
-  ],
-  items: [
-    {
-      title: "Velasca: Capsule Collection “Silene”",
-      year: "2025",
-      description:
-        "Create a poetic and meaningful clothing capsule for a brand traditionally known for its craftsmanship and informal Italian identity.",
-    },
-    {
-      title: "Colmar Sport: Skiwear Redesign",
-      year: "2025",
-      description:
-        "Refresh and modernize the men’s and women’s skiwear collections.",
-    },
-  ],
+  allLabel: "ALL",
+  emptyAll: "No projects yet.",
+  emptyCategory: "No projects in this category.",
+  categoryLabels: categoryLabelsFor("en"),
+  detailLabels: {
+    rolesServices: "Roles / Services",
+    challenge: "Challenge",
+    concept: "Concept",
+    process: "Process",
+    responsibilities: "Responsibilities",
+    outcome: "Outcome",
+    credits: "Credits",
+    behindTheScenes: "Behind the Scenes",
+  },
 };
 
 export const projectsDictionary = { it: projectsIt, en: projectsEn };

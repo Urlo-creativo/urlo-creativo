@@ -49,10 +49,11 @@ Set these values in `.env.local`:
 ```bash
 # Canonical origin for metadata, sitemap.xml, robots.txt (defaults to localhost in dev)
 NEXT_PUBLIC_SITE_URL=https://www.urlocreativo.com
-NEXT_PUBLIC_SANITY_PROJECT_ID=gerfjp7t
+NEXT_PUBLIC_SANITY_PROJECT_ID=rj63sc4z
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2026-06-18
 SANITY_API_READ_TOKEN=
-SANITY_STUDIO_PROJECT_ID=gerfjp7t
+SANITY_STUDIO_PROJECT_ID=rj63sc4z
 SANITY_STUDIO_DATASET=production
+SANITY_STUDIO_ORGANIZATION_ID=o8QxDdBzd
 ```

@@ -8,6 +8,13 @@ import { SiteFooter } from "@/components/sections/site-footer";
 import {
   StructuredRichText,
 } from "@/components/ui/rich-text";
+import { SanityImage } from "@/components/ui/sanity-image";
+import { client } from "@/lib/sanity/client";
+import { localeParams } from "@/lib/sanity/locale";
+import {
+  featuredProjectsQuery,
+  type ProjectListItem,
+} from "@/lib/sanity/queries";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -20,24 +27,6 @@ const clients: Client[] = [
   { name: "Kappa", logo: "/clients/placeholder.svg", url: "https://www.kappa.com" },
   { name: "Ducati", logo: "/clients/placeholder.svg", url: "https://www.ducati.com" },
   { name: "Rossignol", logo: "/clients/placeholder.svg", url: "https://www.rossignol.com" },
-];
-
-const projectImages = [
-  {
-    src: "/projects/project-kappa-ducati.png",
-    title: "KAPPA X DUCATI",
-    year: "2026",
-  },
-  {
-    src: "/projects/project-colmar.png",
-    title: "COLMAR SPORT",
-    year: "2026",
-  },
-  {
-    src: "/projects/project-rossignol.png",
-    title: "JCC X ROSSIGNOL",
-    year: "2026",
-  },
 ];
 
 export default async function Home({
@@ -53,6 +42,11 @@ export default async function Home({
 
   const locale: Locale = localeParam;
   const dictionary = getDictionary(locale);
+
+  const featuredProjects = await client.fetch<ProjectListItem[]>(
+    featuredProjectsQuery,
+    localeParams(locale),
+  );
 
   const methodSteps = [
     dictionary.home.method.identify,
@@ -128,15 +122,19 @@ export default async function Home({
         {/* 2 cols at md keeps images tall enough for 1.1× to reach the title;
             3 cols only kicks in at lg (≥1024px) where images are large enough */}
         <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-[80px]">
-          {projectImages.map((project) => (
+          {featuredProjects.map((project) => (
             /* `isolate` creates a shared compositing group so the text's
                mix-blend-difference blends against the image that overlaps it.
                The visible title below is the link's accessible name, so the
                image stays alt="" (decorative) to avoid a duplicate announcement. */
             <Link
-              key={project.src}
-              href={localizedPath(locale, "/projects")}
-              aria-label={`${project.title} (${project.year})`}
+              key={project._id}
+              href={localizedPath(locale, `/projects/${project.slug}`)}
+              aria-label={
+                project.year
+                  ? `${project.title} (${project.year})`
+                  : project.title
+              }
               className="group relative isolate block"
             >
 
@@ -146,8 +144,8 @@ export default async function Home({
                            origin-top-left transition-transform duration-500 ease-out
                            md:group-hover:scale-[1.1]"
               >
-                <Image
-                  src={project.src}
+                <SanityImage
+                  image={project.coverImage}
                   alt=""
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
