@@ -62,11 +62,11 @@ const homeIt = {
 // EN — English copy.
 const homeEn = {
   // buttons
-  contactCta: "Contact",
-  discoverServices: "Discover our services",
-  seeAllProjects: "See all projects",
+  contactCta: "Contact >",
+  discoverServices: "Discover our services >",
+  seeAllProjects: "See all projects >",
   whatWeDo: "What we do",
-  learnMore: "Learn More",
+  learnMore: "Learn More >",
   // Sanity content
   heroKicker: [
     [{ text: "Lorem ipsum\nDolor sit amet" }],

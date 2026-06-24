@@ -17,14 +17,14 @@ const commonIt = {
     contact: "Contact",
   },
   footer: {
-    title: "Contact",
+    title: "CONTATTI",
     address:
       "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
     socials: [
-      { label: "LinkedIn", href: "https://www.linkedin.com" },
-      { label: "Instagram", href: "https://www.instagram.com" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
+      { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },
     ],
-    ctaLabel: "Book a consultation",
+    ctaLabel: "Prenota una consulenza >",
     emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };
@@ -43,14 +43,14 @@ const commonEn = {
     contact: "Contact",
   },
   footer: {
-    title: "Contact",
+    title: "CONTACT",
     address:
       "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
     socials: [
-      { label: "LinkedIn", href: "https://www.linkedin.com" },
-      { label: "Instagram", href: "https://www.instagram.com" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
+      { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },
     ],
-    ctaLabel: "Book a consultation",
+    ctaLabel: "Book a consultation >",
     emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };

@@ -129,12 +129,12 @@ export default async function Home({
             fallback={dictionary.home.mission}
             className="type-body-xl"
           />
-          <a
-            href="mailto:info@consulenzecreativeperetto.com"
+          <Link
+            href={localizedPath(locale, "/contact")}
             className="pill-button mt-8"
           >
             {dictionary.home.contactCta}
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -259,13 +259,6 @@ export default async function Home({
           fallback={dictionary.home.methodology}
           className="type-body-xl"
         />
-
-        <Link
-          href={localizedPath(locale, "/services")}
-          className="pill-button mt-12"
-        >
-          {dictionary.home.whatWeDo}
-        </Link>
       </section>
 
       <section className="section-y">
