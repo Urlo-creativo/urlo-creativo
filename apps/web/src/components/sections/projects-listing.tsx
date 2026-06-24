@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 
 import { ProjectFilterButtons } from "@/components/sections/project-filter-buttons";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { localizedPath, type Locale } from "@/i18n/config";
 import {
-  categoryLabel,
   getCategoryOptions,
   type CategoryLabels,
   type ProjectListItem,
@@ -31,6 +30,8 @@ export function ProjectsListing({
   categoryLabels,
 }: ProjectsListingProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
 
   const options = useMemo(
     () => getCategoryOptions(projects, categoryLabels),
@@ -44,6 +45,26 @@ export function ProjectsListing({
     );
   }, [projects, selected]);
 
+  const hoveredProject = useMemo(
+    () => visibleProjects.find((project) => project._id === hoveredProjectId),
+    [hoveredProjectId, visibleProjects],
+  );
+
+  useEffect(() => {
+    setHoveredProjectId(null);
+  }, [selected]);
+
+  function movePreview(x: number, y: number) {
+    if (!previewRef.current) return;
+    previewRef.current.style.transform =
+      `translate3d(${x}px, ${y}px, 0) translate(28px, 24px)`;
+  }
+
+  function handlePointerMove(event: PointerEvent<HTMLElement>) {
+    if (event.pointerType === "touch") return;
+    movePreview(event.clientX, event.clientY);
+  }
+
   return (
     <>
       <ProjectFilterButtons
@@ -53,45 +74,89 @@ export function ProjectsListing({
         onSelect={setSelected}
       />
 
+      <div
+        ref={previewRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-40 hidden w-[min(28vw,380px)] md:block"
+        style={{
+          transform: "translate3d(-999px, -999px, 0) translate(28px, 24px)",
+        }}
+      >
+        <div
+          className={`relative aspect-[4/3] w-full overflow-hidden border border-black bg-[var(--color-bg-muted)] shadow-[0_24px_60px_rgba(0,0,0,0.16)] transition-[opacity,transform] duration-300 ease-out ${
+            hoveredProject?.coverImage
+              ? "scale-100 opacity-100"
+              : "scale-95 opacity-0"
+          }`}
+        >
+          {hoveredProject?.coverImage && (
+            <SanityImage
+              image={hoveredProject.coverImage}
+              alt=""
+              fill
+              sizes="380px"
+              width={760}
+              className="object-cover"
+            />
+          )}
+        </div>
+      </div>
+
       <div className="mt-20 border-t border-black md:mt-[102px]">
         {visibleProjects.map((project) => (
-          <article key={project._id} className="border-b border-black py-8 md:py-10">
+          <article key={project._id} className="border-b border-black">
             <Link
               href={localizedPath(locale, `/projects/${project.slug}`)}
-              className="group grid gap-6 md:grid-cols-[104px_minmax(0,1fr)_minmax(0,360px)] md:gap-16"
+              className="group grid gap-6 py-8 outline-none md:grid-cols-[104px_minmax(0,1fr)] md:items-center md:gap-16 md:py-12"
+              onPointerEnter={(event) => {
+                if (event.pointerType === "touch" || !project.coverImage) {
+                  return;
+                }
+                movePreview(event.clientX, event.clientY);
+                setHoveredProjectId(project._id);
+              }}
+              onPointerMove={handlePointerMove}
+              onPointerLeave={(event) => {
+                if (event.pointerType === "touch") return;
+                setHoveredProjectId(null);
+              }}
+              onFocus={(event) => {
+                if (!project.coverImage) return;
+                const rect = event.currentTarget.getBoundingClientRect();
+                movePreview(
+                  rect.left + rect.width * 0.72,
+                  rect.top + rect.height * 0.5,
+                );
+                setHoveredProjectId(project._id);
+              }}
+              onBlur={() => setHoveredProjectId(null)}
             >
-              <p className="type-body-md italic text-[var(--color-text-muted)] md:pt-1">
+              <p className="type-body-lg italic text-[var(--color-text-muted)]">
                 {project.year}
               </p>
 
               <div>
-                <h2 className="type-body-xl text-measure font-bold transition-opacity group-hover:opacity-60">
+                <h2 className="type-heading-xl text-measure font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60">
                   {project.title}
                 </h2>
-                {project.categories && project.categories.length > 0 && (
-                  <p className="type-body-sm mt-3 uppercase text-[var(--color-text-muted)]">
-                    {project.categories
-                      .map((category) => categoryLabel(category, categoryLabels))
-                      .join(" · ")}
-                  </p>
-                )}
                 {project.excerpt && (
-                  <p className="type-body-md mt-4 max-w-[1080px]">
+                  <p className="type-body-md mt-3 max-w-[1080px]">
                     {project.excerpt}
                   </p>
                 )}
-              </div>
 
-              {project.coverImage && (
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:max-w-[360px]">
-                  <SanityImage
-                    image={project.coverImage}
-                    fill
-                    sizes="(min-width: 768px) 360px, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-              )}
+                {project.coverImage && (
+                  <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:hidden">
+                    <SanityImage
+                      image={project.coverImage}
+                      alt=""
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </Link>
           </article>
         ))}
