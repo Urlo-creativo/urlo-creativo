@@ -18,7 +18,7 @@ const homeIt = {
       },
     ],
   ] satisfies RichTextToken[][],
-  contactCta: "Contact",
+  contactCta: "Prenota una consulenza >",
   potentialTitle: [
     [
       { text: " DAL ", bold: true },
