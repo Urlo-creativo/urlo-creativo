@@ -45,17 +45,44 @@ function renderToken(token: RichTextToken, lineIndex: number, index: number) {
   );
 }
 
+function normalizeLines(lines: RichTextToken[][]): RichTextToken[][] {
+  return lines.flatMap((line) => {
+    const normalized: RichTextToken[][] = [];
+    let currentLine: RichTextToken[] = [];
+
+    for (const token of line) {
+      const parts = token.text.split(/\r?\n/);
+
+      parts.forEach((part, partIndex) => {
+        if (partIndex > 0) {
+          normalized.push(currentLine);
+          currentLine = [];
+        }
+
+        if (part) {
+          currentLine.push({ ...token, text: part });
+        }
+      });
+    }
+
+    normalized.push(currentLine);
+    return normalized;
+  });
+}
+
 export function StructuredRichText({
   lines,
   className,
   as: Tag = "span",
 }: StructuredRichTextProps) {
+  const normalizedLines = normalizeLines(lines);
+
   return (
     <Tag className={className}>
-      {lines.map((line, lineIndex) => (
+      {normalizedLines.map((line, lineIndex) => (
         <span key={lineIndex}>
           {line.map((token, index) => renderToken(token, lineIndex, index))}
-          {lineIndex < lines.length - 1 ? <br /> : null}
+          {lineIndex < normalizedLines.length - 1 ? <br /> : null}
         </span>
       ))}
     </Tag>

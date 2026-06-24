@@ -137,7 +137,12 @@ export function ProjectsListing({
 
               <div>
                 <h2 className="type-heading-xl text-measure font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60">
-                  {project.title}
+                  <span className="block">{project.clientName}</span>
+                  {project.projectName && (
+                    <span className="mt-1 block italic">
+                      {project.projectName}
+                    </span>
+                  )}
                 </h2>
                 {project.excerpt && (
                   <p className="type-body-md mt-3 max-w-[1080px]">

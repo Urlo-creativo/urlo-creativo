@@ -1,5 +1,6 @@
 import { clientType } from "./client";
 import { projectType } from "./project";
+import { localizedRichTextType } from "./objects/localizedRichText";
 import { localizedStringType } from "./objects/localizedString";
 import { localizedTextType } from "./objects/localizedText";
 import { projectCreditType } from "./objects/projectCredit";
@@ -11,6 +12,7 @@ export const schemaTypes = [
   projectType,
   localizedStringType,
   localizedTextType,
+  localizedRichTextType,
   projectMediaSectionType,
   projectMediaItemType,
   projectCreditType,

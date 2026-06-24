@@ -89,8 +89,8 @@ export default async function Home({
       </section>
 
       <section className="page-shell py-24 md:py-[90px]">
-        <div className="max-w-[1182px]">
-          <p className="type-body-xl font-bold">
+        <div>
+          <p className="type-body-xl whitespace-pre-line font-bold">
             {dictionary.home.mission}
           </p>
           <a
@@ -122,63 +122,73 @@ export default async function Home({
         {/* 2 cols at md keeps images tall enough for 1.1× to reach the title;
             3 cols only kicks in at lg (≥1024px) where images are large enough */}
         <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-[80px]">
-          {featuredProjects.map((project) => (
-            /* `isolate` creates a shared compositing group so the text's
-               mix-blend-difference blends against the image that overlaps it.
-               `bg-paper` gives that group an opaque backdrop (same as the page,
-               so invisible): where the scaled image doesn't cover the title, the
-               difference blend resolves white against cream → dark/readable
-               instead of staying white. The visible title below is the link's
-               accessible name, so the image stays alt="" (decorative). */
-            <Link
-              key={project._id}
-              href={localizedPath(locale, `/projects/${project.slug}`)}
-              aria-label={
-                project.year
-                  ? `${project.title} (${project.year})`
-                  : project.title
-              }
-              className="group relative isolate block bg-paper"
-            >
-
-              {/* Image grows from the top-left anchor on hover */}
-              <div
-                className="relative aspect-square overflow-hidden md:media-portrait
-                           origin-top-left transition-transform duration-500 ease-out
-                           md:group-hover:scale-[1.1]"
+          {featuredProjects.map((project) => {
+            const projectTitle = [project.clientName, project.projectName]
+              .filter(Boolean)
+              .join(": ");
+            return (
+              /* `isolate` creates a shared compositing group so the text's
+                 mix-blend-difference blends against the image that overlaps it.
+                 `bg-paper` gives that group an opaque backdrop (same as the page,
+                 so invisible): where the scaled image doesn't cover the title, the
+                 difference blend resolves white against cream → dark/readable
+                 instead of staying white. The visible title below is the link's
+                 accessible name, so the image stays alt="" (decorative). */
+              <Link
+                key={project._id}
+                href={localizedPath(locale, `/projects/${project.slug}`)}
+                aria-label={
+                  project.year
+                    ? `${projectTitle} (${project.year})`
+                    : projectTitle
+                }
+                className="group relative isolate block bg-paper"
               >
-                <SanityImage
-                  image={project.coverImage}
-                  alt=""
-                  fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  className="object-cover transition-all duration-500 ease-out
-                             md:grayscale md:blur-[3px]
-                             md:group-hover:grayscale-0 md:group-hover:blur-0"
-                />
-              </div>
 
-              {/* On desktop the title is permanently white + mix-blend-difference.
-                  Against the card's cream backdrop it resolves to near-black at
-                  rest; as the scaled image moves over it on hover, the overlapped
-                  part auto-contrasts. Nothing toggles on hover (the smooth image
-                  scale drives the change), so the title never flashes. Mobile
-                  keeps plain dark text. */}
-              <div className="relative mt-4">
-                <h3
-                  className="type-heading-md font-bold uppercase text-ink
-                             md:text-white md:mix-blend-difference"
+                {/* Image grows from the top-left anchor on hover */}
+                <div
+                  className="relative aspect-square overflow-hidden md:media-portrait
+                             origin-top-left transition-transform duration-500 ease-out
+                             md:group-hover:scale-[1.1]"
                 >
-                  {project.title}
-                </h3>
-                <p
-                  className="type-heading-md mt-1 text-[var(--color-text-subtle)]"
-                >
-                  {project.year}
-                </p>
-              </div>
-            </Link>
-          ))}
+                  <SanityImage
+                    image={project.coverImage}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-all duration-500 ease-out
+                               md:grayscale md:blur-[3px]
+                               md:group-hover:grayscale-0 md:group-hover:blur-0"
+                  />
+                </div>
+
+                {/* On desktop the title is permanently white + mix-blend-difference.
+                    Against the card's cream backdrop it resolves to near-black at
+                    rest; as the scaled image moves over it on hover, the overlapped
+                    part auto-contrasts. Nothing toggles on hover (the smooth image
+                    scale drives the change), so the title never flashes. Mobile
+                    keeps plain dark text. */}
+                <div className="relative mt-4">
+                  <h3
+                    className="type-heading-md font-bold uppercase text-ink
+                               md:text-white md:mix-blend-difference"
+                  >
+                    <span className="block">{project.clientName}</span>
+                    {project.projectName && (
+                      <span className="block italic normal-case">
+                        {project.projectName}
+                      </span>
+                    )}
+                  </h3>
+                  <p
+                    className="type-heading-md mt-1 text-[var(--color-text-subtle)]"
+                  >
+                    {project.year}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
         <Link
           href={localizedPath(locale, "/projects")}
@@ -199,7 +209,7 @@ export default async function Home({
         <StructuredRichText
           as="p"
           lines={dictionary.home.methodology}
-          className="type-body-xl max-w-content"
+          className="type-body-xl"
         />
 
         <Link

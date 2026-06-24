@@ -7,6 +7,7 @@ import {
   ProjectMediaSectionBlock,
 } from "@/components/sections/project-media";
 import { SiteFooter } from "@/components/sections/site-footer";
+import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
@@ -42,6 +43,10 @@ async function getProject(
   });
 }
 
+function projectDisplayTitle(project: Pick<Project, "clientName" | "projectName">) {
+  return [project.clientName, project.projectName].filter(Boolean).join(": ");
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -52,7 +57,7 @@ export async function generateMetadata({
   const project = await getProject(slug, locale);
   if (!project) return { title: "Project" };
   return {
-    title: project.title,
+    title: projectDisplayTitle(project),
     description: project.excerpt ?? undefined,
   };
 }
@@ -177,11 +182,13 @@ export default async function ProjectDetailPage({
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div>
               <h1 className="type-display font-bold uppercase">
-                {project.title}
+                <span className="block">{project.clientName}</span>
+                {project.projectName && (
+                  <span className="type-heading-xl mt-2 block italic normal-case">
+                    {project.projectName}
+                  </span>
+                )}
               </h1>
-              {project.subtitle && (
-                <p className="type-heading-xl mt-2 italic">{project.subtitle}</p>
-              )}
             </div>
 
             {hasImageAsset(project.titleGraphic) && (
@@ -242,20 +249,22 @@ export default async function ProjectDetailPage({
         {/* Interleaved text + media flow */}
         <div className="flex flex-col grid-gap-lg pb-[var(--space-section-y)]">
           {/* 7. Challenge */}
-          {project.challenge && (
+          {project.challenge && project.challenge.length > 0 && (
             <TextSection heading={detailLabels.challenge}>
-              <p className="type-body-lg whitespace-pre-line">
-                {project.challenge}
-              </p>
+              <PortableRichText
+                blocks={project.challenge}
+                className="type-body-lg"
+              />
             </TextSection>
           )}
 
           {/* 8. Concept */}
-          {project.concept && (
+          {project.concept && project.concept.length > 0 && (
             <TextSection heading={detailLabels.concept}>
-              <p className="type-body-lg whitespace-pre-line">
-                {project.concept}
-              </p>
+              <PortableRichText
+                blocks={project.concept}
+                className="type-body-lg"
+              />
             </TextSection>
           )}
 
@@ -263,11 +272,12 @@ export default async function ProjectDetailPage({
           <MediaZone sections={mediaAfterConcept} />
 
           {/* 10. Process */}
-          {project.process && (
+          {project.process && project.process.length > 0 && (
             <TextSection heading={detailLabels.process}>
-              <p className="type-body-lg whitespace-pre-line">
-                {project.process}
-              </p>
+              <PortableRichText
+                blocks={project.process}
+                className="type-body-lg"
+              />
             </TextSection>
           )}
 
@@ -286,11 +296,12 @@ export default async function ProjectDetailPage({
           <MediaZone sections={mediaAfterResponsibilities} />
 
           {/* 13. Outcome */}
-          {project.outcome && (
+          {project.outcome && project.outcome.length > 0 && (
             <TextSection heading={detailLabels.outcome}>
-              <p className="type-body-lg whitespace-pre-line">
-                {project.outcome}
-              </p>
+              <PortableRichText
+                blocks={project.outcome}
+                className="type-body-lg"
+              />
             </TextSection>
           )}
 

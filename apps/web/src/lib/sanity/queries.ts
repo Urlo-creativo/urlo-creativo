@@ -49,6 +49,33 @@ export type SanityImage = {
   } | null;
 };
 
+// Portable Text resolved from a `localizedRichText` field. Blocks are simple
+// paragraphs whose spans may carry `strong` / `em` decorators or reference a
+// `highlight` annotation in `markDefs`.
+export type PortableSpan = {
+  _key: string;
+  _type: "span";
+  text: string;
+  marks?: string[];
+};
+
+export type HighlightMarkDef = {
+  _key: string;
+  _type: "highlight";
+  color?: "blue" | "coral" | "orange" | "pink" | "yellow";
+  trigger?: "load" | "scroll" | "static";
+};
+
+export type PortableBlock = {
+  _key: string;
+  _type: "block";
+  style?: string;
+  children: PortableSpan[];
+  markDefs?: HighlightMarkDef[];
+};
+
+export type PortableRichTextValue = PortableBlock[] | string | null;
+
 export type ProjectMediaItem = {
   _key: string;
   mediaType: "image" | "video";
@@ -89,8 +116,8 @@ export type ProjectCredit = {
 
 export type ProjectListItem = {
   _id: string;
-  title: string;
-  subtitle: string | null;
+  clientName: string;
+  projectName: string | null;
   slug: string;
   year: string | null;
   categories: string[] | null;
@@ -104,11 +131,11 @@ export type Project = ProjectListItem & {
   season: string | null;
   roles: string[] | null;
   heroMedia: ProjectMediaItem | null;
-  challenge: string | null;
-  concept: string | null;
-  process: string | null;
+  challenge: PortableRichTextValue;
+  concept: PortableRichTextValue;
+  process: PortableRichTextValue;
   responsibilities: string[] | null;
-  outcome: string | null;
+  outcome: PortableRichTextValue;
   credits: ProjectCredit[] | null;
   projectContentSections: ProjectMediaSection[] | null;
 };
@@ -116,9 +143,18 @@ export type Project = ProjectListItem & {
 // Shared GROQ fragments -----------------------------------------------------
 
 const localizedValue = (field: string) => `"${field}": select(
-  ${field}._type == "localizedString" || ${field}._type == "localizedText" =>
+  ${field}._type == "localizedString" || ${field}._type == "localizedText" || ${field}._type == "localizedRichText" =>
     coalesce(${field}[$locale], ${field}[$fallbackLocale], ${field}.it, ${field}.en),
   ${field}
+)`;
+
+const localizedValueWithFallback = (field: string, fallbackField: string) => `"${field}": select(
+  defined(${field}) && (${field}._type == "localizedString" || ${field}._type == "localizedText" || ${field}._type == "localizedRichText") =>
+    coalesce(${field}[$locale], ${field}[$fallbackLocale], ${field}.it, ${field}.en),
+  defined(${field}) => ${field},
+  defined(${fallbackField}) && (${fallbackField}._type == "localizedString" || ${fallbackField}._type == "localizedText" || ${fallbackField}._type == "localizedRichText") =>
+    coalesce(${fallbackField}[$locale], ${fallbackField}[$fallbackLocale], ${fallbackField}.it, ${fallbackField}.en),
+  ${fallbackField}
 )`;
 
 const localizedArray = (field: string) => `"${field}": ${field}[]{
@@ -164,8 +200,8 @@ const mediaSectionFragment = `{
 
 const listFields = `
   _id,
-  ${localizedValue("title")},
-  ${localizedValue("subtitle")},
+  ${localizedValueWithFallback("clientName", "title")},
+  ${localizedValueWithFallback("projectName", "subtitle")},
   "slug": slug.current,
   year,
   categories,

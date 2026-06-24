@@ -34,25 +34,27 @@ export const projectType = defineType({
   fields: [
     // ===== Info & cover =====
     defineField({
-      name: "title",
-      title: "Titolo / Title",
+      name: "clientName",
+      title: "Cliente / Client",
       type: "localizedString",
+      description:
+        "Nome del cliente o brand, es. Kappa x Ducati. / Client or brand name.",
       group: "info",
       validation: (Rule) =>
         Rule.custom((value) => {
           const title = value as { it?: string; en?: string } | undefined;
           if (!title?.it && !title?.en) {
-            return "Inserisci almeno il titolo italiano o inglese. / Add at least an Italian or English title.";
+            return "Inserisci almeno il cliente italiano o inglese. / Add at least an Italian or English client name.";
           }
           return true;
         }),
     }),
     defineField({
-      name: "subtitle",
-      title: "Sottotitolo / Subtitle",
+      name: "projectName",
+      title: "Nome progetto / Project name",
       type: "localizedString",
       description:
-        "Linea secondaria opzionale sotto il titolo. / Optional secondary line under the title.",
+        "Nome del progetto mostrato sotto il cliente, es. The Perfect Alliance. / Project name shown under the client.",
       group: "info",
     }),
     defineField({
@@ -78,12 +80,23 @@ export const projectType = defineType({
       group: "info",
       options: {
         source: (doc) => {
-          const title = doc.title as
+          const clientName = doc.clientName as
             | { it?: string; en?: string }
             | string
             | undefined;
-          if (typeof title === "string") return title;
-          return title?.it || title?.en || "project";
+          const projectName = doc.projectName as
+            | { it?: string; en?: string }
+            | string
+            | undefined;
+          const client =
+            typeof clientName === "string"
+              ? clientName
+              : clientName?.it || clientName?.en;
+          const project =
+            typeof projectName === "string"
+              ? projectName
+              : projectName?.it || projectName?.en;
+          return [client, project].filter(Boolean).join(" ") || "project";
         },
         maxLength: 96,
       },
@@ -157,19 +170,19 @@ export const projectType = defineType({
     defineField({
       name: "challenge",
       title: "Sfida / Challenge",
-      type: "localizedText",
+      type: "localizedRichText",
       group: "copy",
     }),
     defineField({
       name: "concept",
       title: "Concept / Concept",
-      type: "localizedText",
+      type: "localizedRichText",
       group: "copy",
     }),
     defineField({
       name: "process",
       title: "Processo / Process",
-      type: "localizedText",
+      type: "localizedRichText",
       group: "copy",
     }),
     defineField({
@@ -184,7 +197,7 @@ export const projectType = defineType({
     defineField({
       name: "outcome",
       title: "Risultato / Outcome",
-      type: "localizedText",
+      type: "localizedRichText",
       group: "copy",
     }),
 
@@ -245,18 +258,28 @@ export const projectType = defineType({
 
   preview: {
     select: {
-      title: "title",
+      clientName: "clientName",
+      projectName: "projectName",
       year: "year",
       season: "season",
       media: "coverImage",
     },
-    prepare({ title, year, season, media }) {
-      const localizedTitle =
-        typeof title === "string" ? title : title?.it || title?.en;
-      const subtitle = [season, year].filter(Boolean).join(" · ");
+    prepare({ clientName, projectName, year, season, media }) {
+      const localizedClientName =
+        typeof clientName === "string"
+          ? clientName
+          : clientName?.it || clientName?.en;
+      const localizedProjectName =
+        typeof projectName === "string"
+          ? projectName
+          : projectName?.it || projectName?.en;
+      const previewTitle = [localizedClientName, localizedProjectName]
+        .filter(Boolean)
+        .join(": ");
+      const metaSubtitle = [season, year].filter(Boolean).join(" · ");
       return {
-        title: localizedTitle || "Progetto senza titolo / Untitled project",
-        subtitle,
+        title: previewTitle || "Progetto senza titolo / Untitled project",
+        subtitle: metaSubtitle,
         media,
       };
     },

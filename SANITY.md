@@ -15,9 +15,10 @@ update the schema or queries, update this file too.
 - **Locales:** `it` (default) + `en`. Routing is `/[locale]/...`.
 - **Locale configuration is shared.** Both Studio and the web app import locale
   IDs, labels, and fallback settings from `shared/locales.ts`.
-- **Content is uploaded manually in Studio.** Nothing is seeded, hardcoded, or
-  migrated by code. The frontend renders whatever exists in Sanity, and degrades
-  gracefully to empty states when there is none.
+- **Content is uploaded manually in Studio.** Nothing is seeded or hardcoded.
+  Schema migrations live under `apps/studio/migrations/` when field names or
+  shapes need to change. The frontend renders whatever exists in Sanity, and
+  degrades gracefully to empty states when there is none.
 - **Project documents are shared across locales.** There is one project document,
   not one document per language.
 - **Project text uses field-level localization.** Editable copy is stored as
@@ -34,7 +35,9 @@ Studio schema (`apps/studio/schemaTypes/`):
 - `client.ts` — `client` document
 - `project.ts` — `project` document
 - `objects/localizedString.ts` — short `{ it, en }` text object
-- `objects/localizedText.ts` — long `{ it, en }` text object
+- `objects/localizedText.ts` — long `{ it, en }` plain-text object
+- `objects/localizedRichText.tsx` — `{ it, en }` Portable Text (Bold / Italic /
+  Highlight marks with colour + animation type)
 - `objects/projectMediaSection.ts` — `projectMediaSection` object
 - `objects/projectMediaItem.ts` — `projectMediaItem` object
 - `objects/projectCredit.ts` — `projectCredit` object
@@ -66,10 +69,10 @@ Fields, in the order they appear in Studio (which mirrors the detail page flow):
 
 | Field | Type | Notes |
 |---|---|---|
-| `title` | `localizedString` | **Required.** Localized `{ it, en }`. |
-| `subtitle` | `localizedString` | Optional. Italic line under the title (e.g. "A bigger splash"). |
+| `clientName` | `localizedString` | **Required.** Client / brand name, localized `{ it, en }`. |
+| `projectName` | `localizedString` | Optional project name shown under the client, e.g. `The Perfect Alliance`. |
 | `titleGraphic` | image (`+ localized alt`) | Optional. Small badge / logo / illustration shown beside the title. **Image only** — not the hero, not a media section, no video. Hotspot enabled. |
-| `slug` | slug | **Required.** Source = `title`. Used in the URL. |
+| `slug` | slug | **Required.** Source = `clientName + projectName`. Used in the URL. |
 | `year` | string | e.g. `2025`. Used for ordering and the listing. |
 | `season` | string | e.g. `FW 23/24`, `SS 25`. Collection period. |
 | `categories` | array of string | **Multi-select** from a fixed list (see 2.5). Drives the list-page filter. |
@@ -77,18 +80,64 @@ Fields, in the order they appear in Studio (which mirrors the detail page flow):
 | `excerpt` | `localizedText` | Short summary for the listing page. |
 | `coverImage` | image (`+ localized alt`) | **Required.** Used on the listing + homepage grid, and as hero fallback. Hotspot enabled. |
 | `heroMedia` | `projectMediaItem` | Optional. Large image **or** video at the top of the detail page. |
-| `challenge` | `localizedText` | Fixed text section. |
-| `concept` | `localizedText` | Fixed text section. |
-| `process` | `localizedText` | Fixed text section. |
+| `challenge` | `localizedRichText` | Fixed text section. Bold / italic / highlight. |
+| `concept` | `localizedRichText` | Fixed text section. Bold / italic / highlight. |
+| `process` | `localizedRichText` | Fixed text section. Bold / italic / highlight. |
 | `responsibilities` | array of `localizedString` | e.g. Material Research, Prototype Development. |
-| `outcome` | `localizedText` | Fixed text section. |
+| `outcome` | `localizedRichText` | Fixed text section. Bold / italic / highlight. |
 | `credits` | array of `projectCredit` | Repeatable credit rows. |
 | `projectContentSections` | array of `projectMediaSection` | **The single media list.** Each section picks its own `placement` (see 2.2). |
 | `featured` | boolean | If true, shows in the homepage projects grid. Default false. |
 | `order` | number | Lower = first in the listing. |
 
 Orderings: Manual order (`order asc`), Year newest first (`year desc`).
-Preview: title + `season · year` + cover image.
+Preview: `clientName: projectName` + `season · year` + cover image.
+
+**SEO rule:** `clientName` is the client / brand name and `projectName` is the
+project name. The project detail page combines both for the HTML `<title>` and
+keeps both inside the main H1, so the page remains descriptive for search
+engines while the Studio fields stay editorially clear.
+
+**Field migration:** older project documents used `title` for the client and
+`subtitle` for the project name. Run the migration script from the repository
+root:
+
+```bash
+npm run migrate:project-fields
+npm run migrate:project-fields:write
+```
+
+The web GROQ queries temporarily fall back from `clientName` to `title` and from
+`projectName` to `subtitle`, so pages keep rendering during rollout. Once all
+environments are migrated, those fallbacks can be removed.
+
+**Rich text (`localizedRichText`):** challenge / concept / process / outcome are
+Portable Text with Bold (`strong`), Italic (`em`), quick Highlight colour
+decorators.
+
+For highlighting, editors select text and click one of the quick Evidenziato
+colour buttons. These decorators store simple marks and default to the `scroll`
+animation:
+
+| Mark | Frontend mapping |
+|---|---|
+| `highlightYellow` | `RichTextToken.highlight = "yellow"` |
+| `highlightPink` | `RichTextToken.highlight = "pink"` |
+| `highlightBlue` | `RichTextToken.highlight = "blue"` |
+| `highlightCoral` | `RichTextToken.highlight = "coral"` |
+| `highlightOrange` | `RichTextToken.highlight = "orange"` |
+
+On the frontend `<PortableRichText>`
+(`components/ui/portable-rich-text.tsx`) maps each span to a `RichTextToken` and
+renders through `StructuredRichText` / `HighlightText`. It also tolerates a
+legacy plain string (content authored before these fields became rich text), so
+old projects keep rendering until re-authored.
+
+> **Migration note:** projects created while these fields were plain
+> `localizedText` still hold strings. Studio now shows them as rich text, so the
+> old copy must be **re-entered** in the rich-text editor to gain formatting and
+> highlight colour controls.
+> The site keeps showing the old plain text until then.
 
 ### 2.2 `projectMediaSection` (object)
 
@@ -199,7 +248,7 @@ fragments:
   `videoFile.asset->{ url, mimeType }`, `poster`, `caption`.
 - **media section fragment** — `_key`, `placement`, `internalLabel`,
   `layout`, `mediaItems[]`.
-- **list fields** — `_id`, `title`, `subtitle`, `slug.current`, `year`,
+- **list fields** — `_id`, `clientName`, `projectName`, `slug.current`, `year`,
   `categories`, `excerpt`, `coverImage`, `featured`.
 
 Queries:
@@ -248,7 +297,7 @@ actually used, in canonical order).
 `sectionsAt(sections, placement)`. Render order:
 
 1. **Hero** — `heroMedia` (image or video) full-bleed; falls back to `coverImage`.
-2. **Title block** — title + subtitle, `titleGraphic` beside it (stacks on mobile).
+2. **Title block** — client name + project name, `titleGraphic` beside it (stacks on mobile).
 3. **Meta** — category chips + `season` + `year`.
 4. **Roles / Services** — labeled chip list (if any).
 5. **Challenge** (yellow label)
@@ -294,14 +343,17 @@ underline component (yellow/blue alternating).
 The project form is split into tabs (**Info & cover / Copy / Media / Credits /
 Settings**). A **language toggle** in the toolbar (via `@sanity/language-filter`)
 lets editors show one language at a time, so the IT + EN inputs aren't all
-visible at once. The toggle only affects `localizedString` / `localizedText`
-fields.
+visible at once. The toggle affects localized fields, including
+`localizedString`, `localizedText`, and `localizedRichText`.
 
-1. Create a **Project**. Fill localized title (`it` and/or `en`), slug, year,
-   season, categories, localized roles, localized excerpt, cover image.
-   Optionally add a title graphic and hero media.
-2. Write localized Challenge / Concept / Process / Outcome and localized
-   Responsibilities.
+1. Create a **Project**. Fill localized client / brand name (`clientName`), optional
+   project name (`projectName`), slug, year, season, categories, localized roles,
+   localized excerpt, and cover image. Optionally add a title graphic and hero
+   media.
+2. Write localized Challenge / Concept / Process / Outcome in the rich-text
+   editor. Use Bold / Italic decorators as needed; select text and click an
+   **Evidenziato** colour button for highlights. Highlights use the default
+   `scroll` animation. Add localized Responsibilities.
 3. Under **Media sections**, click **+ Add item** to append one media layout.
    For each media layout: pick a numbered **Placement**, optionally add an
    **Internal label** for backend organization, pick a **Layout**, then add

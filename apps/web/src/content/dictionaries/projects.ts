@@ -33,13 +33,13 @@ const projectsIt = {
   categoryLabels: categoryLabelsFor("it"),
   detailLabels: {
     rolesServices: "Ruoli / Servizi",
-    credits: "Crediti",
-    behindTheScenes: "Dietro le quinte",
     challenge: sectionHeading("Sfida", "challenge"),
     concept: sectionHeading("Concept", "concept"),
     process: sectionHeading("Processo", "process"),
     responsibilities: sectionHeading("Responsabilita", "responsibilities"),
     outcome: sectionHeading("Risultato", "outcome"),
+    credits: "Crediti",
+    behindTheScenes: "Dietro le quinte",
   },
 };
 
@@ -52,13 +52,13 @@ const projectsEn = {
   categoryLabels: categoryLabelsFor("en"),
   detailLabels: {
     rolesServices: "Roles / Services",
-    credits: "Credits",
-    behindTheScenes: "Behind the Scenes",
     challenge: sectionHeading("Challenge", "challenge"),
     concept: sectionHeading("Concept", "concept"),
     process: sectionHeading("Process", "process"),
     responsibilities: sectionHeading("Responsibilities", "responsibilities"),
     outcome: sectionHeading("Outcome", "outcome"),
+    credits: "Credits",
+    behindTheScenes: "Behind the Scenes",
   },
 };
 

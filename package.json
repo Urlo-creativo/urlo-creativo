@@ -11,6 +11,8 @@
     "typecheck:web": "npm run typecheck --workspace @urlo/web",
     "dev:studio": "npm run dev --workspace @urlo/studio",
     "build:studio": "npm run build --workspace @urlo/studio",
+    "migrate:project-fields": "npm run migrate:project-fields --workspace @urlo/studio",
+    "migrate:project-fields:write": "npm run migrate:project-fields:write --workspace @urlo/studio",
     "typecheck": "npm run typecheck:web"
   },
   "engines": {

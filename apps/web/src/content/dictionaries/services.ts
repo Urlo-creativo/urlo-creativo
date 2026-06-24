@@ -78,12 +78,6 @@ const servicesIt = {
     {
       number: "03",
       title: "Styling / Shooting & Art Direction",
-      details: [
-        "PRODUCTION",
-        "ART DIRECTION",
-        "STYLING",
-        "PHOTO AND VIDEO SHOOTINGS",
-      ],
       statement: [
         [
           { text: "We ", bold: true, italic: true },
@@ -119,6 +113,12 @@ const servicesIt = {
           image: "/services/styling-photo-video.png",
           alt: "",
         },
+      ],
+      details: [
+        "PRODUCTION",
+        "ART DIRECTION",
+        "STYLING",
+        "PHOTO AND VIDEO SHOOTINGS",
       ],
     },
   ],
@@ -212,12 +212,6 @@ const servicesEn = {
     {
       number: "03",
       title: "Styling / Shooting & Art Direction",
-      details: [
-        "PRODUCTION",
-        "ART DIRECTION",
-        "STYLING",
-        "PHOTO AND VIDEO SHOOTINGS",
-      ],
       statement: [
         [
           { text: "We ", bold: true, italic: true },
@@ -253,6 +247,12 @@ const servicesEn = {
           image: "/services/styling-photo-video.png",
           alt: "",
         },
+      ],
+      details: [
+        "PRODUCTION",
+        "ART DIRECTION",
+        "STYLING",
+        "PHOTO AND VIDEO SHOOTINGS",
       ],
     },
   ],

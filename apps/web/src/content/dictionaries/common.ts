@@ -11,21 +11,21 @@ const commonIt = {
   },
   nav: {
     home: "Home",
+    services: "Services",
     projects: "Projects",
     about: "About Us",
-    services: "Services",
     contact: "Contact",
   },
   footer: {
     title: "Contact",
     address:
       "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
-    ctaLabel: "Book a consultation",
-    emailHref: "mailto:info@consulenzecreativeperetto.com",
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com" },
       { label: "Instagram", href: "https://www.instagram.com" },
     ],
+    ctaLabel: "Book a consultation",
+    emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };
 
@@ -37,21 +37,21 @@ const commonEn = {
   },
   nav: {
     home: "Home",
+    services: "Services",
     projects: "Projects",
     about: "About Us",
-    services: "Services",
     contact: "Contact",
   },
   footer: {
     title: "Contact",
     address:
       "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
-    ctaLabel: "Book a consultation",
-    emailHref: "mailto:info@consulenzecreativeperetto.com",
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com" },
       { label: "Instagram", href: "https://www.instagram.com" },
     ],
+    ctaLabel: "Book a consultation",
+    emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };
 
