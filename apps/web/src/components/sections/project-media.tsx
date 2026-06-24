@@ -30,6 +30,16 @@ function getEmbedUrl(url: string): string | null {
   return null;
 }
 
+function getHeroEmbedUrl(url: string): string {
+  const parsed = new URL(url);
+  parsed.searchParams.set("autoplay", "1");
+  parsed.searchParams.set("mute", "1");
+  parsed.searchParams.set("muted", "1");
+  parsed.searchParams.set("playsinline", "1");
+  parsed.searchParams.set("controls", "0");
+  return parsed.toString();
+}
+
 function MediaCaption({ caption }: { caption: string | null }) {
   if (!caption) return null;
   return (
@@ -45,11 +55,33 @@ type MediaItemProps = {
   item: ProjectMediaItem;
   sizes?: string;
   priority?: boolean;
+  variant?: "default" | "hero";
 };
 
-export function ProjectMediaItemView({ item, sizes, priority }: MediaItemProps) {
+export function ProjectMediaItemView({
+  item,
+  sizes,
+  priority,
+  variant = "default",
+}: MediaItemProps) {
+  const isHero = variant === "hero";
+
   if (item.mediaType === "image") {
     if (!hasImageAsset(item.image)) return null;
+    if (isHero) {
+      return (
+        <figure className="relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
+          <SanityImage
+            image={item.image}
+            fill
+            sizes={sizes}
+            priority={priority}
+            className="object-cover"
+          />
+        </figure>
+      );
+    }
+
     return (
       <figure>
         <SanityImage
@@ -72,16 +104,22 @@ export function ProjectMediaItemView({ item, sizes, priority }: MediaItemProps) 
   if (embedUrl) {
     return (
       <figure>
-        <div className="relative aspect-video w-full overflow-hidden bg-black">
+        <div
+          className={
+            isHero
+              ? "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-black"
+              : "relative aspect-video w-full overflow-hidden bg-black"
+          }
+        >
           <iframe
-            src={embedUrl}
+            src={isHero ? getHeroEmbedUrl(embedUrl) : embedUrl}
             title={item.caption ?? "Project video"}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="absolute inset-0 h-full w-full"
           />
         </div>
-        <MediaCaption caption={item.caption} />
+        {!isHero && <MediaCaption caption={item.caption} />}
       </figure>
     );
   }
@@ -92,18 +130,25 @@ export function ProjectMediaItemView({ item, sizes, priority }: MediaItemProps) 
   return (
     <figure>
       <video
-        controls
+        controls={!isHero}
+        autoPlay={isHero}
+        muted={isHero}
+        loop={isHero}
         playsInline
-        preload="metadata"
+        preload={isHero ? "auto" : "metadata"}
         poster={posterProps?.asset?.url}
-        className="h-auto w-full bg-black"
+        className={
+          isHero
+            ? "h-[calc(100vh-var(--project-hero-offset,0px))] w-full bg-black object-cover"
+            : "h-auto w-full bg-black"
+        }
       >
         <source
           src={playableUrl}
           type={item.videoFile?.mimeType ?? undefined}
         />
       </video>
-      <MediaCaption caption={item.caption} />
+      {!isHero && <MediaCaption caption={item.caption} />}
     </figure>
   );
 }
@@ -191,7 +236,7 @@ export function ProjectMediaSectionBlock({
   if (!section.mediaItems || section.mediaItems.length === 0) return null;
 
   return (
-    <section className="page-shell">
+    <section>
       <LayoutBody section={section} />
     </section>
   );

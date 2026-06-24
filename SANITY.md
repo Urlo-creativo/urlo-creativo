@@ -123,7 +123,7 @@ A single image or video. Also reused as the project `heroMedia`.
 | `videoFile` | file (`video/*`) | Shown when `mediaType = video`. Upload a video file. |
 | `videoUrl` | url | Shown when `mediaType = video`. External URL (hosted mp4/webm, or YouTube/Vimeo). |
 | `poster` | image (`+ localized alt`) | Shown when `mediaType = video`. Optional still before playback. |
-| `caption` | `localizedString` | Optional caption under the media. |
+| `caption` | `localizedString` | Optional caption under the media. Hidden when the item is the project `heroMedia` (single object field has no `_key`); only array media items show it. |
 
 Validation: video items require either `videoFile` or `videoUrl`.
 Preview: distinguishes 🖼 Image vs 🎬 Video.

@@ -125,8 +125,11 @@ export default async function Home({
           {featuredProjects.map((project) => (
             /* `isolate` creates a shared compositing group so the text's
                mix-blend-difference blends against the image that overlaps it.
-               The visible title below is the link's accessible name, so the
-               image stays alt="" (decorative) to avoid a duplicate announcement. */
+               `bg-paper` gives that group an opaque backdrop (same as the page,
+               so invisible): where the scaled image doesn't cover the title, the
+               difference blend resolves white against cream → dark/readable
+               instead of staying white. The visible title below is the link's
+               accessible name, so the image stays alt="" (decorative). */
             <Link
               key={project._id}
               href={localizedPath(locale, `/projects/${project.slug}`)}
@@ -135,7 +138,7 @@ export default async function Home({
                   ? `${project.title} (${project.year})`
                   : project.title
               }
-              className="group relative isolate block"
+              className="group relative isolate block bg-paper"
             >
 
               {/* Image grows from the top-left anchor on hover */}
@@ -155,13 +158,16 @@ export default async function Home({
                 />
               </div>
 
-              {/* Text is always in its layout position and always its normal colour.
-                  On hover, text-white + mix-blend-difference turns on so it
-                  auto-contrasts wherever the scaled image overlaps it. */}
+              {/* On desktop the title is permanently white + mix-blend-difference.
+                  Against the card's cream backdrop it resolves to near-black at
+                  rest; as the scaled image moves over it on hover, the overlapped
+                  part auto-contrasts. Nothing toggles on hover (the smooth image
+                  scale drives the change), so the title never flashes. Mobile
+                  keeps plain dark text. */}
               <div className="relative mt-4">
                 <h3
-                  className="type-heading-md font-bold uppercase text-ink transition-colors duration-500
-                             md:group-hover:text-white md:group-hover:mix-blend-difference"
+                  className="type-heading-md font-bold uppercase text-ink
+                             md:text-white md:mix-blend-difference"
                 >
                   {project.title}
                 </h3>

@@ -94,6 +94,11 @@ export const projectMediaItemType = defineType({
       type: "localizedString",
       description:
         "Testo opzionale sotto il media. / Optional caption shown under the media.",
+      // Media items inside an array carry a `_key`; the single `heroMedia`
+      // object field does not. Hide the caption on the hero, where it isn't
+      // rendered and makes no sense.
+      hidden: ({ parent }) =>
+        !(parent as { _key?: string } | undefined)?._key,
     }),
   ],
 
