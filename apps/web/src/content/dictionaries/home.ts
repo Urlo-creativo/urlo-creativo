@@ -91,7 +91,7 @@ const homeIt = {
   teamTitle: "PEOPLE",
   teamIntro: [
     [
-      { text: "Urlo Creativo is proudly powered by women in bonded.", highlight: "yellow", trigger: "scroll" },
+      { text: "Urlo Creativo is proudly powered by women in bonded.", highlight: "orange", trigger: "scroll" },
       {
         text: " In an industry where female voices are still underrepresented, we bring together a diverse network of creative professionals who lead with vision, sensitivity, and strength. Our approach is collaborative, intuitive, and driven by a shared commitment to shaping meaningful and impactful brands.",
       },
@@ -193,7 +193,7 @@ const homeEn = {
   teamTitle: "PEOPLE",
   teamIntro: [
     [
-      { text: "Urlo Creativo is proudly powered by women in bonded.", highlight: "yellow", trigger: "scroll" },
+      { text: "Urlo Creativo is proudly powered by women in bonded.", highlight: "orange", trigger: "scroll" },
       {
         text: " In an industry where female voices are still underrepresented, we bring together a diverse network of creative professionals who lead with vision, sensitivity, and strength. Our approach is collaborative, intuitive, and driven by a shared commitment to shaping meaningful and impactful brands.",
       },

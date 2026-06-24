@@ -1,7 +1,29 @@
 // Projects page UI chrome. Project content comes from Sanity; fixed labels,
 // filters and empty states stay in the app dictionary. Category labels are
 // derived from the single source in `@/lib/sanity/categories`.
+import type { RichTextToken } from "@/components/ui/rich-text";
 import { categoryLabelsFor } from "@/lib/sanity/categories";
+
+// Highlight decoration (colour + reveal trigger) for each fixed detail-page
+// section heading. Neither is localized, so it is defined once here and merged
+// into the per-locale headings below. The headings render through the standard
+// StructuredRichText / RichTextToken pipeline used across the site.
+// trigger: "scroll" = progressive fill on scroll, "load" = reveal once on
+// enter, "static" = always shown.
+const sectionStyle = {
+  challenge: { highlight: "pink", trigger: "scroll" },
+  concept: { highlight: "blue", trigger: "scroll" },
+  process: { highlight: "yellow", trigger: "scroll" },
+  responsibilities: { highlight: "blue", trigger: "scroll" },
+  outcome: { highlight: "pink", trigger: "scroll" },
+} as const;
+
+function sectionHeading(
+  text: string,
+  key: keyof typeof sectionStyle,
+): RichTextToken[][] {
+  return [[{ text, ...sectionStyle[key] }]];
+}
 
 const projectsIt = {
   title: "PROGETTI",
@@ -11,13 +33,13 @@ const projectsIt = {
   categoryLabels: categoryLabelsFor("it"),
   detailLabels: {
     rolesServices: "Ruoli / Servizi",
-    challenge: "Sfida",
-    concept: "Concept",
-    process: "Processo",
-    responsibilities: "Responsabilita",
-    outcome: "Risultato",
     credits: "Crediti",
     behindTheScenes: "Dietro le quinte",
+    challenge: sectionHeading("Sfida", "challenge"),
+    concept: sectionHeading("Concept", "concept"),
+    process: sectionHeading("Processo", "process"),
+    responsibilities: sectionHeading("Responsabilita", "responsibilities"),
+    outcome: sectionHeading("Risultato", "outcome"),
   },
 };
 
@@ -30,13 +52,13 @@ const projectsEn = {
   categoryLabels: categoryLabelsFor("en"),
   detailLabels: {
     rolesServices: "Roles / Services",
-    challenge: "Challenge",
-    concept: "Concept",
-    process: "Process",
-    responsibilities: "Responsibilities",
-    outcome: "Outcome",
     credits: "Credits",
     behindTheScenes: "Behind the Scenes",
+    challenge: sectionHeading("Challenge", "challenge"),
+    concept: sectionHeading("Concept", "concept"),
+    process: sectionHeading("Process", "process"),
+    responsibilities: sectionHeading("Responsibilities", "responsibilities"),
+    outcome: sectionHeading("Outcome", "outcome"),
   },
 };
 

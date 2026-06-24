@@ -49,6 +49,7 @@
   --color-selection-on-yellow-fg: var(--uc-white);
   --color-highlight-yellow: var(--uc-yellow);
   --color-highlight-pink: var(--uc-pink);
+  --color-highlight-orange: hsla(36, 84%, 67%, 1);
   /* CTA pill button — two-tone: rest yellow, hover pink. */
   --color-button-border: var(--uc-black);
   --color-button-text: var(--uc-black);

@@ -254,6 +254,7 @@ Semantic tokens include:
 - `--color-selection-on-yellow-fg: var(--uc-white)`
 - `--color-highlight-yellow: var(--uc-yellow)`
 - `--color-highlight-pink: var(--uc-pink)`
+- `--color-highlight-orange: hsla(36, 84%, 67%, 1)` — `HighlightText` orange variant.
 - `--color-button-border: var(--uc-black)`
 - `--color-button-text: var(--uc-black)`
 - `--color-button-fill: var(--uc-yellow)` — CTA resting fill.

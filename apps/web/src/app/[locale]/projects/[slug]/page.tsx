@@ -7,7 +7,7 @@ import {
   ProjectMediaSectionBlock,
 } from "@/components/sections/project-media";
 import { SiteFooter } from "@/components/sections/site-footer";
-import { HighlightText } from "@/components/ui/highlight-text";
+import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { hasImageAsset } from "@/lib/sanity/image";
@@ -57,25 +57,24 @@ export async function generateMetadata({
   };
 }
 
-// Fixed text section: highlighted label + body. Alternating label colours
-// mirror the reference layouts (challenge/process/outcome = yellow,
-// concept/responsibilities = blue).
+// Presentational wrapper for a fixed text section: highlighted heading + body.
+// The heading (text + highlight colour + reveal trigger) is a dictionary
+// RichTextToken and renders through the shared StructuredRichText pipeline used
+// across the site — this component only adds the section/body layout.
 function TextSection({
-  label,
-  color,
+  heading,
   children,
 }: {
-  label: string;
-  color: "yellow" | "blue";
+  heading: RichTextToken[][];
   children: React.ReactNode;
 }) {
   return (
     <section className="page-shell">
-      <h2 className="type-heading-md font-bold uppercase">
-        <HighlightText color={color} trigger="scroll">
-          {label}
-        </HighlightText>
-      </h2>
+      <StructuredRichText
+        as="h2"
+        lines={heading}
+        className="type-heading-md font-bold uppercase"
+      />
       <div className="stack-md text-measure">{children}</div>
     </section>
   );
@@ -97,10 +96,6 @@ function MediaZone({
       ))}
     </div>
   );
-}
-
-function hasZone(sections: ProjectMediaSection[] | null | undefined): boolean {
-  return Boolean(sections && sections.length > 0);
 }
 
 // Sections live in one ordered array; split them by their chosen placement,
@@ -133,14 +128,14 @@ export default async function ProjectDetailPage({
   const { footer, nav, projects } = getDictionary(locale);
   const { detailLabels, categoryLabels } = projects;
 
-  const heroIsVideo =
-    project.heroMedia?.mediaType === "video" &&
-    (project.heroMedia.videoUrl || project.heroMedia.videoFile);
-  const heroImage =
-    project.heroMedia?.mediaType === "image" &&
-    hasImageAsset(project.heroMedia.image)
-      ? project.heroMedia.image
-      : project.coverImage;
+  // Hero is a projectMediaItem (image or video). Render it via the shared
+  // media view; fall back to the cover image when it has no usable source.
+  const hero = project.heroMedia;
+  const heroRenderable =
+    hero &&
+    (hero.mediaType === "video"
+      ? Boolean(hero.videoUrl || hero.videoFile)
+      : hasImageAsset(hero.image));
 
   const responsibilities = project.responsibilities ?? [];
   const roles = project.roles ?? [];
@@ -157,17 +152,19 @@ export default async function ProjectDetailPage({
       {/* 1. Hero */}
       <section className="page-top">
         <div className="page-shell">
-          {heroIsVideo && project.heroMedia ? (
-            <ProjectMediaItemView item={project.heroMedia} priority />
+          {heroRenderable ? (
+            <ProjectMediaItemView
+              item={hero}
+              priority
+              sizes="(min-width: 1728px) 1632px, 100vw"
+            />
           ) : (
-            heroImage && (
-              <SanityImage
-                image={heroImage}
-                priority
-                sizes="(min-width: 1728px) 1632px, 100vw"
-                className="h-auto w-full"
-              />
-            )
+            <SanityImage
+              image={project.coverImage}
+              priority
+              sizes="(min-width: 1728px) 1632px, 100vw"
+              className="h-auto w-full"
+            />
           )}
         </div>
       </section>
@@ -196,27 +193,27 @@ export default async function ProjectDetailPage({
         {(project.categories?.length ||
           project.season ||
           project.year) && (
-          <div className="stack-md flex flex-wrap items-center gap-x-6 gap-y-3">
-            {project.categories?.map((category) => (
-              <span
-                key={category}
-                className="type-body-sm border border-black px-3 py-1 uppercase"
-              >
-                {categoryLabel(category, categoryLabels)}
-              </span>
-            ))}
-            {project.season && (
-              <span className="type-body-sm italic text-[var(--color-text-muted)]">
-                {project.season}
-              </span>
-            )}
-            {project.year && (
-              <span className="type-body-sm italic text-[var(--color-text-muted)]">
-                {project.year}
-              </span>
-            )}
-          </div>
-        )}
+            <div className="stack-md flex flex-wrap items-center gap-x-6 gap-y-3">
+              {project.categories?.map((category) => (
+                <span
+                  key={category}
+                  className="type-body-sm border border-black px-3 py-1 uppercase"
+                >
+                  {categoryLabel(category, categoryLabels)}
+                </span>
+              ))}
+              {project.season && (
+                <span className="type-body-sm italic text-[var(--color-text-muted)]">
+                  {project.season}
+                </span>
+              )}
+              {project.year && (
+                <span className="type-body-sm italic text-[var(--color-text-muted)]">
+                  {project.year}
+                </span>
+              )}
+            </div>
+          )}
 
         {roles.length > 0 && (
           <div className="stack-md">
@@ -227,7 +224,7 @@ export default async function ProjectDetailPage({
               {roles.map((role, index) => (
                 <li
                   key={index}
-                  className="type-body-sm border border-[var(--color-border-primary)] px-3 py-1"
+                  className="type-body-sm border border-black px-3 py-1"
                 >
                   {role}
                 </li>
@@ -241,7 +238,7 @@ export default async function ProjectDetailPage({
       <div className="flex flex-col grid-gap-lg pb-[var(--space-section-y)]">
         {/* 7. Challenge */}
         {project.challenge && (
-          <TextSection label={detailLabels.challenge} color="yellow">
+          <TextSection heading={detailLabels.challenge}>
             <p className="type-body-lg whitespace-pre-line">
               {project.challenge}
             </p>
@@ -250,7 +247,7 @@ export default async function ProjectDetailPage({
 
         {/* 8. Concept */}
         {project.concept && (
-          <TextSection label={detailLabels.concept} color="blue">
+          <TextSection heading={detailLabels.concept}>
             <p className="type-body-lg whitespace-pre-line">
               {project.concept}
             </p>
@@ -262,7 +259,7 @@ export default async function ProjectDetailPage({
 
         {/* 10. Process */}
         {project.process && (
-          <TextSection label={detailLabels.process} color="yellow">
+          <TextSection heading={detailLabels.process}>
             <p className="type-body-lg whitespace-pre-line">
               {project.process}
             </p>
@@ -271,7 +268,7 @@ export default async function ProjectDetailPage({
 
         {/* 11. Responsibilities */}
         {responsibilities.length > 0 && (
-          <TextSection label={detailLabels.responsibilities} color="blue">
+          <TextSection heading={detailLabels.responsibilities}>
             <ul className="type-body-lg flex flex-col gap-1">
               {responsibilities.map((item, index) => (
                 <li key={index}>{item}</li>
@@ -285,7 +282,7 @@ export default async function ProjectDetailPage({
 
         {/* 13. Outcome */}
         {project.outcome && (
-          <TextSection label={detailLabels.outcome} color="yellow">
+          <TextSection heading={detailLabels.outcome}>
             <p className="type-body-lg whitespace-pre-line">
               {project.outcome}
             </p>
@@ -318,7 +315,7 @@ export default async function ProjectDetailPage({
                 return (
                   <div
                     key={credit._key}
-                    className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-[var(--color-border-primary)] pb-3"
+                    className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-black pb-3"
                   >
                     <dt className="type-body-sm">
                       <span className="font-bold uppercase">{credit.role}</span>
@@ -341,7 +338,7 @@ export default async function ProjectDetailPage({
         )}
 
         {/* 16–17. Behind the Scenes (fixed heading) + its media */}
-        {hasZone(mediaBehindTheScenes) && (
+        {mediaBehindTheScenes.length > 0 && (
           <>
             <section className="page-shell">
               <h2 className="type-display font-bold uppercase">

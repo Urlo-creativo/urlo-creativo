@@ -382,6 +382,13 @@ a {
     );
   }
 
+  .highlight-text-orange {
+    background-image: linear-gradient(
+      var(--color-highlight-orange),
+      var(--color-highlight-orange)
+    );
+  }
+
   .method-rail {
     position: relative;
     isolation: isolate;

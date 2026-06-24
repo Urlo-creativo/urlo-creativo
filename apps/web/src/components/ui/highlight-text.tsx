@@ -35,13 +35,14 @@ function subscribe(fn: () => void): () => void {
 export type HighlightTextProps = {
   children: ReactNode;
   className?: string;
-  color?: "blue" | "coral" | "pink" | "yellow";
+  color?: "blue" | "coral" | "orange" | "pink" | "yellow";
   trigger?: "load" | "scroll" | "static";
 };
 
 const colorClassNames = {
   blue: "highlight-text-blue",
   coral: "highlight-text-coral",
+  orange: "highlight-text-orange",
   pink: "highlight-text-pink",
   yellow: "highlight-text-yellow",
 } as const;
