@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Client = {
-  logo: string;
+  logo: string | null;
   name: string;
-  url?: string;
+  url?: string | null;
 };
 
 type ClientMarqueeProps = {
@@ -111,7 +111,7 @@ export function ClientMarquee({ clients }: ClientMarqueeProps) {
   return (
     <div
       ref={viewportRef}
-      className="client-marquee-viewport mt-16 bg-yellow py-8 md:py-[40px]"
+      className="client-marquee-viewport mt-16 bg-yellow py-10 md:py-[54px]"
     >
       <div className="sr-only" aria-label="Selected clients">
         {clients.map((client) =>
@@ -133,14 +133,18 @@ export function ClientMarquee({ clients }: ClientMarqueeProps) {
             className="client-marquee-group"
           >
             {clients.map((client) => {
+              if (!client.logo) return null;
+
               const logo = (
-                <Image
-                  src={client.logo}
-                  alt=""
-                  width={240}
-                  height={80}
-                  className="client-marquee-logo"
-                />
+                <span className="client-marquee-logo-frame">
+                  <Image
+                    src={client.logo}
+                    alt=""
+                    width={280}
+                    height={120}
+                    className="client-marquee-logo"
+                  />
+                </span>
               );
 
               return client.url ? (

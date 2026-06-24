@@ -5,18 +5,23 @@ import type {
   PortableSpan,
 } from "@/lib/sanity/queries";
 
-const quickHighlightColors = {
-  highlightYellow: "yellow",
-  highlightPink: "pink",
-  highlightBlue: "blue",
-  highlightCoral: "coral",
-  highlightOrange: "orange",
+const quickHighlightMarks = {
+  highlightYellow: { color: "yellow", trigger: "scroll" },
+  highlightPink: { color: "pink", trigger: "scroll" },
+  highlightBlue: { color: "blue", trigger: "scroll" },
+  highlightCoral: { color: "coral", trigger: "scroll" },
+  highlightOrange: { color: "orange", trigger: "scroll" },
+  highlightLoadYellow: { color: "yellow", trigger: "load" },
+  highlightLoadPink: { color: "pink", trigger: "load" },
+  highlightLoadBlue: { color: "blue", trigger: "load" },
+  highlightLoadCoral: { color: "coral", trigger: "load" },
+  highlightLoadOrange: { color: "orange", trigger: "load" },
 } as const;
 
-function getQuickHighlightColor(marks: string[]) {
-  const mark = marks.find((item) => item in quickHighlightColors);
+function getQuickHighlightMark(marks: string[]) {
+  const mark = marks.find((item) => item in quickHighlightMarks);
   if (!mark) return undefined;
-  return quickHighlightColors[mark as keyof typeof quickHighlightColors];
+  return quickHighlightMarks[mark as keyof typeof quickHighlightMarks];
 }
 
 // Map a Portable Text span (Bold / Italic / Highlight marks) onto the shared
@@ -30,7 +35,7 @@ function spanToToken(
   const highlight = marks
     .map((mark) => markDefsByKey.get(mark))
     .find((markDef) => markDef?._type === "highlight");
-  const quickHighlightColor = getQuickHighlightColor(marks);
+  const quickHighlight = getQuickHighlightMark(marks);
 
   return {
     text: span.text,
@@ -38,11 +43,12 @@ function spanToToken(
     italic: marks.includes("em"),
     highlight:
       highlight?.color ??
-      quickHighlightColor ??
+      quickHighlight?.color ??
       (marks.includes("highlight") ? "yellow" : undefined),
     trigger:
       highlight?.trigger ??
-      (quickHighlightColor || marks.includes("highlight") ? "scroll" : undefined),
+      quickHighlight?.trigger ??
+      (marks.includes("highlight") ? "scroll" : undefined),
   };
 }
 
@@ -65,7 +71,14 @@ export function PortableRichText({
   if (typeof blocks === "string") {
     if (!blocks.trim()) return null;
     const lines = blocks.split("\n").map((line) => [{ text: line }]);
-    return <StructuredRichText as={as} lines={lines} className={className} />;
+    return (
+      <StructuredRichText
+        as={as}
+        lines={lines}
+        className={className}
+        lineGap={lines.length > 1}
+      />
+    );
   }
 
   if (blocks.length === 0) return null;
@@ -76,5 +89,12 @@ export function PortableRichText({
     );
     return block.children.map((span) => spanToToken(span, markDefsByKey));
   });
-  return <StructuredRichText as={as} lines={lines} className={className} />;
+  return (
+    <StructuredRichText
+      as={as}
+      lines={lines}
+      className={className}
+      lineGap={lines.length > 1}
+    />
+  );
 }

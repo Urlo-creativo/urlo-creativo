@@ -8,18 +8,33 @@ const client = getCliClient({ apiVersion }).withConfig({
 const shouldWrite = process.env.SEED_HOME_PAGE_WRITE === "1";
 
 const highlightMarks = {
-  blue: "highlightBlue",
-  coral: "highlightCoral",
-  orange: "highlightOrange",
-  pink: "highlightPink",
-  yellow: "highlightYellow",
+  scroll: {
+    blue: "highlightBlue",
+    coral: "highlightCoral",
+    orange: "highlightOrange",
+    pink: "highlightPink",
+    yellow: "highlightYellow",
+  },
+  load: {
+    blue: "highlightLoadBlue",
+    coral: "highlightLoadCoral",
+    orange: "highlightLoadOrange",
+    pink: "highlightLoadPink",
+    yellow: "highlightLoadYellow",
+  },
 };
+
+function highlightMarkFor(token) {
+  if (!token.highlight) return null;
+  const trigger = token.trigger === "load" ? "load" : "scroll";
+  return highlightMarks[trigger][token.highlight];
+}
 
 function span(token, spanIndex) {
   const marks = [
     token.bold ? "strong" : null,
     token.italic ? "em" : null,
-    token.highlight ? highlightMarks[token.highlight] : null,
+    highlightMarkFor(token),
   ].filter(Boolean);
 
   return {

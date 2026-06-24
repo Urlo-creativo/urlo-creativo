@@ -117,16 +117,21 @@ Portable Text with Bold (`strong`), Italic (`em`), quick Highlight colour
 decorators.
 
 For highlighting, editors select text and click one of the quick Evidenziato
-colour buttons. These decorators store simple marks and default to the `scroll`
+colour buttons. `S` icons use the `scroll` animation; `L` icons use the `load`
 animation:
 
 | Mark | Frontend mapping |
 |---|---|
-| `highlightYellow` | `RichTextToken.highlight = "yellow"` |
-| `highlightPink` | `RichTextToken.highlight = "pink"` |
-| `highlightBlue` | `RichTextToken.highlight = "blue"` |
-| `highlightCoral` | `RichTextToken.highlight = "coral"` |
-| `highlightOrange` | `RichTextToken.highlight = "orange"` |
+| `highlightYellow` | `RichTextToken.highlight = "yellow"`, `trigger = "scroll"` |
+| `highlightPink` | `RichTextToken.highlight = "pink"`, `trigger = "scroll"` |
+| `highlightBlue` | `RichTextToken.highlight = "blue"`, `trigger = "scroll"` |
+| `highlightCoral` | `RichTextToken.highlight = "coral"`, `trigger = "scroll"` |
+| `highlightOrange` | `RichTextToken.highlight = "orange"`, `trigger = "scroll"` |
+| `highlightLoadYellow` | `RichTextToken.highlight = "yellow"`, `trigger = "load"` |
+| `highlightLoadPink` | `RichTextToken.highlight = "pink"`, `trigger = "load"` |
+| `highlightLoadBlue` | `RichTextToken.highlight = "blue"`, `trigger = "load"` |
+| `highlightLoadCoral` | `RichTextToken.highlight = "coral"`, `trigger = "load"` |
+| `highlightLoadOrange` | `RichTextToken.highlight = "orange"`, `trigger = "load"` |
 
 On the frontend `<PortableRichText>`
 (`components/ui/portable-rich-text.tsx`) maps each span to a `RichTextToken` and
@@ -223,8 +228,8 @@ and only needs the `value` strings. **To add a category:** add it to
 
 ### 2.7 `client` (document)
 
-Pre-existing, for the homepage "Selected Clients" marquee (logos currently still
-use a local placeholder; not yet wired to the marquee component).
+Pre-existing, for the homepage "Selected Clients" marquee. The homepage reads
+these documents through `clientsQuery`; each logo renders from Sanity's CDN URL.
 
 | Field | Type | Notes |
 |---|---|---|

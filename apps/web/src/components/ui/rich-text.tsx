@@ -12,6 +12,7 @@ type StructuredRichTextProps = {
   lines: RichTextToken[][];
   className?: string;
   as?: "p" | "h1" | "h2" | "h3" | "span";
+  lineGap?: boolean;
 };
 
 function tokenClassName(token: RichTextToken) {
@@ -74,15 +75,19 @@ export function StructuredRichText({
   lines,
   className,
   as: Tag = "span",
+  lineGap = false,
 }: StructuredRichTextProps) {
   const normalizedLines = normalizeLines(lines);
 
   return (
     <Tag className={className}>
       {normalizedLines.map((line, lineIndex) => (
-        <span key={lineIndex}>
+        <span
+          key={lineIndex}
+          className={lineGap ? `block${lineIndex > 0 ? " mt-[0.6em]" : ""}` : undefined}
+        >
           {line.map((token, index) => renderToken(token, lineIndex, index))}
-          {lineIndex < normalizedLines.length - 1 ? <br /> : null}
+          {!lineGap && lineIndex < normalizedLines.length - 1 ? <br /> : null}
         </span>
       ))}
     </Tag>

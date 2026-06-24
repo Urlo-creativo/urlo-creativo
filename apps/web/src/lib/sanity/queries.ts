@@ -1,18 +1,17 @@
-import type { SanityImageSource } from "@sanity/image-url";
-
 export type SanityClient = {
   _id: string;
   name: string;
-  logo: SanityImageSource;
-  url?: string;
-  order?: number;
+  logo: string | null;
+  url: string | null;
+  order: number | null;
 };
 
 export const clientsQuery = `*[_type == "client"] | order(order asc) {
   _id,
   name,
-  logo,
-  url
+  "logo": logo.asset->url,
+  url,
+  order
 }`;
 
 // ---------------------------------------------------------------------------

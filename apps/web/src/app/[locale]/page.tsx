@@ -14,25 +14,16 @@ import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
 import {
+  clientsQuery,
   featuredProjectsQuery,
   homePageQuery,
   type HomePageContent,
   type PortableRichTextValue,
   type ProjectListItem,
+  type SanityClient,
 } from "@/lib/sanity/queries";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-
-type Client = { name: string; logo: string; url?: string };
-
-const clients: Client[] = [
-  { name: "Colmar", logo: "/clients/placeholder.svg", url: "https://www.colmar.it" },
-  { name: "Velasca", logo: "/clients/placeholder.svg", url: "https://www.velasca.com" },
-  { name: "OVS", logo: "/clients/placeholder.svg", url: "https://www.ovs.it" },
-  { name: "Kappa", logo: "/clients/placeholder.svg", url: "https://www.kappa.com" },
-  { name: "Ducati", logo: "/clients/placeholder.svg", url: "https://www.ducati.com" },
-  { name: "Rossignol", logo: "/clients/placeholder.svg", url: "https://www.rossignol.com" },
-];
 
 type HomeRichTextProps = {
   as?: "p" | "h1" | "h2" | "h3" | "span";
@@ -68,14 +59,11 @@ export default async function Home({
   const locale: Locale = localeParam;
   const dictionary = getDictionary(locale);
 
-  const featuredProjects = await client.fetch<ProjectListItem[]>(
-    featuredProjectsQuery,
-    localeParams(locale),
-  );
-  const homeContent = await client.fetch<HomePageContent | null>(
-    homePageQuery,
-    localeParams(locale),
-  );
+  const [featuredProjects, homeContent, selectedClients] = await Promise.all([
+    client.fetch<ProjectListItem[]>(featuredProjectsQuery, localeParams(locale)),
+    client.fetch<HomePageContent | null>(homePageQuery, localeParams(locale)),
+    client.fetch<SanityClient[]>(clientsQuery),
+  ]);
 
   const fallbackMethodSteps = [
     dictionary.home.method.identify,
@@ -289,7 +277,7 @@ export default async function Home({
             className="type-display uppercase"
           />
         </div>
-        <ClientMarquee clients={clients} />
+        <ClientMarquee clients={selectedClients} />
       </section>
 
       <section className="py-20 md:pb-[180px] md:pt-[190px]">

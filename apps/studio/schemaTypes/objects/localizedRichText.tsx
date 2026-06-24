@@ -16,12 +16,18 @@ const QUICK_HIGHLIGHT_OPTIONS: Array<{
   title: string;
   value: string;
   color: HighlightColor;
+  triggerLabel: "S" | "L";
 }> = [
-  { title: "Evid. giallo", value: "highlightYellow", color: "yellow" },
-  { title: "Evid. rosa", value: "highlightPink", color: "pink" },
-  { title: "Evid. blu", value: "highlightBlue", color: "blue" },
-  { title: "Evid. corallo", value: "highlightCoral", color: "coral" },
-  { title: "Evid. arancione", value: "highlightOrange", color: "orange" },
+  { title: "Scroll giallo", value: "highlightYellow", color: "yellow", triggerLabel: "S" },
+  { title: "Scroll rosa", value: "highlightPink", color: "pink", triggerLabel: "S" },
+  { title: "Scroll blu", value: "highlightBlue", color: "blue", triggerLabel: "S" },
+  { title: "Scroll corallo", value: "highlightCoral", color: "coral", triggerLabel: "S" },
+  { title: "Scroll arancione", value: "highlightOrange", color: "orange", triggerLabel: "S" },
+  { title: "Load giallo", value: "highlightLoadYellow", color: "yellow", triggerLabel: "L" },
+  { title: "Load rosa", value: "highlightLoadPink", color: "pink", triggerLabel: "L" },
+  { title: "Load blu", value: "highlightLoadBlue", color: "blue", triggerLabel: "L" },
+  { title: "Load corallo", value: "highlightLoadCoral", color: "coral", triggerLabel: "L" },
+  { title: "Load arancione", value: "highlightLoadOrange", color: "orange", triggerLabel: "L" },
 ];
 
 function HighlightPreview({
@@ -52,7 +58,7 @@ function createHighlightDecorator(color: HighlightColor) {
   };
 }
 
-function createHighlightIcon(color: HighlightColor) {
+function createHighlightIcon(color: HighlightColor, triggerLabel: "S" | "L") {
   return function HighlightIcon() {
     return (
       <span
@@ -71,14 +77,14 @@ function createHighlightIcon(color: HighlightColor) {
           width: 14,
         }}
       >
-        H
+        {triggerLabel}
       </span>
     );
   };
 }
 
-// One paragraph block. Bold / Italic and Highlights are decorators. Highlight
-// marks render on the site through StructuredRichText with the scroll trigger.
+// One paragraph block. Bold / Italic and Highlights are decorators. S icons
+// render with the scroll trigger; L icons render with the load trigger.
 const richTextBlocks = () => [
   defineArrayMember({
     type: "block",
@@ -92,7 +98,7 @@ const richTextBlocks = () => [
           title: option.title,
           value: option.value,
           component: createHighlightDecorator(option.color),
-          icon: createHighlightIcon(option.color),
+          icon: createHighlightIcon(option.color, option.triggerLabel),
         })),
       ],
       annotations: [],

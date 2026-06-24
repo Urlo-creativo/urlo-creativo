@@ -113,7 +113,8 @@
   --layout-text-max: 980px;
   --layout-narrow-max: 760px;
   --layout-aspect-portrait: 357 / 440;
-  --client-marquee-logo-height: 96px;
+  --client-marquee-logo-width: 230px;
+  --client-marquee-logo-height: 104px;
   --client-marquee-gap: 64px;
   --client-marquee-gap-md: 118px;
 
