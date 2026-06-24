@@ -1,10 +1,6 @@
 import Link from "next/link";
 
 import { MethodSteps } from "@/components/sections/method-steps";
-import {
-  StructuredRichText,
-  type RichTextToken,
-} from "@/components/ui/rich-text";
 
 type MethodStep = {
   items: string[];
@@ -12,7 +8,7 @@ type MethodStep = {
 };
 
 type PotentialSectionProps = {
-  heading: RichTextToken[][];
+  heading: React.ReactNode;
   ctaHref: string;
   ctaLabel: string;
   steps: MethodStep[];
@@ -26,11 +22,7 @@ export function PotentialSection({
 }: PotentialSectionProps) {
   return (
     <div>
-      <StructuredRichText
-        as="h2"
-        lines={heading}
-        className="type-display uppercase"
-      />
+      {heading}
 
       <MethodSteps steps={steps} />
 

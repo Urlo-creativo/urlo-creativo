@@ -46,9 +46,11 @@ export default async function AboutPage({
             lines={about.title}
             className="type-display uppercase"
           />
-          <p className="type-heading-xl mt-8 w-full font-bold md:mt-9">
-            {about.intro}
-          </p>
+          <StructuredRichText
+            as="p"
+            lines={about.intro}
+            className="type-heading-xl mt-8 w-full font-bold md:mt-9"
+          />
         </div>
       </section>
 
@@ -86,9 +88,11 @@ export default async function AboutPage({
           {about.missionTitle}
         </h2>
         <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-start md:gap-[140px]">
-          <p className="type-body-xl">
-            {about.mission}
-          </p>
+          <StructuredRichText
+            as="p"
+            lines={about.mission}
+            className="type-body-xl"
+          />
           <div className="relative aspect-[575/337] overflow-hidden">
             <Image
               src="/about/mission.jpg"

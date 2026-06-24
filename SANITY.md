@@ -33,6 +33,7 @@ update the schema or queries, update this file too.
 Studio schema (`apps/studio/schemaTypes/`):
 - `index.ts` — registers all types
 - `client.ts` — `client` document
+- `homePage.ts` — `homePage` singleton document for homepage editorial copy
 - `project.ts` — `project` document
 - `objects/localizedString.ts` — short `{ it, en }` text object
 - `objects/localizedText.ts` — long `{ it, en }` plain-text object
@@ -231,6 +232,39 @@ use a local placeholder; not yet wired to the marquee component).
 | `logo` | image | **Required.** |
 | `url` | url | Optional. |
 | `order` | number | Marquee position. |
+
+### 2.8 `homePage` (singleton document)
+
+The homepage keeps UI labels in the app dictionary, but editorial copy lives in
+Sanity. Editors open **Homepage** in Studio; the document ID is fixed as
+`homePage` by the Studio structure.
+
+| Field | Type | Notes |
+|---|---|---|
+| `heroKicker` | `localizedRichText` | Small text in the hero. |
+| `heroTitle` | `localizedRichText` | Main homepage hero title. |
+| `heroSubheading` | `localizedRichText` | Homepage hero subtitle. |
+| `mission` | `localizedRichText` | Main homepage mission paragraph. |
+| `potentialTitle` | `localizedRichText` | Large title above the method steps. |
+| `methodSteps` | array of objects | Ordered method steps. Each step has a localized `title` and localized `items`. |
+| `methodologyLabel` | `localizedRichText` | Label before the methodology paragraph. |
+| `methodology` | `localizedRichText` | Methodology body text. |
+| `projectsTitle` | `localizedRichText` | Featured projects section title. |
+| `selectedClients` | `localizedRichText` | Selected clients section title. |
+| `teamTitle` | `localizedRichText` | People section title. |
+| `teamIntro` | `localizedRichText` | People section body text. |
+
+Current dictionary values were seeded into Sanity with:
+
+```bash
+npm run seed:home-page
+npm run seed:home-page:write
+```
+
+The frontend reads Sanity first and falls back to the dictionary if a field is
+missing, so content can be migrated field by field without breaking the page.
+Because these fields are now maintained in Sanity, their dictionary entries are
+only short `Lorem ipsum` fallbacks that preserve the expected rich-text shape.
 
 ---
 

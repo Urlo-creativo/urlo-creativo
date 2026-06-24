@@ -10,8 +10,13 @@ const aboutIt = {
       { text: "AGENCY", bold: true, highlight: "yellow", trigger: "load" },
     ],
   ] satisfies RichTextToken[][],
-  intro:
-    "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the hidden potential of brands. A flexible network of professionals working together depending on each project.",
+  intro: [
+    [
+      {
+        text: "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the hidden potential of brands. A flexible network of professionals working together depending on each project.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   statement: [
     [
       { text: "Urlo Creativo", bold: true },
@@ -52,8 +57,13 @@ const aboutIt = {
     "Ongoing support and brand evolution.",
   ],
   missionTitle: "MISSION",
-  mission:
-    "We love brands with personality. This is why we dig deep to bring it to the surface.",
+  mission: [
+    [
+      {
+        text: "We love brands with personality. This is why we dig deep to bring it to the surface.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   missionHighlight: [
     [{ text: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.", bold: true, highlight: "yellow", trigger: "scroll" }],
   ] satisfies RichTextToken[][],
@@ -127,8 +137,13 @@ const aboutEn = {
       { text: "AGENCY", bold: true, highlight: "yellow", trigger: "load" },
     ],
   ] satisfies RichTextToken[][],
-  intro:
-    "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the hidden potential of brands. A flexible network of professionals working together depending on each project.",
+  intro: [
+    [
+      {
+        text: "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the hidden potential of brands. A flexible network of professionals working together depending on each project.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   statement: [
     [
       { text: "Urlo Creativo", bold: true },
@@ -169,8 +184,13 @@ const aboutEn = {
     "Ongoing support and brand evolution.",
   ],
   missionTitle: "MISSION",
-  mission:
-    "We love brands with personality. This is why we dig deep to bring it to the surface.",
+  mission: [
+    [
+      {
+        text: "We love brands with personality. This is why we dig deep to bring it to the surface.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   missionHighlight: [
     [{ text: "WE DEVELOP IDEAS THROUGH WORDS AND IMAGES.", bold: true, highlight: "yellow", trigger: "scroll" }],
   ] satisfies RichTextToken[][],

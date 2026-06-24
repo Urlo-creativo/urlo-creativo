@@ -5,14 +5,19 @@ import { notFound } from "next/navigation";
 import { ClientMarquee } from "@/components/sections/client-marquee";
 import { PotentialSection } from "@/components/sections/potential-section";
 import { SiteFooter } from "@/components/sections/site-footer";
+import { PortableRichText } from "@/components/ui/portable-rich-text";
 import {
   StructuredRichText,
+  type RichTextToken,
 } from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
 import {
   featuredProjectsQuery,
+  homePageQuery,
+  type HomePageContent,
+  type PortableRichTextValue,
   type ProjectListItem,
 } from "@/lib/sanity/queries";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
@@ -28,6 +33,26 @@ const clients: Client[] = [
   { name: "Ducati", logo: "/clients/placeholder.svg", url: "https://www.ducati.com" },
   { name: "Rossignol", logo: "/clients/placeholder.svg", url: "https://www.rossignol.com" },
 ];
+
+type HomeRichTextProps = {
+  as?: "p" | "h1" | "h2" | "h3" | "span";
+  className?: string;
+  fallback: RichTextToken[][];
+  value: PortableRichTextValue | undefined;
+};
+
+function HomeRichText({
+  as = "p",
+  className,
+  fallback,
+  value,
+}: HomeRichTextProps) {
+  if (value && (!Array.isArray(value) || value.length > 0)) {
+    return <PortableRichText as={as} blocks={value} className={className} />;
+  }
+
+  return <StructuredRichText as={as} lines={fallback} className={className} />;
+}
 
 export default async function Home({
   params,
@@ -47,12 +72,23 @@ export default async function Home({
     featuredProjectsQuery,
     localeParams(locale),
   );
+  const homeContent = await client.fetch<HomePageContent | null>(
+    homePageQuery,
+    localeParams(locale),
+  );
 
-  const methodSteps = [
+  const fallbackMethodSteps = [
     dictionary.home.method.identify,
     dictionary.home.method.define,
     dictionary.home.method.express,
   ];
+  const methodSteps =
+    homeContent?.methodSteps?.length
+      ? homeContent.methodSteps.map((step) => ({
+          title: step.title,
+          items: step.items ?? [],
+        }))
+      : fallbackMethodSteps;
 
   return (
     <main className="overflow-hidden bg-paper">
@@ -74,28 +110,36 @@ export default async function Home({
         />
 
         <div className="page-shell relative z-20 flex h-full flex-col justify-center pb-20 pt-28">
-          <StructuredRichText
+          <HomeRichText
             as="p"
-            lines={dictionary.home.heroKicker}
+            value={homeContent?.heroKicker}
+            fallback={dictionary.home.heroKicker}
             className="type-body-md absolute left-[var(--page-gutter)] top-[92px]"
           />
           <div className="mt-28 text-center md:mt-20">
-            <h1 className="type-display-xl font-bold uppercase">
-              {dictionary.home.heroTitle}
-            </h1>
-            <p className="type-body-lg mt-8 text-center italic">
-              {dictionary.home.heroSubheading}
-            </p>
+            <HomeRichText
+              as="h1"
+              value={homeContent?.heroTitle}
+              fallback={dictionary.home.heroTitle}
+              className="type-display-xl font-bold uppercase"
+            />
+            <HomeRichText
+              as="p"
+              value={homeContent?.heroSubheading}
+              fallback={dictionary.home.heroSubheading}
+              className="type-body-lg mt-8 text-center italic"
+            />
           </div>
         </div>
       </section>
 
       <section className="page-shell py-24 md:py-[90px]">
         <div>
-          <StructuredRichText
+          <HomeRichText
             as="p"
-            lines={dictionary.home.mission}
-            className="type-body-xl font-bold"
+            value={homeContent?.mission}
+            fallback={dictionary.home.mission}
+            className="type-body-xl"
           />
           <a
             href="mailto:info@consulenzecreativeperetto.com"
@@ -109,7 +153,14 @@ export default async function Home({
       <section className="relative py-20 md:pb-[128px] md:pt-[170px]">
         <div className="page-shell">
           <PotentialSection
-            heading={dictionary.home.potentialTitle}
+            heading={
+              <HomeRichText
+                as="h2"
+                value={homeContent?.potentialTitle}
+                fallback={dictionary.home.potentialTitle}
+                className="type-display uppercase"
+              />
+            }
             ctaHref={localizedPath(locale, "/services")}
             ctaLabel={dictionary.home.discoverServices}
             steps={methodSteps}
@@ -119,9 +170,12 @@ export default async function Home({
 
       <section className="page-shell py-20 md:pb-[88px] md:pt-[72px]">
         <div className="mb-12 md:mb-[68px]">
-          <h2 className="type-display font-bold uppercase">
-            {dictionary.home.projectsTitle}
-          </h2>
+          <HomeRichText
+            as="h2"
+            value={homeContent?.projectsTitle}
+            fallback={dictionary.home.projectsTitle}
+            className="type-display font-bold uppercase"
+          />
         </div>
         {/* 2 cols at md keeps images tall enough for 1.1× to reach the title;
             3 cols only kicks in at lg (≥1024px) where images are large enough */}
@@ -204,15 +258,17 @@ export default async function Home({
 
       <section className="page-shell py-16 md:pb-[120px] md:pt-[80px]">
         <div className="mb-12">
-          <StructuredRichText
-            lines={dictionary.home.methodologyLabel}
+          <HomeRichText
+            value={homeContent?.methodologyLabel}
+            fallback={dictionary.home.methodologyLabel}
             className="type-body-xl"
           />
         </div>
 
-        <StructuredRichText
+        <HomeRichText
           as="p"
-          lines={dictionary.home.methodology}
+          value={homeContent?.methodology}
+          fallback={dictionary.home.methodology}
           className="type-body-xl"
         />
 
@@ -226,9 +282,10 @@ export default async function Home({
 
       <section className="section-y">
         <div className="page-shell">
-          <StructuredRichText
+          <HomeRichText
             as="h2"
-            lines={dictionary.home.selectedClients}
+            value={homeContent?.selectedClients}
+            fallback={dictionary.home.selectedClients}
             className="type-display uppercase"
           />
         </div>
@@ -238,9 +295,12 @@ export default async function Home({
       <section className="py-20 md:pb-[180px] md:pt-[190px]">
         {/* Heading */}
         <div className="page-shell">
-          <h2 className="type-display font-bold uppercase">
-            {dictionary.home.teamTitle}
-          </h2>
+          <HomeRichText
+            as="h2"
+            value={homeContent?.teamTitle}
+            fallback={dictionary.home.teamTitle}
+            className="type-display font-bold uppercase"
+          />
         </div>
 
         {/* Full-width photo */}
@@ -256,9 +316,10 @@ export default async function Home({
 
         {/* Body text + button */}
         <div className="page-shell mt-16 md:mt-24">
-          <StructuredRichText
+          <HomeRichText
             as="p"
-            lines={dictionary.home.teamIntro}
+            value={homeContent?.teamIntro}
+            fallback={dictionary.home.teamIntro}
             className="type-body-xl"
           />
           <Link

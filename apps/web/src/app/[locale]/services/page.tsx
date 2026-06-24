@@ -51,9 +51,11 @@ export default async function ServicesPage({
           lines={services.collaborationTitle}
           className="type-body-lg w-fit font-bold uppercase"
         />
-        <p className="type-body-lg mt-6 max-w-[1036px] font-bold">
-          {services.collaboration}
-        </p>
+        <StructuredRichText
+          as="p"
+          lines={services.collaboration}
+          className="type-body-lg mt-6 max-w-[1036px] font-bold"
+        />
       </section>
 
       <SiteFooter footer={footer} />

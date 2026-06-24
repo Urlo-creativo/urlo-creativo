@@ -5,6 +5,7 @@ import { structureTool } from "sanity/structure";
 
 import { defaultLocale, supportedLocales } from "../../shared/locales";
 import { schemaTypes } from "./schemaTypes";
+import { structure } from "./structure";
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || "rj63sc4z";
 const dataset = process.env.SANITY_STUDIO_DATASET || "production";
@@ -18,10 +19,9 @@ export default defineConfig({
   dataset,
   organizationId,
   plugins: [
-    structureTool(),
-    // Toolbar toggle to show one language at a time. Only affects the
-    // localizedString / localizedText fields, so editors aren't faced with
-    // every IT + EN input at once.
+    structureTool({ structure }),
+    // Toolbar toggle to show one language at a time. Only affects localized
+    // fields, so editors aren't faced with every IT + EN input at once.
     languageFilter({
       supportedLanguages: supportedLocales.map((locale) => ({
         id: locale.id,
@@ -29,7 +29,7 @@ export default defineConfig({
       })),
       defaultLanguages: [defaultLocale],
       // Required: the toggle is only enabled for the document types listed here.
-      documentTypes: ["project"],
+      documentTypes: ["project", "homePage"],
       filterField: (enclosingType, member, selectedLanguages) =>
         !enclosingType.name.startsWith("localized") ||
         (member.kind === "field" && selectedLanguages.includes(member.name)),

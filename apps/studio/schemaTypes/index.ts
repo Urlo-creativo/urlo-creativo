@@ -1,4 +1,5 @@
 import { clientType } from "./client";
+import { homePageType } from "./homePage";
 import { projectType } from "./project";
 import { localizedRichTextType } from "./objects/localizedRichText";
 import { localizedStringType } from "./objects/localizedString";
@@ -8,6 +9,7 @@ import { projectMediaItemType } from "./objects/projectMediaItem";
 import { projectMediaSectionType } from "./objects/projectMediaSection";
 
 export const schemaTypes = [
+  homePageType,
   clientType,
   projectType,
   localizedStringType,

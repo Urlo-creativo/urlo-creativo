@@ -114,6 +114,25 @@ export type ProjectCredit = {
   url: string | null;
 };
 
+export type HomePageContent = {
+  heroKicker: PortableRichTextValue;
+  heroTitle: PortableRichTextValue;
+  heroSubheading: PortableRichTextValue;
+  mission: PortableRichTextValue;
+  potentialTitle: PortableRichTextValue;
+  methodSteps: Array<{
+    _key: string;
+    title: string;
+    items: string[] | null;
+  }> | null;
+  methodologyLabel: PortableRichTextValue;
+  methodology: PortableRichTextValue;
+  projectsTitle: PortableRichTextValue;
+  selectedClients: PortableRichTextValue;
+  teamTitle: PortableRichTextValue;
+  teamIntro: PortableRichTextValue;
+};
+
 export type ProjectListItem = {
   _id: string;
   clientName: string;
@@ -242,3 +261,22 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
 }`;
 
 export const projectSlugsQuery = `*[_type == "project" && defined(slug.current)].slug.current`;
+
+export const homePageQuery = `*[_id == "homePage"][0]{
+  ${localizedValue("heroKicker")},
+  ${localizedValue("heroTitle")},
+  ${localizedValue("heroSubheading")},
+  ${localizedValue("mission")},
+  ${localizedValue("potentialTitle")},
+  methodSteps[]{
+    _key,
+    ${localizedValue("title")},
+    ${localizedArray("items")}
+  },
+  ${localizedValue("methodologyLabel")},
+  ${localizedValue("methodology")},
+  ${localizedValue("projectsTitle")},
+  ${localizedValue("selectedClients")},
+  ${localizedValue("teamTitle")},
+  ${localizedValue("teamIntro")}
+}`;

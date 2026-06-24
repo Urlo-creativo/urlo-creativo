@@ -133,8 +133,13 @@ const servicesIt = {
   collaborationTitle: [
     [{ text: "Collaboration", highlight: "coral", trigger: "load" }],
   ] satisfies RichTextToken[][],
-  collaboration:
-    "We suggest the right atmospheres, settings and faces for launch shootings.",
+  collaboration: [
+    [
+      {
+        text: "We suggest the right atmospheres, settings and faces for launch shootings.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
 };
 
 // EN — English copy.
@@ -267,8 +272,13 @@ const servicesEn = {
   collaborationTitle: [
     [{ text: "Collaboration", highlight: "coral", trigger: "load" }],
   ] satisfies RichTextToken[][],
-  collaboration:
-    "We suggest the right atmospheres, settings and faces for launch shootings.",
+  collaboration: [
+    [
+      {
+        text: "We suggest the right atmospheres, settings and faces for launch shootings.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
 };
 
 export const servicesDictionary = { it: servicesIt, en: servicesEn };

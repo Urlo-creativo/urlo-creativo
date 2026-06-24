@@ -50,7 +50,7 @@ type PortableRichTextProps = {
   // Accepts a plain string too: content authored before the field became rich
   // text resolves to a string, and should keep rendering until re-authored.
   blocks: PortableBlock[] | string | null | undefined;
-  as?: "p" | "span";
+  as?: "p" | "h1" | "h2" | "h3" | "span";
   className?: string;
 };
 

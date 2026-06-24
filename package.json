@@ -13,6 +13,10 @@
     "build:studio": "npm run build --workspace @urlo/studio",
     "migrate:project-fields": "npm run migrate:project-fields --workspace @urlo/studio",
     "migrate:project-fields:write": "npm run migrate:project-fields:write --workspace @urlo/studio",
+    "migrate:home-title-rich-text": "npm run migrate:home-title-rich-text --workspace @urlo/studio",
+    "migrate:home-title-rich-text:write": "npm run migrate:home-title-rich-text:write --workspace @urlo/studio",
+    "seed:home-page": "npm run seed:home-page --workspace @urlo/studio",
+    "seed:home-page:write": "npm run seed:home-page:write --workspace @urlo/studio",
     "typecheck": "npm run typecheck:web"
   },
   "engines": {
