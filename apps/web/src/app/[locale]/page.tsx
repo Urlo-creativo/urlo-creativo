@@ -74,9 +74,11 @@ export default async function Home({
         />
 
         <div className="page-shell relative z-20 flex h-full flex-col justify-center pb-20 pt-28">
-          <p className="type-body-md absolute left-[var(--page-gutter)] top-[92px] whitespace-pre-line">
-            {dictionary.home.heroKicker}
-          </p>
+          <StructuredRichText
+            as="p"
+            lines={dictionary.home.heroKicker}
+            className="type-body-md absolute left-[var(--page-gutter)] top-[92px]"
+          />
           <div className="mt-28 text-center md:mt-20">
             <h1 className="type-display-xl font-bold uppercase">
               {dictionary.home.heroTitle}
@@ -90,9 +92,11 @@ export default async function Home({
 
       <section className="page-shell py-24 md:py-[90px]">
         <div>
-          <p className="type-body-xl whitespace-pre-line font-bold">
-            {dictionary.home.mission}
-          </p>
+          <StructuredRichText
+            as="p"
+            lines={dictionary.home.mission}
+            className="type-body-xl font-bold"
+          />
           <a
             href="mailto:info@consulenzecreativeperetto.com"
             className="pill-button mt-8"

@@ -2,12 +2,22 @@ import type { RichTextToken } from "@/components/ui/rich-text";
 
 // ⚠️ IT — Italian copy. Currently an English placeholder; translate each string.
 const homeIt = {
-  heroKicker:
-    "URLO CREATIVO È UN HUB MULTIDISCIPLINARE\nidentità di brand · design · sviluppo prodotto · art direction",
+  heroKicker: [
+    [
+      {
+        text: "URLO CREATIVO È UN HUB MULTIDISCIPLINARE\nidentità di brand · design · sviluppo prodotto · art direction",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   heroTitle: "URLO CREATIVO",
   heroSubheading: "DOVE I BRAND PRENDONO FORMA",
-  mission:
-    "Aiutiamo i brand a costruire identità, prodotti ed esperienze che le persone possano riconoscere, vivere e ricordare.\nAttraverso strategia, design, sviluppo prodotto e comunicazione.",
+  mission: [
+    [
+      {
+        text: "Aiutiamo i brand a costruire identità, prodotti ed esperienze che le persone possano riconoscere, vivere e ricordare.\n\nAttraverso strategia, design, sviluppo prodotto e comunicazione.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   contactCta: "Contact",
   potentialTitle: [
     [
@@ -87,12 +97,22 @@ const homeIt = {
 
 // EN — English copy.
 const homeEn = {
-  heroKicker:
-    "URLO CREATIVO IS A MULTIDISCIPLINARY STUDIO\nbrand identity • design • product development • art direction",
+  heroKicker: [
+    [
+      {
+        text: "URLO CREATIVO IS A MULTIDISCIPLINARY STUDIO\nbrand identity • design • product development • art direction",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   heroTitle: "URLO CREATIVO",
   heroSubheading: "WHERE BRANDS TAKE SHAPE",
-  mission:
-    "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the full potential of brands.",
+  mission: [
+    [
+      {
+        text: "Urlo Creativo is a multidisciplinary creative agency dedicated to bringing out the full potential of brands.",
+      },
+    ],
+  ] satisfies RichTextToken[][],
   contactCta: "Contact",
   potentialTitle: [
     [
