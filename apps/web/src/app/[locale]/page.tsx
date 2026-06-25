@@ -5,11 +5,7 @@ import { notFound } from "next/navigation";
 import { ClientMarquee } from "@/components/sections/client-marquee";
 import { PotentialSection } from "@/components/sections/potential-section";
 import { SiteFooter } from "@/components/sections/site-footer";
-import { PortableRichText } from "@/components/ui/portable-rich-text";
-import {
-  StructuredRichText,
-  type RichTextToken,
-} from "@/components/ui/rich-text";
+import { PageRichText } from "@/components/ui/page-rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
@@ -18,32 +14,11 @@ import {
   featuredProjectsQuery,
   homePageQuery,
   type HomePageContent,
-  type PortableRichTextValue,
   type ProjectListItem,
   type SanityClient,
 } from "@/lib/sanity/queries";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-
-type HomeRichTextProps = {
-  as?: "p" | "h1" | "h2" | "h3" | "span";
-  className?: string;
-  fallback: RichTextToken[][];
-  value: PortableRichTextValue | undefined;
-};
-
-function HomeRichText({
-  as = "p",
-  className,
-  fallback,
-  value,
-}: HomeRichTextProps) {
-  if (value && (!Array.isArray(value) || value.length > 0)) {
-    return <PortableRichText as={as} blocks={value} className={className} />;
-  }
-
-  return <StructuredRichText as={as} lines={fallback} className={className} />;
-}
 
 export default async function Home({
   params,
@@ -98,20 +73,20 @@ export default async function Home({
         />
 
         <div className="page-shell relative z-20 flex h-full flex-col justify-center pb-20 pt-28">
-          <HomeRichText
+          <PageRichText
             as="p"
             value={homeContent?.heroKicker}
             fallback={dictionary.home.heroKicker}
             className="type-body-md absolute left-[var(--page-gutter)] top-[92px]"
           />
           <div className="mt-28 text-center md:mt-20">
-            <HomeRichText
+            <PageRichText
               as="h1"
               value={homeContent?.heroTitle}
               fallback={dictionary.home.heroTitle}
               className="type-display-xl font-bold uppercase"
             />
-            <HomeRichText
+            <PageRichText
               as="p"
               value={homeContent?.heroSubheading}
               fallback={dictionary.home.heroSubheading}
@@ -123,7 +98,7 @@ export default async function Home({
 
       <section className="page-shell py-24 md:py-[90px]">
         <div>
-          <HomeRichText
+          <PageRichText
             as="p"
             value={homeContent?.mission}
             fallback={dictionary.home.mission}
@@ -142,7 +117,7 @@ export default async function Home({
         <div className="page-shell">
           <PotentialSection
             heading={
-              <HomeRichText
+              <PageRichText
                 as="h2"
                 value={homeContent?.potentialTitle}
                 fallback={dictionary.home.potentialTitle}
@@ -158,7 +133,7 @@ export default async function Home({
 
       <section className="page-shell py-20 md:pb-[88px] md:pt-[72px]">
         <div className="mb-12 md:mb-[68px]">
-          <HomeRichText
+          <PageRichText
             as="h2"
             value={homeContent?.projectsTitle}
             fallback={dictionary.home.projectsTitle}
@@ -246,14 +221,14 @@ export default async function Home({
 
       <section className="page-shell py-16 md:pb-[120px] md:pt-[80px]">
         <div className="mb-12">
-          <HomeRichText
+          <PageRichText
             value={homeContent?.methodologyLabel}
             fallback={dictionary.home.methodologyLabel}
             className="type-body-xl"
           />
         </div>
 
-        <HomeRichText
+        <PageRichText
           as="p"
           value={homeContent?.methodology}
           fallback={dictionary.home.methodology}
@@ -263,7 +238,7 @@ export default async function Home({
 
       <section className="section-y">
         <div className="page-shell">
-          <HomeRichText
+          <PageRichText
             as="h2"
             value={homeContent?.selectedClients}
             fallback={dictionary.home.selectedClients}
@@ -276,7 +251,7 @@ export default async function Home({
       <section className="py-20 md:pb-[180px] md:pt-[190px]">
         {/* Heading */}
         <div className="page-shell">
-          <HomeRichText
+          <PageRichText
             as="h2"
             value={homeContent?.teamTitle}
             fallback={dictionary.home.teamTitle}
@@ -297,7 +272,7 @@ export default async function Home({
 
         {/* Body text + button */}
         <div className="page-shell mt-16 md:mt-24">
-          <HomeRichText
+          <PageRichText
             as="p"
             value={homeContent?.teamIntro}
             fallback={dictionary.home.teamIntro}

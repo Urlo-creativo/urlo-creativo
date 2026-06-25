@@ -2,34 +2,50 @@
 
 import { useState } from "react";
 
-const processColors = [
-  "var(--color-process-1)",
-  "var(--color-process-2)",
-  "var(--color-process-3)",
-  "var(--color-process-4)",
-  "var(--color-process-5)",
-  "var(--color-process-6)",
-] as const;
+import type { ProcessStepColor } from "@/lib/sanity/queries";
+
+const processColorValues = {
+  pink: "var(--color-process-1)",
+  deepBlue: "var(--color-process-2)",
+  yellow: "var(--color-process-3)",
+  coral: "var(--color-process-4)",
+  blue: "var(--color-process-5)",
+  orange: "var(--color-process-6)",
+} as const;
+
+const defaultProcessColors: readonly ProcessStepColor[] = [
+  "pink",
+  "deepBlue",
+  "yellow",
+  "coral",
+  "blue",
+  "orange",
+];
 
 // Foreground per block, chosen for WCAG contrast against each fill.
 // Only blue-deep (process-2) is dark enough to need white; the rest are light.
-const textColors = [
-  "text-black",
-  "text-white",
-  "text-black",
-  "text-black",
-  "text-black",
-  "text-black",
-] as const;
+function textColorFor(color: ProcessStepColor) {
+  return color === "deepBlue" ? "text-white" : "text-black";
+}
 
 type ProcessSectionProps = {
   title: string;
   stages: readonly string[];
   descriptions: readonly string[];
+  colors?: readonly (ProcessStepColor | null | undefined)[];
 };
 
-export function ProcessSection({ title, stages, descriptions }: ProcessSectionProps) {
+export function ProcessSection({
+  title,
+  stages,
+  descriptions,
+  colors,
+}: ProcessSectionProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  function colorFor(index: number) {
+    return colors?.[index] ?? defaultProcessColors[index % defaultProcessColors.length]!;
+  }
 
   return (
     <section className="page-shell py-20 md:pb-[136px] md:pt-[96px]">
@@ -43,7 +59,7 @@ export function ProcessSection({ title, stages, descriptions }: ProcessSectionPr
               <span
                 aria-hidden
                 className="mt-1 h-12 w-4 shrink-0"
-                style={{ backgroundColor: processColors[i] }}
+                style={{ backgroundColor: processColorValues[colorFor(i)] }}
               />
               <div>
                 <p className="type-caption font-bold uppercase">
@@ -78,12 +94,12 @@ export function ProcessSection({ title, stages, descriptions }: ProcessSectionPr
               <div
                 className="absolute inset-x-0 top-0 z-10 flex items-center overflow-hidden transition-[height] duration-300 ease-out"
                 style={{
-                  backgroundColor: processColors[i],
+                  backgroundColor: processColorValues[colorFor(i)],
                   height: activeIndex === i ? "120px" : "48px",
                 }}
               >
                 <p
-                  className={`type-body-sm px-4 transition-opacity duration-200 ${textColors[i]} ${
+                  className={`type-body-sm px-4 transition-opacity duration-200 ${textColorFor(colorFor(i))} ${
                     activeIndex === i ? "opacity-100 delay-100" : "opacity-0 delay-0"
                   }`}
                 >

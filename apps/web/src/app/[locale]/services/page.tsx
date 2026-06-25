@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { PortableRichText } from "@/components/ui/portable-rich-text";
-import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
+import { PageRichText, hasPortableText } from "@/components/ui/page-rich-text";
+import type { RichTextToken } from "@/components/ui/rich-text";
 import { ServiceAccordion, type ServiceItem } from "@/components/sections/service-accordion";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -55,30 +55,6 @@ const galleryByServiceIndex = {
 } as const;
 
 type ServiceRichText = PortableRichTextValue | RichTextToken[][];
-
-function hasPortableText(
-  value: PortableRichTextValue | undefined,
-): value is Exclude<PortableRichTextValue, null> {
-  return Boolean(value && (!Array.isArray(value) || value.length > 0));
-}
-
-function PageRichText({
-  as = "p",
-  className,
-  fallback,
-  value,
-}: {
-  as?: "p" | "h1" | "h2" | "h3" | "span";
-  className?: string;
-  fallback: RichTextToken[][];
-  value: PortableRichTextValue | undefined;
-}) {
-  if (hasPortableText(value)) {
-    return <PortableRichText as={as} blocks={value} className={className} />;
-  }
-
-  return <StructuredRichText as={as} lines={fallback} className={className} />;
-}
 
 function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
   return (content.items ?? []).map((item, index) => {

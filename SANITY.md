@@ -35,6 +35,8 @@ Studio schema (`apps/studio/schemaTypes/`):
 - `client.ts` — `client` document
 - `homePage.ts` — `homePage` singleton document for homepage editorial copy
 - `servicesPage.ts` — `servicesPage` singleton document for services editorial copy
+- `aboutPage.ts` — `aboutPage` singleton document for About page editorial sections
+- `person.ts` — `person` document list for People grid members
 - `project.ts` — `project` document
 - `objects/localizedString.ts` — short `{ it, en }` text object
 - `objects/localizedText.ts` — long `{ it, en }` plain-text object
@@ -51,6 +53,8 @@ Web integration (`apps/web/src/`):
 - `lib/sanity/image.ts` — `urlForImage`, `sanityImageProps`, `hasImageAsset`
 - `components/ui/sanity-image.tsx` — `<SanityImage>` (next/image wrapper)
 - `components/sections/project-media.tsx` — media section/item renderers
+- `components/ui/page-rich-text.tsx` — `<PageRichText>` (Sanity value or
+  dictionary fallback); shared by home / services / about pages
 - `components/sections/projects-listing.tsx` — list + category filter (client)
 - `components/sections/project-filter-buttons.tsx` — controlled filter buttons
 - `app/[locale]/projects/page.tsx` — projects list page
@@ -303,6 +307,53 @@ npm run seed:services-page:write
 The frontend reads Sanity first and falls back to the dictionary if a field is
 missing. Because these fields are now maintained in Sanity, their dictionary
 entries are only short `Lorem ipsum` fallbacks that preserve the expected shape.
+
+### 2.10 `aboutPage` (singleton document)
+
+The About page editorial sections are modelled in the `aboutPage` singleton.
+Document ID fixed as `aboutPage`. The dictionary entries for these fields are
+short `Lorem ipsum` fallbacks only.
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `localizedRichText` | About page title (e.g. "ABOUT THE AGENCY"). |
+| `intro` | `localizedRichText` | Intro paragraph under the title. |
+| `heroImage` | image (`+ localized alt`) | Full-width blurred image under the intro. Local `/projects/people-team.jpg` is the fallback. |
+| `statement` | `localizedRichText` | Yellow statement section. |
+| `teamCoreTitle` | `localizedString` | Team core heading. |
+| `coreRoles` | array of objects | Team core hover list. Each item has localized `role` and uploaded hover `image`. Local `/about/team-core-*.png` images remain fallbacks. |
+| `processTitle` | `localizedString` | Process section heading. |
+| `processSteps` | array of objects | Ordered process steps. Each item has localized `stage`, localized `description`, and a `color` from the fixed process palette (`pink`, `deepBlue`, `yellow`, `coral`, `blue`, `orange`). |
+| `missionTitle` | `localizedString` | Mission section heading. |
+| `mission` | `localizedRichText` | Mission body copy. |
+| `missionImage` | image (`+ localized alt`) | Mission image. Local `/about/mission.jpg` is the fallback. |
+| `missionHighlight` | `localizedRichText` | Large highlighted mission line. |
+| `historyTitle` | `localizedRichText` | History/value section heading. |
+| `historyImage` | image (`+ localized alt`) | History/value image. Local `/about/history-value.png` is the fallback. |
+| `historyItems` | array of objects | Ordered history/value items. Each item has localized `label`, `year`, and localized rich-text `description`. |
+| `peopleTitle` | `localizedString` | "PEOPLE" heading. |
+
+### 2.11 `person` (document list)
+
+People are managed as independent `person` documents, listed in Studio under
+**People**. This keeps member ordering, photos, and roles maintainable like the
+project/client lists.
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | string | Person name. |
+| `role` | `localizedString` | Role shown under the name. |
+| `photo` | image (`+ localized alt`) | Portrait shown in the People grid. Local `/about/*.png` portraits remain fallbacks by index. |
+| `order` | number | Controls ordering; lower numbers render first. |
+
+The About page reads `aboutPageQuery` plus `peopleQuery`, then falls back to the
+`about` dictionary field-by-field. The current dictionary values were seeded
+into Sanity with:
+
+```bash
+npm run seed:about-page
+npm run seed:about-page:write
+```
 
 ---
 

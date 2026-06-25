@@ -21,6 +21,8 @@
     "seed:home-page:write": "npm run seed:home-page:write --workspace @urlo/studio",
     "seed:services-page": "npm run seed:services-page --workspace @urlo/studio",
     "seed:services-page:write": "npm run seed:services-page:write --workspace @urlo/studio",
+    "seed:about-page": "npm run seed:about-page --workspace @urlo/studio",
+    "seed:about-page:write": "npm run seed:about-page:write --workspace @urlo/studio",
     "typecheck": "npm run typecheck:web"
   },
   "engines": {

@@ -1,7 +1,7 @@
-import { CaseIcon, HomeIcon } from "@sanity/icons";
+import { CaseIcon, HomeIcon, InfoOutlineIcon, UserIcon } from "@sanity/icons";
 import type { StructureResolver } from "sanity/structure";
 
-const singletonTypes = new Set(["homePage", "servicesPage"]);
+const customListTypes = new Set(["homePage", "servicesPage", "aboutPage", "person"]);
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -21,8 +21,15 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.document().schemaType("servicesPage").documentId("servicesPage"),
         ),
+      S.listItem()
+        .title("About page")
+        .id("aboutPage")
+        .icon(InfoOutlineIcon)
+        .schemaType("aboutPage")
+        .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
+      S.documentTypeListItem("person").title("People").icon(UserIcon),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => !singletonTypes.has(item.getId() ?? ""),
+        (item) => !customListTypes.has(item.getId() ?? ""),
       ),
     ]);

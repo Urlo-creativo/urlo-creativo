@@ -163,6 +163,55 @@ export type ServicesPageContent = {
   collaboration: PortableRichTextValue;
 };
 
+export type AboutPageContent = {
+  title: PortableRichTextValue;
+  intro: PortableRichTextValue;
+  heroImage: SanityImage | null;
+  statement: PortableRichTextValue;
+  teamCoreTitle: string | null;
+  coreRoles: Array<{
+    _key: string;
+    role: string | null;
+    image: SanityImage | null;
+  }> | null;
+  processTitle: string | null;
+  processSteps: Array<{
+    _key: string;
+    stage: string | null;
+    description: string | null;
+    color: ProcessStepColor | null;
+  }> | null;
+  missionTitle: string | null;
+  mission: PortableRichTextValue;
+  missionImage: SanityImage | null;
+  missionHighlight: PortableRichTextValue;
+  historyTitle: PortableRichTextValue;
+  historyImage: SanityImage | null;
+  historyItems: Array<{
+    _key: string;
+    label: string | null;
+    year: string | null;
+    description: PortableRichTextValue;
+  }> | null;
+  peopleTitle: string | null;
+};
+
+export type ProcessStepColor =
+  | "pink"
+  | "deepBlue"
+  | "yellow"
+  | "coral"
+  | "blue"
+  | "orange";
+
+export type PersonListItem = {
+  _id: string;
+  name: string | null;
+  role: string | null;
+  photo: SanityImage | null;
+  order: number | null;
+};
+
 export type ProjectListItem = {
   _id: string;
   clientName: string;
@@ -331,4 +380,46 @@ export const servicesPageQuery = `*[_id == "servicesPage"][0]{
   },
   ${localizedValue("collaborationTitle")},
   ${localizedValue("collaboration")}
+}`;
+
+export const aboutPageQuery = `*[_id == "aboutPage"][0]{
+  ${localizedValue("title")},
+  ${localizedValue("intro")},
+  heroImage ${imageFragment},
+  ${localizedValue("statement")},
+  ${localizedValue("teamCoreTitle")},
+  coreRoles[]{
+    _key,
+    ${localizedValue("role")},
+    image ${imageFragment}
+  },
+  ${localizedValue("processTitle")},
+  processSteps[]{
+    _key,
+    ${localizedValue("stage")},
+    ${localizedValue("description")},
+    color
+  },
+  ${localizedValue("missionTitle")},
+  ${localizedValue("mission")},
+  missionImage ${imageFragment},
+  ${localizedValue("missionHighlight")},
+  ${localizedValue("historyTitle")},
+  historyImage ${imageFragment},
+  historyItems[]{
+    _key,
+    ${localizedValue("label")},
+    year,
+    ${localizedValue("description")}
+  },
+  ${localizedValue("peopleTitle")}
+}`;
+
+export const peopleQuery = `*[_type == "person"]
+  | order(coalesce(order, 9999) asc, name asc) {
+  _id,
+  name,
+  ${localizedValue("role")},
+  photo ${imageFragment},
+  order
 }`;

@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { AnimatedBar } from "@/components/ui/animated-bar";
+import { SanityImage } from "@/components/ui/sanity-image";
+import type { SanityImage as SanityImageType } from "@/lib/sanity/queries";
 
 // Each image has its own position + size for a scattered editorial layout
 const imageStyles = [
@@ -14,17 +16,16 @@ const imageStyles = [
   { top: "10%",  left: "2%",  width: "82%", aspect: "4/3"   },
 ] as const;
 
-const coreImages = [
-  "/about/team-core-1.png",
-  "/about/team-core-2.png",
-  "/about/team-core-3.png",
-  "/about/team-core-4.png",
-  "/about/team-core-5.png",
-];
+export type TeamCoreRole = {
+  role: string;
+  image?: SanityImageType | null;
+  fallbackImage?: string;
+  alt?: string;
+};
 
 type TeamCoreSectionProps = {
   title: string;
-  roles: readonly string[];
+  roles: readonly TeamCoreRole[];
 };
 
 export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
@@ -41,15 +42,15 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
 
         {/* Roles list */}
         <div className="flex flex-col md:w-1/2">
-          {roles.map((role, i) => (
+          {roles.map((item, i) => (
             <div
-              key={role}
+              key={`${item.role}-${i}`}
               className="role-item py-5 pl-10"
               onMouseEnter={() => setActiveIndex(i)}
               onMouseLeave={() => setActiveIndex(null)}
             >
               <span className="type-heading-md inline-block w-fit border-y border-black py-2 uppercase text-black">
-                {role}
+                {item.role}
               </span>
             </div>
           ))}
@@ -57,11 +58,11 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
 
         {/* Image reveal area */}
         <div className="pointer-events-none relative hidden flex-1 md:block">
-          {coreImages.map((src, i) => {
-            const s = imageStyles[i]!;
+          {roles.map((item, i) => {
+            const s = imageStyles[i % imageStyles.length]!;
             return (
               <div
-                key={src}
+                key={`${item.role}-image-${i}`}
                 className="absolute transition-all duration-300 ease-out"
                 style={{
                   top: s.top,
@@ -72,13 +73,23 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
                   transform: activeIndex === i ? "translateY(0)" : "translateY(8px)",
                 }}
               >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="35vw"
-                  className="object-cover"
-                />
+                {item.image ? (
+                  <SanityImage
+                    image={item.image}
+                    alt={item.alt ?? item.image.alt ?? ""}
+                    fill
+                    sizes="35vw"
+                    className="object-cover"
+                  />
+                ) : item.fallbackImage ? (
+                  <Image
+                    src={item.fallbackImage}
+                    alt={item.alt ?? ""}
+                    fill
+                    sizes="35vw"
+                    className="object-cover"
+                  />
+                ) : null}
               </div>
             );
           })}
