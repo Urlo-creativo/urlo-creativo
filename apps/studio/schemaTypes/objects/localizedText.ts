@@ -7,13 +7,13 @@ export const localizedTextType = defineType({
   fields: [
     defineField({
       name: "it",
-      title: "Italiano / Italian",
+      title: "Italiano",
       type: "text",
       rows: 4,
     }),
     defineField({
       name: "en",
-      title: "English / Inglese",
+      title: "English",
       type: "text",
       rows: 4,
     }),

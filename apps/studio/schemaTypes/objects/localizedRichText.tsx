@@ -113,13 +113,13 @@ export const localizedRichTextType = defineType({
   fields: [
     defineField({
       name: "it",
-      title: "Italiano / Italian",
+      title: "Italiano",
       type: "array",
       of: richTextBlocks(),
     }),
     defineField({
       name: "en",
-      title: "English / Inglese",
+      title: "English",
       type: "array",
       of: richTextBlocks(),
     }),
