@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { StructuredRichText } from "@/components/ui/rich-text";
-import { ServiceAccordion } from "@/components/sections/service-accordion";
+import { PortableRichText } from "@/components/ui/portable-rich-text";
+import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
+import { ServiceAccordion, type ServiceItem } from "@/components/sections/service-accordion";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
+import { client } from "@/lib/sanity/client";
+import { localeParams } from "@/lib/sanity/locale";
+import {
+  servicesPageQuery,
+  type PortableRichTextValue,
+  type ServicesPageContent,
+} from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -16,6 +24,134 @@ const serviceImages = [
   "/services/design.jpg",
   "/services/styling.jpg",
 ] as const;
+
+const mediaByServiceIndex = {
+  1: { fallbackImage: "/services/design-development-detail.png", alt: "" },
+} as const;
+
+const galleryByServiceIndex = {
+  2: [
+    {
+      label: "PRODUCTION",
+      fallbackImage: "/services/styling-production.png",
+      alt: "",
+    },
+    {
+      label: "ART DIRECTION",
+      fallbackImage: "/services/styling-art-direction.png",
+      alt: "",
+    },
+    {
+      label: "STYLING",
+      fallbackImage: "/services/styling-styling.png",
+      alt: "",
+    },
+    {
+      label: "PHOTO AND VIDEO SHOOTINGS",
+      fallbackImage: "/services/styling-photo-video.png",
+      alt: "",
+    },
+  ],
+} as const;
+
+type ServiceRichText = PortableRichTextValue | RichTextToken[][];
+
+function hasPortableText(
+  value: PortableRichTextValue | undefined,
+): value is Exclude<PortableRichTextValue, null> {
+  return Boolean(value && (!Array.isArray(value) || value.length > 0));
+}
+
+function PageRichText({
+  as = "p",
+  className,
+  fallback,
+  value,
+}: {
+  as?: "p" | "h1" | "h2" | "h3" | "span";
+  className?: string;
+  fallback: RichTextToken[][];
+  value: PortableRichTextValue | undefined;
+}) {
+  if (hasPortableText(value)) {
+    return <PortableRichText as={as} blocks={value} className={className} />;
+  }
+
+  return <StructuredRichText as={as} lines={fallback} className={className} />;
+}
+
+function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
+  return (content.items ?? []).map((item, index) => {
+    const base = {
+      number: item.number ?? String(index + 1).padStart(2, "0"),
+      title: item.title ?? "",
+    };
+
+    if (item.variant === "structured") {
+      return {
+        ...base,
+        details:
+          item.detailGroups?.map((detail) => ({
+            title: detail.title,
+            items: detail.items ?? [],
+          })) ?? [],
+      };
+    }
+
+    if (item.variant === "media") {
+      const fallbackMedia =
+        mediaByServiceIndex[index as keyof typeof mediaByServiceIndex];
+      const media =
+        item.media?.image || fallbackMedia
+          ? {
+              ...(fallbackMedia ?? {}),
+              image: item.media?.image,
+              alt: item.media?.alt ?? fallbackMedia?.alt ?? "",
+            }
+          : null;
+
+      return {
+        ...base,
+        details: item.details ?? [],
+        ...(media ? { media } : {}),
+        statement: item.statement,
+      };
+    }
+
+    if (item.variant === "gallery") {
+      const fallbackGallery =
+        galleryByServiceIndex[index as keyof typeof galleryByServiceIndex] ?? [];
+      const sanityGallery = item.gallery ?? [];
+      const galleryLength = Math.max(fallbackGallery.length, sanityGallery.length);
+      const gallery = Array.from({ length: galleryLength }, (_, galleryIndex) => {
+        const fallbackGalleryItem = fallbackGallery[galleryIndex];
+        const sanityGalleryItem = sanityGallery[galleryIndex];
+
+        return {
+          fallbackImage: fallbackGalleryItem?.fallbackImage,
+          image: sanityGalleryItem?.image,
+          label:
+            sanityGalleryItem?.label ??
+            fallbackGalleryItem?.label ??
+            String(galleryIndex + 1).padStart(2, "0"),
+          alt: sanityGalleryItem?.alt ?? fallbackGalleryItem?.alt ?? "",
+        };
+      }).filter((galleryItem) => galleryItem.image || galleryItem.fallbackImage);
+
+      return {
+        ...base,
+        details: [],
+        gallery,
+        statement: item.statement,
+      };
+    }
+
+    return {
+      ...base,
+      details: item.details ?? [],
+    };
+  });
+}
 
 export default async function ServicesPage({
   params,
@@ -30,30 +166,49 @@ export default async function ServicesPage({
 
   const locale: Locale = localeParam;
   const { services, footer } = getDictionary(locale);
+  const servicesContent = await client.fetch<ServicesPageContent | null>(
+    servicesPageQuery,
+    localeParams(locale),
+  );
+
+  const serviceItems = servicesContent?.items?.length
+    ? serviceItemsFromSanity(servicesContent)
+    : services.items;
+  const sanityStatement = servicesContent?.statement;
+  const serviceStatement: ServiceRichText = hasPortableText(sanityStatement)
+    ? sanityStatement
+    : services.statement;
 
   return (
     <main className="page-top bg-paper text-black">
       <section className="page-shell">
-        <h1 className="type-display font-bold uppercase">{services.title}</h1>
+        <PageRichText
+          as="h1"
+          value={servicesContent?.title}
+          fallback={services.title}
+          className="type-display font-bold uppercase"
+        />
       </section>
 
       <section className="page-shell pb-16 pt-12 md:pb-[96px] md:pt-[64px]">
         <ServiceAccordion
-          items={services.items}
+          items={serviceItems}
           images={serviceImages}
-          statement={services.statement}
+          statement={serviceStatement}
         />
       </section>
 
       <section className="page-shell pb-20 md:pb-[140px]">
-        <StructuredRichText
+        <PageRichText
           as="h2"
-          lines={services.collaborationTitle}
+          value={servicesContent?.collaborationTitle}
+          fallback={services.collaborationTitle}
           className="type-body-lg w-fit font-bold uppercase"
         />
-        <StructuredRichText
+        <PageRichText
           as="p"
-          lines={services.collaboration}
+          value={servicesContent?.collaboration}
+          fallback={services.collaboration}
           className="type-body-lg mt-6 max-w-[1036px] font-bold"
         />
       </section>

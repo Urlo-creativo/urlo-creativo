@@ -132,6 +132,36 @@ export type HomePageContent = {
   teamIntro: PortableRichTextValue;
 };
 
+export type ServicesPageContent = {
+  title: PortableRichTextValue;
+  statement: PortableRichTextValue;
+  items: Array<{
+    _key: string;
+    number: string | null;
+    title: string | null;
+    variant: "structured" | "media" | "gallery" | null;
+    detailGroups: Array<{
+      _key: string;
+      title: PortableRichTextValue;
+      items: string[] | null;
+    }> | null;
+    details: string[] | null;
+    media: {
+      image: SanityImage | null;
+      alt: string | null;
+    } | null;
+    statement: PortableRichTextValue;
+    gallery: Array<{
+      _key: string;
+      label: string | null;
+      image: SanityImage | null;
+      alt: string | null;
+    }> | null;
+  }> | null;
+  collaborationTitle: PortableRichTextValue;
+  collaboration: PortableRichTextValue;
+};
+
 export type ProjectListItem = {
   _id: string;
   clientName: string;
@@ -278,4 +308,34 @@ export const homePageQuery = `*[_id == "homePage"][0]{
   ${localizedValue("selectedClients")},
   ${localizedValue("teamTitle")},
   ${localizedValue("teamIntro")}
+}`;
+
+export const servicesPageQuery = `*[_id == "servicesPage"][0]{
+  ${localizedValue("title")},
+  ${localizedValue("statement")},
+  items[]{
+    _key,
+    number,
+    ${localizedValue("title")},
+    variant,
+    detailGroups[]{
+      _key,
+      ${localizedValue("title")},
+      ${localizedArray("items")}
+    },
+    ${localizedArray("details")},
+    media{
+      image ${imageFragment},
+      ${localizedValue("alt")}
+    },
+    ${localizedValue("statement")},
+    gallery[]{
+      _key,
+      ${localizedValue("label")},
+      image ${imageFragment},
+      ${localizedValue("alt")}
+    }
+  },
+  ${localizedValue("collaborationTitle")},
+  ${localizedValue("collaboration")}
 }`;

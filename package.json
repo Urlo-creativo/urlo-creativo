@@ -15,8 +15,12 @@
     "migrate:project-fields:write": "npm run migrate:project-fields:write --workspace @urlo/studio",
     "migrate:home-title-rich-text": "npm run migrate:home-title-rich-text --workspace @urlo/studio",
     "migrate:home-title-rich-text:write": "npm run migrate:home-title-rich-text:write --workspace @urlo/studio",
+    "migrate:services-gallery-items": "npm run migrate:services-gallery-items --workspace @urlo/studio",
+    "migrate:services-gallery-items:write": "npm run migrate:services-gallery-items:write --workspace @urlo/studio",
     "seed:home-page": "npm run seed:home-page --workspace @urlo/studio",
     "seed:home-page:write": "npm run seed:home-page:write --workspace @urlo/studio",
+    "seed:services-page": "npm run seed:services-page --workspace @urlo/studio",
+    "seed:services-page:write": "npm run seed:services-page:write --workspace @urlo/studio",
     "typecheck": "npm run typecheck:web"
   },
   "engines": {

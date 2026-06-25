@@ -34,6 +34,7 @@ Studio schema (`apps/studio/schemaTypes/`):
 - `index.ts` — registers all types
 - `client.ts` — `client` document
 - `homePage.ts` — `homePage` singleton document for homepage editorial copy
+- `servicesPage.ts` — `servicesPage` singleton document for services editorial copy
 - `project.ts` — `project` document
 - `objects/localizedString.ts` — short `{ it, en }` text object
 - `objects/localizedText.ts` — long `{ it, en }` plain-text object
@@ -271,6 +272,38 @@ missing, so content can be migrated field by field without breaking the page.
 Because these fields are now maintained in Sanity, their dictionary entries are
 only short `Lorem ipsum` fallbacks that preserve the expected rich-text shape.
 
+### 2.9 `servicesPage` (singleton document)
+
+The services page keeps its editorial copy in the `servicesPage` singleton.
+Sanity controls the page title, accordion text, statements, detail lists,
+media images, gallery labels, gallery images, and collaboration copy. Existing
+local service images remain as fallbacks when a media/gallery image has not
+been uploaded yet.
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `localizedRichText` | Main services page title. |
+| `statement` | `localizedRichText` | Yellow statement shown inside the first accordion section. |
+| `items` | array of service objects | Ordered services accordion. Each item has `number`, localized `title`, `variant`, and variant-specific fields. |
+| `items[].detailGroups` | array of objects | Used by structured services. Each group has a rich-text title and localized item list. |
+| `items[].details` | array of `localizedString` | Used by media services for the uppercase details list. Hidden for gallery services. |
+| `items[].media` | object | Used by media services. Contains uploaded `image` and localized `alt`; local image remains the fallback if empty. |
+| `items[].statement` | `localizedRichText` | Used by media/gallery services. |
+| `items[].gallery` | array of objects | Used by gallery services. Each item has localized `label`, uploaded `image`, and localized `alt`. |
+| `collaborationTitle` | `localizedRichText` | Collaboration section title. |
+| `collaboration` | `localizedRichText` | Collaboration section body. |
+
+Current dictionary values were seeded into Sanity with:
+
+```bash
+npm run seed:services-page
+npm run seed:services-page:write
+```
+
+The frontend reads Sanity first and falls back to the dictionary if a field is
+missing. Because these fields are now maintained in Sanity, their dictionary
+entries are only short `Lorem ipsum` fallbacks that preserve the expected shape.
+
 ---
 
 ## 3. GROQ queries
@@ -295,6 +328,7 @@ Queries:
 | Name | Purpose |
 |---|---|
 | `clientsQuery` | All clients, ordered by `order`. |
+| `servicesPageQuery` | Services page singleton content. Used by `/[locale]/services`. |
 | `projectsListQuery` | All projects (`order asc, year desc`) — list fields only. Used by the projects list page. |
 | `featuredProjectsQuery` | Same as above but `featured == true`. Used by the homepage grid. |
 | `projectBySlugQuery` | One full project by `$slug` — list fields + titleGraphic, season, roles, heroMedia, the text sections, credits, and `projectContentSections[]`. |

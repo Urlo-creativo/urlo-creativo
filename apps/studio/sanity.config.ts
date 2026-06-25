@@ -29,7 +29,7 @@ export default defineConfig({
       })),
       defaultLanguages: [defaultLocale],
       // Required: the toggle is only enabled for the document types listed here.
-      documentTypes: ["project", "homePage"],
+      documentTypes: ["project", "homePage", "servicesPage"],
       filterField: (enclosingType, member, selectedLanguages) =>
         !enclosingType.name.startsWith("localized") ||
         (member.kind === "field" && selectedLanguages.includes(member.name)),

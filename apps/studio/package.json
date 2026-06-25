@@ -10,8 +10,12 @@
     "migrate:project-fields:write": "MIGRATE_PROJECT_FIELDS_WRITE=1 sanity exec migrations/rename-project-title-fields.mjs --with-user-token",
     "migrate:home-title-rich-text": "sanity exec migrations/migrate-home-title-rich-text.mjs --with-user-token",
     "migrate:home-title-rich-text:write": "MIGRATE_HOME_TITLE_RICH_TEXT_WRITE=1 sanity exec migrations/migrate-home-title-rich-text.mjs --with-user-token",
+    "migrate:services-gallery-items": "sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
+    "migrate:services-gallery-items:write": "MIGRATE_SERVICES_GALLERY_ITEMS_WRITE=1 sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
     "seed:home-page": "sanity exec migrations/seed-home-page-content.mjs --with-user-token",
-    "seed:home-page:write": "SEED_HOME_PAGE_WRITE=1 sanity exec migrations/seed-home-page-content.mjs --with-user-token"
+    "seed:home-page:write": "SEED_HOME_PAGE_WRITE=1 sanity exec migrations/seed-home-page-content.mjs --with-user-token",
+    "seed:services-page": "sanity exec migrations/seed-services-page-content.mjs --with-user-token",
+    "seed:services-page:write": "SEED_SERVICES_PAGE_WRITE=1 sanity exec migrations/seed-services-page-content.mjs --with-user-token"
   },
   "dependencies": {
     "@sanity/language-filter": "^5.0.4",

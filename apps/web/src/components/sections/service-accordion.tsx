@@ -3,27 +3,72 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { StructuredRichText } from "@/components/ui/rich-text";
-import type { Dictionary } from "@/i18n/dictionaries";
+import { PortableRichText } from "@/components/ui/portable-rich-text";
+import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
+import { SanityImage } from "@/components/ui/sanity-image";
+import type {
+  PortableRichTextValue,
+  SanityImage as SanityImageType,
+} from "@/lib/sanity/queries";
 
-type ServiceItem = Dictionary["services"]["items"][number];
-type ServiceDetail = ServiceItem["details"][number];
-type StructuredServiceDetail = Extract<ServiceDetail, { items: readonly string[] }>;
+type ServiceRichText = PortableRichTextValue | RichTextToken[][];
+type ServiceDetail = string | StructuredServiceDetail;
+type StructuredServiceDetail = {
+  title: ServiceRichText;
+  items: readonly string[];
+};
+export type ServiceItem = {
+  number: string;
+  title: string;
+  details: readonly ServiceDetail[];
+  media?: {
+    fallbackImage?: string;
+    image?: SanityImageType | null;
+    alt: string;
+  };
+  statement?: ServiceRichText;
+  gallery?: readonly {
+    fallbackImage?: string;
+    image?: SanityImageType | null;
+    label: string;
+    alt: string;
+  }[];
+};
 type MediaServiceItem = ServiceItem & {
-  media: { image: string; alt: string };
-  statement: Dictionary["services"]["statement"];
+  media: NonNullable<ServiceItem["media"]>;
+  statement: ServiceRichText;
 };
 type GalleryServiceItem = ServiceItem &
   {
-    gallery: readonly { image: string; label: string; alt: string }[];
-    statement: Dictionary["services"]["statement"];
+    gallery: NonNullable<ServiceItem["gallery"]>;
+    statement: ServiceRichText;
   };
 
 type ServiceAccordionProps = {
   images: readonly string[];
   items: readonly ServiceItem[];
-  statement: Dictionary["services"]["statement"];
+  statement: ServiceRichText;
 };
+
+function isTokenLines(value: ServiceRichText): value is RichTextToken[][] {
+  return Array.isArray(value) && (value.length === 0 || Array.isArray(value[0]));
+}
+
+function ServiceRichText({
+  as = "span",
+  className,
+  value,
+}: {
+  as?: "p" | "h1" | "h2" | "h3" | "span";
+  className?: string;
+  value: ServiceRichText;
+}) {
+  if (isTokenLines(value)) {
+    return <StructuredRichText as={as} lines={value} className={className} />;
+  }
+
+  return <PortableRichText as={as} blocks={value} className={className} />;
+}
 
 function isStructuredDetail(
   detail: ServiceDetail,
@@ -32,11 +77,11 @@ function isStructuredDetail(
 }
 
 function isMediaServiceItem(item: ServiceItem): item is MediaServiceItem {
-  return "media" in item && "statement" in item;
+  return Boolean(item.media) && "statement" in item;
 }
 
 function isGalleryServiceItem(item: ServiceItem): item is GalleryServiceItem {
-  return "gallery" in item && "statement" in item;
+  return Boolean(item.gallery?.length) && "statement" in item;
 }
 
 // Keep in sync with the `duration-500` panel transitions below.
@@ -220,9 +265,9 @@ export function ServiceAccordion({
                 <div className="pb-20 pt-6 md:pb-[92px] md:pt-8">
                   {isGalleryServiceItem(item) ? (
                     <div className="md:max-w-[1080px]">
-                      <StructuredRichText
+                      <ServiceRichText
                         as="p"
-                        lines={item.statement}
+                        value={item.statement}
                         className="type-heading-md mb-12 max-w-[430px]"
                       />
                       <div className="space-y-20 md:space-y-[112px]">
@@ -244,13 +289,23 @@ export function ServiceAccordion({
                                   : "0ms",
                               }}
                             >
-                              <Image
-                                src={galleryItem.image}
-                                alt={galleryItem.alt}
-                                fill
-                                sizes="(min-width: 768px) 430px, 100vw"
-                                className="object-cover object-center"
-                              />
+                              {galleryItem.image ? (
+                                <SanityImage
+                                  image={galleryItem.image}
+                                  alt={galleryItem.alt}
+                                  fill
+                                  sizes="(min-width: 768px) 430px, 100vw"
+                                  className="object-cover object-center"
+                                />
+                              ) : galleryItem.fallbackImage ? (
+                                <Image
+                                  src={galleryItem.fallbackImage}
+                                  alt={galleryItem.alt}
+                                  fill
+                                  sizes="(min-width: 768px) 430px, 100vw"
+                                  className="object-cover object-center"
+                                />
+                              ) : null}
                             </div>
                             <p className="type-heading-md pt-1 font-bold italic uppercase">
                               {galleryItem.label}
@@ -285,17 +340,27 @@ export function ServiceAccordion({
                         }}
                       >
                         <div className="relative aspect-[888/990] w-full max-w-[528px] overflow-hidden">
-                          <Image
-                            src={item.media.image}
-                            alt={item.media.alt}
-                            fill
-                            sizes="(min-width: 768px) 520px, 100vw"
-                            className="object-contain object-center"
-                          />
+                          {item.media.image ? (
+                            <SanityImage
+                              image={item.media.image}
+                              alt={item.media.alt}
+                              fill
+                              sizes="(min-width: 768px) 520px, 100vw"
+                              className="object-contain object-center"
+                            />
+                          ) : item.media.fallbackImage ? (
+                            <Image
+                              src={item.media.fallbackImage}
+                              alt={item.media.alt}
+                              fill
+                              sizes="(min-width: 768px) 520px, 100vw"
+                              className="object-contain object-center"
+                            />
+                          ) : null}
                         </div>
-                        <StructuredRichText
+                        <ServiceRichText
                           as="p"
-                          lines={item.statement}
+                          value={item.statement}
                           className="type-heading-md mt-8 font-bold"
                         />
                       </div>
@@ -308,9 +373,9 @@ export function ServiceAccordion({
                             key={detail.items.join("|")}
                             className="grid gap-8 py-9 md:grid-cols-[minmax(260px,430px)_minmax(0,1fr)] md:gap-[116px] md:py-12"
                           >
-                            <StructuredRichText
+                            <ServiceRichText
                               as="h3"
-                              lines={detail.title}
+                              value={detail.title}
                               className="type-heading-md font-bold uppercase"
                             />
                             <div className="type-heading-md text-[var(--color-text-muted)]">
@@ -366,9 +431,9 @@ export function ServiceAccordion({
                           className="object-cover object-center"
                         />
                       </div>
-                      <StructuredRichText
+                      <ServiceRichText
                         as="p"
-                        lines={statement}
+                        value={statement}
                         className="type-heading-xl font-bold"
                       />
                     </div>
