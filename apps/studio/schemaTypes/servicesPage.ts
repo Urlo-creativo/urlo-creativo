@@ -1,9 +1,11 @@
+import { CaseIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const servicesPageType = defineType({
   name: "servicesPage",
   title: "Services page",
   type: "document",
+  icon: CaseIcon,
   groups: [
     { name: "hero", title: "Hero", default: true },
     { name: "accordion", title: "Accordion" },
@@ -40,6 +42,21 @@ export const servicesPageType = defineType({
               name: "title",
               title: "Titolo / Title",
               type: "localizedString",
+            }),
+            defineField({
+              name: "previewImage",
+              title: "Immagine anteprima / Preview image",
+              type: "image",
+              description:
+                "Immagine mostrata nell'intestazione del servizio (stato chiuso). / Image shown in the collapsed service header.",
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: "alt",
+                  title: "Alt text",
+                  type: "localizedString",
+                }),
+              ],
             }),
             defineField({
               name: "variant",
@@ -170,13 +187,19 @@ export const servicesPageType = defineType({
             }),
           ],
           preview: {
-            select: { number: "number", title: "title", variant: "variant" },
-            prepare({ number, title, variant }) {
+            select: {
+              number: "number",
+              title: "title",
+              variant: "variant",
+              media: "previewImage",
+            },
+            prepare({ number, title, variant, media }) {
               const localizedTitle =
                 typeof title === "string" ? title : title?.it || title?.en;
               return {
                 title: [number, localizedTitle].filter(Boolean).join(" "),
                 subtitle: variant || "service",
+                media,
               };
             },
           },

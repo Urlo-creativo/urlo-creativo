@@ -20,6 +20,7 @@ type StructuredServiceDetail = {
 export type ServiceItem = {
   number: string;
   title: string;
+  previewImage?: SanityImageType | null;
   details: readonly ServiceDetail[];
   media?: {
     fallbackImage?: string;
@@ -228,13 +229,22 @@ export function ServiceAccordion({
                     .filter(Boolean)
                     .join(" ")}
                 >
-                  <Image
-                    src={images[index]}
-                    alt=""
-                    fill
-                    sizes="(min-width: 768px) 471px, 100vw"
-                    className="object-cover object-center"
-                  />
+                  {item.previewImage ? (
+                    <SanityImage
+                      image={item.previewImage}
+                      fill
+                      sizes="(min-width: 768px) 471px, 100vw"
+                      className="object-cover object-center"
+                    />
+                  ) : (
+                    <Image
+                      src={images[index]}
+                      alt=""
+                      fill
+                      sizes="(min-width: 768px) 471px, 100vw"
+                      className="object-cover object-center"
+                    />
+                  )}
                 </div>
               </div>
             </button>

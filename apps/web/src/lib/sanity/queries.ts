@@ -139,6 +139,7 @@ export type ServicesPageContent = {
     _key: string;
     number: string | null;
     title: string | null;
+    previewImage: SanityImage | null;
     variant: "structured" | "media" | "gallery" | null;
     detailGroups: Array<{
       _key: string;
@@ -196,15 +197,6 @@ const localizedValue = (field: string) => `"${field}": select(
   ${field}
 )`;
 
-const localizedValueWithFallback = (field: string, fallbackField: string) => `"${field}": select(
-  defined(${field}) && (${field}._type == "localizedString" || ${field}._type == "localizedText" || ${field}._type == "localizedRichText") =>
-    coalesce(${field}[$locale], ${field}[$fallbackLocale], ${field}.it, ${field}.en),
-  defined(${field}) => ${field},
-  defined(${fallbackField}) && (${fallbackField}._type == "localizedString" || ${fallbackField}._type == "localizedText" || ${fallbackField}._type == "localizedRichText") =>
-    coalesce(${fallbackField}[$locale], ${fallbackField}[$fallbackLocale], ${fallbackField}.it, ${fallbackField}.en),
-  ${fallbackField}
-)`;
-
 const localizedArray = (field: string) => `"${field}": ${field}[]{
   "value": select(
     @._type == "localizedString" || @._type == "localizedText" =>
@@ -248,8 +240,8 @@ const mediaSectionFragment = `{
 
 const listFields = `
   _id,
-  ${localizedValueWithFallback("clientName", "title")},
-  ${localizedValueWithFallback("projectName", "subtitle")},
+  ${localizedValue("clientName")},
+  ${localizedValue("projectName")},
   "slug": slug.current,
   year,
   categories,
@@ -317,6 +309,7 @@ export const servicesPageQuery = `*[_id == "servicesPage"][0]{
     _key,
     number,
     ${localizedValue("title")},
+    previewImage ${imageFragment},
     variant,
     detailGroups[]{
       _key,

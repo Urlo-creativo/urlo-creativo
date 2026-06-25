@@ -100,18 +100,17 @@ project name. The project detail page combines both for the HTML `<title>` and
 keeps both inside the main H1, so the page remains descriptive for search
 engines while the Studio fields stay editorially clear.
 
-**Field migration:** older project documents used `title` for the client and
-`subtitle` for the project name. Run the migration script from the repository
-root:
+**Field migration (done):** older project documents used `title` for the client
+and `subtitle` for the project name. The rename migration has been run on
+`production` (verified: every project has `clientName`, none still has `title`),
+so the GROQ `clientName→title` / `projectName→subtitle` fallback has been
+**removed** — queries now read `clientName` / `projectName` directly. The
+migration script remains for other datasets:
 
 ```bash
 npm run migrate:project-fields
 npm run migrate:project-fields:write
 ```
-
-The web GROQ queries temporarily fall back from `clientName` to `title` and from
-`projectName` to `subtitle`, so pages keep rendering during rollout. Once all
-environments are migrated, those fallbacks can be removed.
 
 **Rich text (`localizedRichText`):** challenge / concept / process / outcome are
 Portable Text with Bold (`strong`), Italic (`em`), quick Highlight colour
@@ -285,6 +284,7 @@ been uploaded yet.
 | `title` | `localizedRichText` | Main services page title. |
 | `statement` | `localizedRichText` | Yellow statement shown inside the first accordion section. |
 | `items` | array of service objects | Ordered services accordion. Each item has `number`, localized `title`, `variant`, and variant-specific fields. |
+| `items[].previewImage` | image (`+ localized alt`) | Image shown in the collapsed service header (all variants). Local `serviceImages[index]` remains the fallback if empty. |
 | `items[].detailGroups` | array of objects | Used by structured services. Each group has a rich-text title and localized item list. |
 | `items[].details` | array of `localizedString` | Used by media services for the uppercase details list. Hidden for gallery services. |
 | `items[].media` | object | Used by media services. Contains uploaded `image` and localized `alt`; local image remains the fallback if empty. |

@@ -1,3 +1,4 @@
+import { ImagesIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 // Category dropdown for the Studio. The `value` strings are the contract with
@@ -23,6 +24,7 @@ export const projectType = defineType({
   name: "project",
   title: "Progetto / Project",
   type: "document",
+  icon: ImagesIcon,
   // Tabs keep the long form navigable for maintainers.
   groups: [
     { name: "info", title: "Info e copertina / Info & cover", default: true },

@@ -85,6 +85,7 @@ function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
     const base = {
       number: item.number ?? String(index + 1).padStart(2, "0"),
       title: item.title ?? "",
+      previewImage: item.previewImage,
     };
 
     if (item.variant === "structured") {
