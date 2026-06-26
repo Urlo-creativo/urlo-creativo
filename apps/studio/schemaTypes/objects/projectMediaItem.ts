@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { localizedPreviewText } from "../utils/preview";
+
 /**
  * A single piece of media inside a `projectMediaSection`.
  * It is either an image or a video (file upload or external URL).
@@ -7,16 +9,16 @@ import { defineField, defineType } from "sanity";
  */
 export const projectMediaItemType = defineType({
   name: "projectMediaItem",
-  title: "Elemento media / Media item",
+  title: "Elemento media",
   type: "object",
   fields: [
     defineField({
       name: "mediaType",
-      title: "Tipo / Type",
+      title: "Tipo media",
       type: "string",
       options: {
         list: [
-          { title: "Immagine / Image", value: "image" },
+          { title: "Immagine", value: "image" },
           { title: "Video", value: "video" },
         ],
         layout: "radio",
@@ -29,24 +31,23 @@ export const projectMediaItemType = defineType({
     // ----- Image -----
     defineField({
       name: "image",
-      title: "Immagine / Image",
+      title: "Immagine",
       type: "image",
       options: { hotspot: true },
       hidden: ({ parent }) => parent?.mediaType !== "image",
       fields: [
         defineField({
           name: "alt",
-          title: "Testo alt / Alt text",
+          title: "Testo alt",
           type: "localizedString",
-          description:
-            "Descrivi l'immagine per accessibilita e SEO. / Describe the image for screen readers and SEO.",
+          description: "Describe the image for screen readers and SEO.",
         }),
       ],
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const parent = context.parent as { mediaType?: string } | undefined;
           if (parent?.mediaType === "image" && !value) {
-            return "Aggiungi un'immagine o cambia il tipo in Video. / Add an image or switch the type to Video.";
+            return "Add an image or switch the media type to Video.";
           }
           return true;
         }),
@@ -55,33 +56,30 @@ export const projectMediaItemType = defineType({
     // ----- Video -----
     defineField({
       name: "videoFile",
-      title: "File video / Video file",
+      title: "File video",
       type: "file",
       options: { accept: "video/*" },
-      description:
-        "Carica un file video, oppure usa un URL esterno. / Upload a video file, or use an external URL.",
+      description: "Upload a video file, or use an external video URL below.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
     }),
     defineField({
       name: "videoUrl",
-      title: "URL video esterno / External video URL",
+      title: "URL video esterno",
       type: "url",
-      description:
-        "Esempio: file .mp4/.webm ospitato, Vimeo o YouTube. / Example: hosted .mp4/.webm, Vimeo or YouTube.",
+      description: "Hosted .mp4/.webm, Vimeo, or YouTube URL.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
     }),
     defineField({
       name: "poster",
-      title: "Poster video / Video poster",
+      title: "Poster video",
       type: "image",
       options: { hotspot: true },
-      description:
-        "Immagine opzionale mostrata prima del video. / Optional still shown before the video plays.",
+      description: "Optional still image shown before the video plays.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
       fields: [
         defineField({
           name: "alt",
-          title: "Testo alt / Alt text",
+          title: "Testo alt",
           type: "localizedString",
         }),
       ],
@@ -90,15 +88,13 @@ export const projectMediaItemType = defineType({
     // ----- Shared -----
     defineField({
       name: "caption",
-      title: "Didascalia / Caption",
+      title: "Didascalia",
       type: "localizedString",
-      description:
-        "Testo opzionale sotto il media. / Optional caption shown under the media.",
+      description: "Optional caption shown below media section items.",
       // Media items inside an array carry a `_key`; the single `heroMedia`
       // object field does not. Hide the caption on the hero, where it isn't
       // rendered and makes no sense.
-      hidden: ({ parent }) =>
-        !(parent as { _key?: string } | undefined)?._key,
+      hidden: ({ parent }) => !(parent as { _key?: string } | undefined)?._key,
     }),
   ],
 
@@ -108,7 +104,7 @@ export const projectMediaItemType = defineType({
         | { mediaType?: string; videoFile?: unknown; videoUrl?: string }
         | undefined;
       if (item?.mediaType === "video" && !item.videoFile && !item.videoUrl) {
-        return "Aggiungi un file video o un URL esterno. / Add a video file or an external video URL.";
+        return "Add a video file or an external video URL.";
       }
       return true;
     }),
@@ -123,11 +119,10 @@ export const projectMediaItemType = defineType({
     },
     prepare({ mediaType, caption, videoUrl, image, poster }) {
       const isVideo = mediaType === "video";
-      const localizedCaption =
-        typeof caption === "string" ? caption : caption?.it || caption?.en;
+      const localizedCaption = localizedPreviewText(caption);
       return {
-        title: localizedCaption || (isVideo ? "Video" : "Immagine / Image"),
-        subtitle: isVideo ? `Video${videoUrl ? " · URL" : ""}` : "Immagine / Image",
+        title: localizedCaption || (isVideo ? "Video" : "Image"),
+        subtitle: isVideo ? `Video${videoUrl ? " · URL" : ""}` : "Image",
         media: isVideo ? poster : image,
       };
     },

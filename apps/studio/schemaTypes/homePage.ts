@@ -1,89 +1,110 @@
 import { HomeIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { localizedPreviewText } from "./utils/preview";
+
 export const homePageType = defineType({
   name: "homePage",
-  title: "Homepage",
+  title: "Pagina home",
   type: "document",
   icon: HomeIcon,
   groups: [
-    { name: "hero", title: "Hero", default: true },
-    { name: "mission", title: "Mission" },
-    { name: "methodSteps", title: "Method steps" },
-    { name: "methodology", title: "Methodology" },
-    { name: "projects", title: "Projects" },
-    { name: "clients", title: "Clients" },
-    { name: "team", title: "People" },
+    { name: "hero", title: "Sezione iniziale", default: true },
+    { name: "mission", title: "Missione" },
+    { name: "methodSteps", title: "Intro metodo" },
+    { name: "methodology", title: "Metodologia" },
+    { name: "projects", title: "Progetti" },
+    { name: "clients", title: "Clienti" },
+    { name: "team", title: "Persone" },
   ],
   fields: [
     defineField({
       name: "heroKicker",
-      title: "Kicker hero / Hero kicker",
+      title: "Testo breve sopra il titolo",
       type: "localizedRichText",
       group: "hero",
+      description: "Small line above the main homepage headline.",
     }),
     defineField({
       name: "heroMedia",
-      title: "Media hero / Hero media",
+      title: "Media di sfondo iniziale",
       type: "projectMediaItem",
       group: "hero",
       description:
-        "Immagine o video per lo sfondo hero. I video vengono riprodotti in autoplay e senza audio sul sito. / Image or video for the hero background. Videos autoplay muted on the website.",
+        "Image or video behind the homepage hero. Videos autoplay muted.",
     }),
     defineField({
       name: "heroTitle",
-      title: "Titolo hero / Hero title",
+      title: "Titolo sezione iniziale",
       type: "localizedRichText",
       group: "hero",
+      description: "Main headline at the top of the homepage.",
     }),
     defineField({
       name: "heroSubheading",
-      title: "Sottotitolo hero / Hero subheading",
+      title: "Sottotitolo sezione iniziale",
       type: "localizedRichText",
       group: "hero",
+      description: "Short text below the hero headline.",
     }),
     defineField({
       name: "mission",
-      title: "Missione homepage / Homepage mission",
+      title: "Dichiarazione missione",
       type: "localizedRichText",
       group: "mission",
+      description: "Large mission copy immediately after the hero.",
     }),
     defineField({
       name: "potentialTitle",
-      title: "Titolo metodo / Method title",
+      title: "Titolo intro metodo",
       type: "localizedRichText",
       group: "methodSteps",
+      description: "Headline above the method step list.",
     }),
     defineField({
       name: "methodSteps",
-      title: "Step metodo / Method steps",
+      title: "Step metodo",
       type: "array",
       group: "methodSteps",
+      description: "The compact method columns shown below the intro title.",
+      validation: (Rule) => Rule.max(4),
       of: [
         defineArrayMember({
           type: "object",
           fields: [
             defineField({
               name: "title",
-              title: "Titolo / Title",
+              title: "Titolo step",
               type: "localizedString",
+              validation: (Rule) =>
+                Rule.custom((value) => {
+                  const title = value as
+                    | { it?: string; en?: string }
+                    | undefined;
+                  return title?.it || title?.en
+                    ? true
+                    : "Add at least one language.";
+                }),
             }),
             defineField({
               name: "items",
-              title: "Voci / Items",
+              title: "Righe dello step",
               type: "array",
+              description: "Short lines listed under this step.",
               of: [defineArrayMember({ type: "localizedString" })],
+              validation: (Rule) => Rule.max(6),
             }),
           ],
           preview: {
             select: { title: "title", items: "items" },
             prepare({ title, items }) {
-              const localizedTitle =
-                typeof title === "string" ? title : title?.it || title?.en;
+              const localizedTitle = localizedPreviewText(title);
               const count = Array.isArray(items) ? items.length : 0;
               return {
-                title: localizedTitle || "Step metodo / Method step",
-                subtitle: `${count} item${count === 1 ? "" : "s"}`,
+                title: localizedTitle || "Untitled method step",
+                subtitle: count
+                  ? `${count} line${count === 1 ? "" : "s"}`
+                  : "No lines added",
               };
             },
           },
@@ -92,60 +113,63 @@ export const homePageType = defineType({
     }),
     defineField({
       name: "methodologyLabel",
-      title: "Etichetta metodologia / Methodology label",
+      title: "Etichetta metodologia",
       type: "localizedRichText",
       group: "methodology",
+      description: "Small label above the methodology body.",
     }),
     defineField({
       name: "methodology",
-      title: "Testo metodologia / Methodology body",
+      title: "Testo metodologia",
       type: "localizedRichText",
       group: "methodology",
     }),
     defineField({
       name: "projectsTitle",
-      title: "Titolo progetti / Projects title",
+      title: "Titolo sezione progetti",
       type: "localizedRichText",
       group: "projects",
+      description: "Heading above the featured projects grid.",
     }),
     defineField({
       name: "selectedClients",
-      title: "Titolo clienti selezionati / Selected clients title",
+      title: "Titolo clienti selezionati",
       type: "localizedRichText",
       group: "clients",
+      description: "Heading above the selected client logo marquee.",
     }),
     defineField({
       name: "teamTitle",
-      title: "Titolo persone / People title",
+      title: "Titolo sezione persone",
       type: "localizedRichText",
       group: "team",
     }),
     defineField({
       name: "teamImage",
-      title: "Immagine persone / People image",
+      title: "Immagine persone",
       type: "image",
       group: "team",
+      description: "Image shown beside the people section intro.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
-          title: "Testo alt / Alt text",
+          title: "Testo alt",
           type: "localizedString",
-          description:
-            "Descrivi l'immagine per accessibilita e SEO. / Describe the image for screen readers and SEO.",
+          description: "Describe the image for screen readers and SEO.",
         }),
       ],
     }),
     defineField({
       name: "teamIntro",
-      title: "Introduzione persone / People intro",
+      title: "Introduzione persone",
       type: "localizedRichText",
       group: "team",
     }),
   ],
   preview: {
     prepare() {
-      return { title: "Homepage" };
+      return { title: "Pagina home" };
     },
   },
 });

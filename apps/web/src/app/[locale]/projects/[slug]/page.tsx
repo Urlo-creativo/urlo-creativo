@@ -9,13 +9,18 @@ import {
 } from "@/components/sections/project-media";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { PortableRichText } from "@/components/ui/portable-rich-text";
-import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
+import {
+  StructuredRichText,
+  type RichTextToken,
+} from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { PLACEHOLDER_ALT, PLACEHOLDER_IMAGE } from "@/content/placeholders";
+import { projectCategoryPillClass } from "@/lib/project-category-styles";
 import { client } from "@/lib/sanity/client";
 import { hasImageAsset } from "@/lib/sanity/image";
 import { localeParams } from "@/lib/sanity/locale";
 import {
+  CATEGORY_ORDER,
   categoryLabel,
   projectBySlugQuery,
   projectSlugsQuery,
@@ -30,9 +35,7 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(projectSlugsQuery);
-  return locales.flatMap((locale) =>
-    slugs.map((slug) => ({ locale, slug })),
-  );
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 async function getProject(
@@ -45,7 +48,9 @@ async function getProject(
   });
 }
 
-function projectDisplayTitle(project: Pick<Project, "clientName" | "projectName">) {
+function projectDisplayTitle(
+  project: Pick<Project, "clientName" | "projectName">,
+) {
   return [project.clientName, project.projectName].filter(Boolean).join(": ");
 }
 
@@ -114,6 +119,21 @@ function sectionsAt(
   return (sections ?? []).filter((section) => section.placement === placement);
 }
 
+function linesFromResponsibilities(
+  value: Project["responsibilities"],
+): string[] {
+  if (Array.isArray(value)) {
+    return value.map((item) => item.trim()).filter(Boolean);
+  }
+
+  return value
+    ? value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : [];
+}
+
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -144,13 +164,17 @@ export default async function ProjectDetailPage({
       ? Boolean(hero.videoUrl || hero.videoFile)
       : hasImageAsset(hero.image));
 
-  const responsibilities = project.responsibilities ?? [];
+  const responsibilities = linesFromResponsibilities(project.responsibilities);
   const roles = project.roles ?? [];
   const credits = project.credits ?? [];
+  const seasonLabel = project.season ?? project.year;
 
   const sections = project.projectContentSections;
   const mediaAfterConcept = sectionsAt(sections, "afterConcept");
-  const mediaAfterResponsibilities = sectionsAt(sections, "afterResponsibilities");
+  const mediaAfterResponsibilities = sectionsAt(
+    sections,
+    "afterResponsibilities",
+  );
   const mediaAfterOutcome = sectionsAt(sections, "afterOutcome");
   const mediaBehindTheScenes = sectionsAt(sections, "behindTheScenes");
 
@@ -191,17 +215,17 @@ export default async function ProjectDetailPage({
 
       <div className="page-shell">
         {/* 2–6. Title, graphic, category, season, roles */}
-        <section className="section-y-sm">
+        <section className="border-b border-[var(--uc-gray-200)] py-20 md:pb-[72px] md:pt-[92px]">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div>
               <h1 className="type-display font-bold uppercase">
-                <span className="block">{project.clientName}</span>
-                {project.projectName && (
-                  <span className="type-heading-xl mt-2 block italic normal-case">
-                    {project.projectName}
-                  </span>
-                )}
+                {project.clientName}
               </h1>
+              {project.projectName && (
+                <p className="type-display font-bold italic">
+                  {project.projectName}
+                </p>
+              )}
             </div>
 
             {hasImageAsset(project.titleGraphic) && (
@@ -215,46 +239,41 @@ export default async function ProjectDetailPage({
             )}
           </div>
 
-          {(project.categories?.length ||
-            project.season ||
-            project.year) && (
-              <div className="stack-md flex flex-wrap items-center gap-x-6 gap-y-3">
-                {project.categories?.map((category) => (
-                  <span
-                    key={category}
-                    className="type-body-sm border border-black px-3 py-1 uppercase"
-                  >
-                    {categoryLabel(category, categoryLabels)}
-                  </span>
-                ))}
-                {project.season && (
-                  <span className="type-body-sm italic text-[var(--color-text-muted)]">
-                    {project.season}
-                  </span>
-                )}
-                {project.year && (
-                  <span className="type-body-sm italic text-[var(--color-text-muted)]">
-                    {project.year}
-                  </span>
-                )}
-              </div>
-            )}
+          {(project.categories?.length || seasonLabel || roles.length > 0) && (
+            <div className="mt-5 md:mt-6">
+              {project.categories?.length ? (
+                <div className="flex flex-wrap items-center gap-3">
+                  {project.categories.map((category, index) => {
+                    const categoryIndex = CATEGORY_ORDER.includes(category)
+                      ? CATEGORY_ORDER.indexOf(category)
+                      : index;
 
-          {roles.length > 0 && (
-            <div className="stack-md">
-              <p className="type-body-sm uppercase text-[var(--color-text-muted)]">
-                {detailLabels.rolesServices}
-              </p>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {roles.map((role, index) => (
-                  <li
-                    key={index}
-                    className="type-body-sm border border-black px-3 py-1"
-                  >
-                    {role}
-                  </li>
-                ))}
-              </ul>
+                    return (
+                      <span
+                        key={category}
+                        className={[
+                          "pill-button pill-button-reverse type-body-sm rounded-full border border-black px-6 py-1 uppercase",
+                          projectCategoryPillClass(categoryIndex),
+                        ].join(" ")}
+                      >
+                        {categoryLabel(category, categoryLabels)}
+                      </span>
+                    );
+                  })}
+                </div>
+              ) : null}
+
+              {seasonLabel && (
+                <p className="type-body-sm mt-5 italic text-[var(--color-text-muted)]">
+                  {seasonLabel}
+                </p>
+              )}
+
+              {roles.length > 0 && (
+                <p className="type-body-sm mt-1 italic text-[var(--color-text-muted)]">
+                  {roles.join(" · ")}
+                </p>
+              )}
             </div>
           )}
         </section>
@@ -297,9 +316,14 @@ export default async function ProjectDetailPage({
           {/* 11. Responsibilities */}
           {responsibilities.length > 0 && (
             <TextSection heading={detailLabels.responsibilities}>
-              <ul className="type-body-lg flex flex-col gap-1">
+              <ul className="type-body-lg flex flex-col items-start gap-7">
                 {responsibilities.map((item, index) => (
-                  <li key={index}>{item}</li>
+                  <li
+                    key={index}
+                    className="inline-block border-y border-[var(--color-text-muted)] leading-[1.08]"
+                  >
+                    {item}
+                  </li>
                 ))}
               </ul>
             </TextSection>
@@ -381,7 +405,10 @@ export default async function ProjectDetailPage({
 
         {/* Back to projects */}
         <section className="pb-[var(--space-section-y)]">
-          <Link href={localizedPath(locale, "/projects")} className="pill-button">
+          <Link
+            href={localizedPath(locale, "/projects")}
+            className="pill-button"
+          >
             {nav.projects}
           </Link>
         </section>

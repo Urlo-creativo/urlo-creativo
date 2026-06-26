@@ -14,6 +14,8 @@
     "migrate:about-title-rich-text:write": "MIGRATE_ABOUT_TITLE_RICH_TEXT_WRITE=1 sanity exec migrations/migrate-about-title-rich-text.mjs --with-user-token",
     "migrate:services-gallery-items": "sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
     "migrate:services-gallery-items:write": "MIGRATE_SERVICES_GALLERY_ITEMS_WRITE=1 sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
+    "migrate:project-responsibilities-text": "sanity exec migrations/migrate-project-responsibilities-text.mjs --with-user-token",
+    "migrate:project-responsibilities-text:write": "MIGRATE_PROJECT_RESPONSIBILITIES_TEXT_WRITE=1 sanity exec migrations/migrate-project-responsibilities-text.mjs --with-user-token",
     "seed:home-page": "sanity exec migrations/seed-home-page-content.mjs --with-user-token",
     "seed:home-page:write": "SEED_HOME_PAGE_WRITE=1 sanity exec migrations/seed-home-page-content.mjs --with-user-token",
     "seed:services-page": "sanity exec migrations/seed-services-page-content.mjs --with-user-token",

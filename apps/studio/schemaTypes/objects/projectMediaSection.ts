@@ -1,23 +1,23 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const LAYOUT_VARIANTS = [
-  { title: "Collage a una colonna / One-column collage", value: "oneColumnCollage" },
-  { title: "Griglia a due colonne / Two-column grid", value: "twoColumnGrid" },
-  { title: "Masonry / Masonry", value: "masonry" },
+  { title: "Collage a una colonna", value: "oneColumnCollage" },
+  { title: "Griglia a due colonne", value: "twoColumnGrid" },
+  { title: "Mosaico", value: "masonry" },
   {
-    title: "Griglia compatta a tre colonne / Compact three-column grid",
+    title: "Griglia compatta a tre colonne",
     value: "compactThreeColumnGrid",
   },
 ] as const;
 
 const PLACEMENT_OPTIONS = [
-  { title: "1. Dopo Concept / After Concept", value: "afterConcept" },
+  { title: "1. Dopo Concept", value: "afterConcept" },
   {
-    title: "2. Dopo Responsabilita / After Responsibilities",
+    title: "2. Dopo Responsabilità",
     value: "afterResponsibilities",
   },
-  { title: "3. Dopo Risultato / After Outcome", value: "afterOutcome" },
-  { title: "4. Behind the Scenes / Behind the Scenes", value: "behindTheScenes" },
+  { title: "3. Dopo Risultato", value: "afterOutcome" },
+  { title: "4. Dietro le quinte", value: "behindTheScenes" },
 ] as const;
 
 const LAYOUT_TITLES: Record<string, string> = Object.fromEntries(
@@ -35,15 +35,15 @@ const PLACEMENT_TITLES: Record<string, string> = Object.fromEntries(
  */
 export const projectMediaSectionType = defineType({
   name: "projectMediaSection",
-  title: "Sezione media / Media section",
+  title: "Sezione media",
   type: "object",
   fields: [
     defineField({
       name: "placement",
-      title: "Posizione nella pagina / Placement",
+      title: "Posizione nella pagina",
       type: "string",
       description:
-        "Scegli dove mostrare questa sezione nella pagina progetto. / Choose where this media section renders.",
+        "Choose where this media section appears in the project detail flow.",
       options: {
         list: [...PLACEMENT_OPTIONS],
         layout: "radio",
@@ -53,14 +53,13 @@ export const projectMediaSectionType = defineType({
     }),
     defineField({
       name: "internalLabel",
-      title: "Etichetta interna / Internal label",
+      title: "Etichetta interna",
       type: "string",
-      description:
-        "Solo per organizzare il backend; non viene mostrata sul sito. / For Studio organization only; not shown on the website.",
+      description: "For Studio organization only. Not shown on the website.",
     }),
     defineField({
       name: "layout",
-      title: "Tipo di griglia / Layout variant",
+      title: "Variante disposizione",
       type: "string",
       options: {
         list: [...LAYOUT_VARIANTS],
@@ -71,16 +70,13 @@ export const projectMediaSectionType = defineType({
     }),
     defineField({
       name: "mediaItems",
-      title: "Elementi media / Media items",
+      title: "Elementi media",
       type: "array",
       // Grid layout shows thumbnails so editors can scan and drag-reorder
       // many images visually instead of reading a vertical list.
       options: { layout: "grid" },
       of: [defineArrayMember({ type: "projectMediaItem" })],
-      validation: (Rule) =>
-        Rule.min(1).error(
-          "Aggiungi almeno un elemento media. / Add at least one media item.",
-        ),
+      validation: (Rule) => Rule.min(1).error("Add at least one media item."),
     }),
   ],
 
@@ -89,23 +85,65 @@ export const projectMediaSectionType = defineType({
       internalLabel: "internalLabel",
       layout: "layout",
       placement: "placement",
-      items: "mediaItems",
+      item0: "mediaItems.0",
+      item1: "mediaItems.1",
+      item2: "mediaItems.2",
+      item3: "mediaItems.3",
+      item4: "mediaItems.4",
+      item5: "mediaItems.5",
+      item6: "mediaItems.6",
+      item7: "mediaItems.7",
+      item8: "mediaItems.8",
+      item9: "mediaItems.9",
+      item10: "mediaItems.10",
+      item11: "mediaItems.11",
+      item12: "mediaItems.12",
       firstImage: "mediaItems.0.image",
       firstPoster: "mediaItems.0.poster",
     },
-    prepare({ internalLabel, layout, placement, items, firstImage, firstPoster }) {
-      const count = Array.isArray(items) ? items.length : 0;
-      const variant = layout
-        ? LAYOUT_TITLES[layout] ?? layout
-        : "Nessuna griglia / No layout";
+    prepare({
+      internalLabel,
+      layout,
+      placement,
+      item0,
+      item1,
+      item2,
+      item3,
+      item4,
+      item5,
+      item6,
+      item7,
+      item8,
+      item9,
+      item10,
+      item11,
+      item12,
+      firstImage,
+      firstPoster,
+    }) {
+      const visibleItems = [
+        item0,
+        item1,
+        item2,
+        item3,
+        item4,
+        item5,
+        item6,
+        item7,
+        item8,
+        item9,
+        item10,
+        item11,
+      ].filter(Boolean).length;
+      const count = item12 ? `${visibleItems}+` : String(visibleItems);
+      const variant = layout ? (LAYOUT_TITLES[layout] ?? layout) : "No layout";
       const where = placement
-        ? PLACEMENT_TITLES[placement] ?? placement
-        : "Nessuna posizione / No placement";
+        ? (PLACEMENT_TITLES[placement] ?? placement)
+        : "No placement";
 
       return {
         title: `${where} · ${variant} · ${count} media`,
-        subtitle:
-          internalLabel || "No internal label / Nessuna etichetta interna",
+        subtitle: internalLabel || "No internal label",
         media: firstImage || firstPoster,
       };
     },

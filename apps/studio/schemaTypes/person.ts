@@ -1,47 +1,52 @@
 import { UserIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
+import { localizedPreviewText } from "./utils/preview";
+
 export const personType = defineType({
   name: "person",
-  title: "Persona / Person",
+  title: "Persona",
   type: "document",
   icon: UserIcon,
   fields: [
     defineField({
       name: "name",
-      title: "Nome / Name",
+      title: "Nome",
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "role",
-      title: "Ruolo / Role",
+      title: "Ruolo",
       type: "localizedString",
+      description: "Shown below the person's name in the People grid.",
     }),
     defineField({
       name: "photo",
-      title: "Foto / Photo",
+      title: "Foto",
       type: "image",
+      description: "Portrait used in the About page People grid.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
-          title: "Alt text",
+          title: "Testo alt",
           type: "localizedString",
+          description: "Describe the portrait for screen readers and SEO.",
         }),
       ],
     }),
     defineField({
       name: "order",
-      title: "Ordine / Order",
+      title: "Ordine manuale",
       type: "number",
       description:
-        "Controlla la posizione nella griglia People. Numero piu basso = prima posizione. / Controls position in the People grid.",
+        "Controls position in the People grid. Lower number appears first.",
     }),
   ],
   orderings: [
     {
-      title: "Ordine / Order",
+      title: "Ordine manuale",
       name: "orderAsc",
       by: [{ field: "order", direction: "asc" }],
     },
@@ -49,11 +54,9 @@ export const personType = defineType({
   preview: {
     select: { title: "name", role: "role", media: "photo" },
     prepare({ title, role, media }) {
-      const localizedRole =
-        typeof role === "string" ? role : role?.it || role?.en;
       return {
         title: title || "Person",
-        subtitle: localizedRole || undefined,
+        subtitle: localizedPreviewText(role) || undefined,
         media,
       };
     },

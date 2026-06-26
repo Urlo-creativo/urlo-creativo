@@ -18,16 +18,66 @@ const QUICK_HIGHLIGHT_OPTIONS: Array<{
   color: HighlightColor;
   triggerLabel: "S" | "L";
 }> = [
-  { title: "Scroll giallo", value: "highlightYellow", color: "yellow", triggerLabel: "S" },
-  { title: "Scroll rosa", value: "highlightPink", color: "pink", triggerLabel: "S" },
-  { title: "Scroll blu", value: "highlightBlue", color: "blue", triggerLabel: "S" },
-  { title: "Scroll corallo", value: "highlightCoral", color: "coral", triggerLabel: "S" },
-  { title: "Scroll arancione", value: "highlightOrange", color: "orange", triggerLabel: "S" },
-  { title: "Load giallo", value: "highlightLoadYellow", color: "yellow", triggerLabel: "L" },
-  { title: "Load rosa", value: "highlightLoadPink", color: "pink", triggerLabel: "L" },
-  { title: "Load blu", value: "highlightLoadBlue", color: "blue", triggerLabel: "L" },
-  { title: "Load corallo", value: "highlightLoadCoral", color: "coral", triggerLabel: "L" },
-  { title: "Load arancione", value: "highlightLoadOrange", color: "orange", triggerLabel: "L" },
+  {
+    title: "Scroll giallo",
+    value: "highlightYellow",
+    color: "yellow",
+    triggerLabel: "S",
+  },
+  {
+    title: "Scroll rosa",
+    value: "highlightPink",
+    color: "pink",
+    triggerLabel: "S",
+  },
+  {
+    title: "Scroll blu",
+    value: "highlightBlue",
+    color: "blue",
+    triggerLabel: "S",
+  },
+  {
+    title: "Scroll corallo",
+    value: "highlightCoral",
+    color: "coral",
+    triggerLabel: "S",
+  },
+  {
+    title: "Scroll arancione",
+    value: "highlightOrange",
+    color: "orange",
+    triggerLabel: "S",
+  },
+  {
+    title: "Load giallo",
+    value: "highlightLoadYellow",
+    color: "yellow",
+    triggerLabel: "L",
+  },
+  {
+    title: "Load rosa",
+    value: "highlightLoadPink",
+    color: "pink",
+    triggerLabel: "L",
+  },
+  {
+    title: "Load blu",
+    value: "highlightLoadBlue",
+    color: "blue",
+    triggerLabel: "L",
+  },
+  {
+    title: "Load corallo",
+    value: "highlightLoadCoral",
+    color: "coral",
+    triggerLabel: "L",
+  },
+  {
+    title: "Load arancione",
+    value: "highlightLoadOrange",
+    color: "orange",
+    triggerLabel: "L",
+  },
 ];
 
 function HighlightPreview({
@@ -108,7 +158,7 @@ const richTextBlocks = () => [
 
 export const localizedRichTextType = defineType({
   name: "localizedRichText",
-  title: "Testo formattato localizzato / Localized rich text",
+  title: "Testo formattato localizzato",
   type: "object",
   fields: [
     defineField({
@@ -119,7 +169,7 @@ export const localizedRichTextType = defineType({
     }),
     defineField({
       name: "en",
-      title: "English",
+      title: "Inglese",
       type: "array",
       of: richTextBlocks(),
     }),

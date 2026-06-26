@@ -145,11 +145,11 @@ export function ProjectsListing({
               </p>
 
               <div>
-                <h2 className="type-heading-xl text-measure font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60">
-                  <span className="block">{project.clientName}</span>
+                <h2 className="type-heading-xl font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60">
+                  <span>{project.clientName}</span>
                   {project.projectName && (
-                    <span className="mt-1 block italic">
-                      {project.projectName}
+                    <span>
+                      {`: ${project.projectName}`}
                     </span>
                   )}
                 </h2>

@@ -234,7 +234,7 @@ export type Project = ProjectListItem & {
   challenge: PortableRichTextValue;
   concept: PortableRichTextValue;
   process: PortableRichTextValue;
-  responsibilities: string[] | null;
+  responsibilities: string | string[] | null;
   outcome: PortableRichTextValue;
   credits: ProjectCredit[] | null;
   projectContentSections: ProjectMediaSection[] | null;
@@ -320,7 +320,17 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
   ${localizedValue("challenge")},
   ${localizedValue("concept")},
   ${localizedValue("process")},
-  ${localizedArray("responsibilities")},
+  "responsibilities": select(
+    responsibilities._type == "localizedString" || responsibilities._type == "localizedText" =>
+      coalesce(responsibilities[$locale], responsibilities[$fallbackLocale], responsibilities.it, responsibilities.en),
+    responsibilities[]{
+      "value": select(
+        @._type == "localizedString" || @._type == "localizedText" =>
+          coalesce(@[$locale], @[$fallbackLocale], @.it, @.en),
+        @
+      )
+    }.value
+  ),
   ${localizedValue("outcome")},
   credits[]{
     _key,

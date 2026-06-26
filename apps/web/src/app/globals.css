@@ -338,6 +338,21 @@ a {
     --pill-button-selected-text: var(--color-button-neutral-text);
   }
 
+  .pill-button-reverse {
+    --pill-button-fill-hover: var(--pill-button-color);
+  }
+
+  .pill-button-reverse::before {
+    opacity: 1;
+    transform: translate(-24%, -50%) scale(2.35);
+  }
+
+  .pill-button-reverse:hover::before,
+  .pill-button-reverse:focus-visible::before {
+    opacity: 0;
+    transform: translate(-60%, -50%) scale(0.04);
+  }
+
   /* The highlight is painted as a wrapping background rather than a single
      absolutely-positioned bar, so it follows the text across every line when
      the phrase wraps (e.g. multi-line headings/body on mobile). */

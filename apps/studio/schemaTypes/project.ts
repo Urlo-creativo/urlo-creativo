@@ -1,87 +1,236 @@
 import { ImagesIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { localizedPreviewText } from "./utils/preview";
+
 // Category dropdown for the Studio. The `value` strings are the contract with
 // the frontend — keep them identical to apps/web/src/lib/sanity/categories.ts
 // (which owns the display labels and order on the website).
 const CATEGORY_OPTIONS = [
   {
-    title: "Identita del brand e comunicazione / Brand Identity & Communication",
+    title: "Identità del brand e comunicazione",
     value: "brand-identity",
   },
   {
-    title: "Design e sviluppo prodotto / Design & Product Development",
+    title: "Design e sviluppo prodotto",
     value: "design-product",
   },
   {
-    title:
-      "Styling, shooting e art direction / Styling, Shooting & Art Direction",
+    title: "Styling, shooting e art direction",
     value: "styling-art-direction",
   },
 ] as const;
 
 export const projectType = defineType({
   name: "project",
-  title: "Progetto / Project",
+  title: "Progetto",
   type: "document",
   icon: ImagesIcon,
-  // Tabs keep the long form navigable for maintainers.
   groups: [
-    { name: "info", title: "Info e copertina / Info & cover", default: true },
-    { name: "copy", title: "Testi / Copy" },
-    { name: "media", title: "Media" },
-    { name: "credits", title: "Crediti / Credits" },
-    { name: "settings", title: "Impostazioni / Settings" },
+    { name: "hero", title: "Inizio pagina dettaglio", default: true },
+    { name: "copy", title: "Testi pagina dettaglio" },
+    { name: "media", title: "Sezioni media" },
+    { name: "credits", title: "Crediti" },
+    { name: "listing", title: "Lista e impostazioni" },
   ],
   fields: [
-    // ===== Info & cover =====
+    // ===== Detail page top =====
+    defineField({
+      name: "heroMedia",
+      title: "Media iniziale",
+      type: "projectMediaItem",
+      description:
+        "Large image or video at the top of the project detail page. Falls back to the cover image if empty.",
+      group: "hero",
+    }),
     defineField({
       name: "clientName",
-      title: "Cliente / Client",
+      title: "Nome cliente",
       type: "localizedString",
-      description:
-        "Nome del cliente o brand, es. Kappa x Ducati. / Client or brand name.",
-      group: "info",
+      description: "Main project title line, e.g. Kappa x Ducati.",
+      group: "hero",
       validation: (Rule) =>
         Rule.custom((value) => {
           const title = value as { it?: string; en?: string } | undefined;
           if (!title?.it && !title?.en) {
-            return "Inserisci almeno il cliente italiano o inglese. / Add at least an Italian or English client name.";
+            return "Add at least one language.";
           }
           return true;
         }),
     }),
     defineField({
       name: "projectName",
-      title: "Nome progetto / Project name",
+      title: "Nome progetto",
       type: "localizedString",
-      description:
-        "Nome del progetto mostrato sotto il cliente, es. The Perfect Alliance. / Project name shown under the client.",
-      group: "info",
+      description: "Second project title line shown below the client name.",
+      group: "hero",
     }),
     defineField({
       name: "titleGraphic",
-      title: "Grafica del titolo / Title graphic",
+      title: "Grafica titolo",
       type: "image",
-      group: "info",
+      group: "hero",
       options: { hotspot: true },
       description:
-        "Piccola grafica, badge o logo accanto al titolo. Solo immagine: non e hero, non e una sezione media. / Small graphic, badge or logo beside the title. Image only.",
+        "Small graphic, badge, or logo beside the title. This is not the hero media.",
       fields: [
         defineField({
           name: "alt",
-          title: "Testo alt / Alt text",
+          title: "Testo alt",
           type: "localizedString",
-          description:
-            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
+          description: "Describe the image for screen readers and SEO.",
         }),
       ],
     }),
     defineField({
+      name: "categories",
+      title: "Categorie",
+      type: "array",
+      group: "hero",
+      description: "Category tags shown below the project title.",
+      of: [defineArrayMember({ type: "string" })],
+      options: { list: [...CATEGORY_OPTIONS] },
+      validation: (Rule) => Rule.max(3),
+    }),
+    defineField({
+      name: "season",
+      title: "Stagione / collezione",
+      type: "string",
+      description: "Shown below the project title, e.g. FW 24/25 or SS 25.",
+      group: "hero",
+    }),
+    defineField({
+      name: "year",
+      title: "Anno",
+      type: "string",
+      description: "Shown below the project title and used for sorting.",
+      group: "hero",
+    }),
+    defineField({
+      name: "roles",
+      title: "Ruoli / servizi",
+      type: "array",
+      group: "hero",
+      description: "Tags shown in the Roles / Services row on the detail page.",
+      of: [defineArrayMember({ type: "localizedString" })],
+      validation: (Rule) => Rule.max(8),
+    }),
+
+    // ===== Detail page copy =====
+    defineField({
+      name: "challenge",
+      title: "Sfida",
+      type: "localizedRichText",
+      group: "copy",
+      description: "First text section on the project detail page.",
+    }),
+    defineField({
+      name: "concept",
+      title: "Concetto",
+      type: "localizedRichText",
+      group: "copy",
+      description: "Second text section, before media placed after Concept.",
+    }),
+    defineField({
+      name: "process",
+      title: "Processo",
+      type: "localizedRichText",
+      group: "copy",
+      description: "Text section after the media placed after Concept.",
+    }),
+    defineField({
+      name: "responsibilities",
+      title: "Responsabilità",
+      type: "localizedText",
+      description:
+        "Scrivi una responsabilità per riga. Mostrata dopo Processo e prima di Risultato.",
+      group: "copy",
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          const responsibilities = value as
+            | { it?: string; en?: string }
+            | undefined;
+          const lineCount = Math.max(
+            ...[responsibilities?.it, responsibilities?.en].map((text) =>
+              text
+                ? text
+                    .split(/\r?\n/)
+                    .map((line) => line.trim())
+                    .filter(Boolean).length
+                : 0,
+            ),
+          );
+
+          return lineCount <= 12
+            ? true
+            : "Inserisci massimo 12 responsabilità.";
+        }),
+    }),
+    defineField({
+      name: "outcome",
+      title: "Risultato",
+      type: "localizedRichText",
+      group: "copy",
+      description: "Final text section before Credits.",
+    }),
+
+    // ===== Media =====
+    // One list; each section's own `placement` field decides where it renders
+    // (after Concept / Responsibilities / Outcome, or under Behind the Scenes).
+    defineField({
+      name: "projectContentSections",
+      title: "Sezioni media del progetto",
+      type: "array",
+      group: "media",
+      description:
+        "Reusable media sections. Each section chooses where it appears in the detail page flow.",
+      of: [defineArrayMember({ type: "projectMediaSection" })],
+      validation: (Rule) => Rule.max(12),
+    }),
+
+    // ===== Credits =====
+    defineField({
+      name: "credits",
+      title: "Crediti",
+      type: "array",
+      group: "credits",
+      description: "Credit rows shown near the bottom of the detail page.",
+      of: [defineArrayMember({ type: "projectCredit" })],
+      validation: (Rule) => Rule.max(24),
+    }),
+
+    // ===== Listing & settings =====
+    defineField({
+      name: "coverImage",
+      title: "Immagine di copertina lista",
+      type: "image",
+      group: "listing",
+      description:
+        "Image used in project listings and as the hero fallback if Hero media is empty.",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alt",
+          type: "localizedString",
+          description: "Describe the image for screen readers and SEO.",
+        }),
+      ],
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "excerpt",
+      title: "Riassunto per lista",
+      type: "localizedText",
+      description: "Short summary shown on the projects listing page.",
+      group: "listing",
+    }),
+    defineField({
       name: "slug",
-      title: "Slug URL / URL slug",
+      title: "URL slug",
       type: "slug",
-      group: "info",
+      group: "listing",
+      description: "Used in the public project URL.",
       options: {
         source: (doc) => {
           const clientName = doc.clientName as
@@ -92,14 +241,8 @@ export const projectType = defineType({
             | { it?: string; en?: string }
             | string
             | undefined;
-          const client =
-            typeof clientName === "string"
-              ? clientName
-              : clientName?.it || clientName?.en;
-          const project =
-            typeof projectName === "string"
-              ? projectName
-              : projectName?.it || projectName?.en;
+          const client = localizedPreviewText(clientName);
+          const project = localizedPreviewText(projectName);
           return [client, project].filter(Boolean).join(" ") || "project";
         },
         maxLength: 96,
@@ -107,156 +250,30 @@ export const projectType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "year",
-      title: "Anno / Year",
-      type: "string",
-      description:
-        "Usato per ordinamento e lista progetti, es. 2025. / Used for ordering and the listing.",
-      group: "info",
-    }),
-    defineField({
-      name: "season",
-      title: "Stagione / Collezione / Season",
-      type: "string",
-      description: "Esempi: FW 23/24, FW 24/25, SS 25. / Examples.",
-      group: "info",
-    }),
-    defineField({
-      name: "categories",
-      title: "Categorie / Categories",
-      type: "array",
-      group: "info",
-      of: [defineArrayMember({ type: "string" })],
-      options: { list: [...CATEGORY_OPTIONS] },
-    }),
-    defineField({
-      name: "roles",
-      title: "Ruoli / Servizi / Roles",
-      type: "array",
-      group: "info",
-      description:
-        "Esempi: Creative Direction, Visual Identity, Product Development. / Examples.",
-      of: [defineArrayMember({ type: "localizedString" })],
-    }),
-    defineField({
-      name: "excerpt",
-      title: "Riassunto per lista / Listing excerpt",
-      type: "localizedText",
-      description:
-        "Breve testo mostrato nella pagina progetti. / Short summary shown on the projects listing page.",
-      group: "info",
-    }),
-    defineField({
-      name: "coverImage",
-      title: "Immagine di copertina / Cover image",
-      type: "image",
-      group: "info",
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Testo alt / Alt text",
-          type: "localizedString",
-          description:
-            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
-        }),
-      ],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "heroMedia",
-      title: "Media hero / Hero media",
-      type: "projectMediaItem",
-      description:
-        "Immagine o video grande in apertura della pagina progetto. / Large image or video at the top of the detail page.",
-      group: "info",
-    }),
-
-    // ===== Copy =====
-    defineField({
-      name: "challenge",
-      title: "Sfida / Challenge",
-      type: "localizedRichText",
-      group: "copy",
-    }),
-    defineField({
-      name: "concept",
-      title: "Concept / Concept",
-      type: "localizedRichText",
-      group: "copy",
-    }),
-    defineField({
-      name: "process",
-      title: "Processo / Process",
-      type: "localizedRichText",
-      group: "copy",
-    }),
-    defineField({
-      name: "responsibilities",
-      title: "Responsabilita / Responsibilities",
-      type: "array",
-      description:
-        "Esempi: Material Research, Prototype Development, Production Oversight. / Examples.",
-      of: [defineArrayMember({ type: "localizedString" })],
-      group: "copy",
-    }),
-    defineField({
-      name: "outcome",
-      title: "Risultato / Outcome",
-      type: "localizedRichText",
-      group: "copy",
-    }),
-
-    // ===== Media =====
-    // One list; each section's own `placement` field decides where it renders
-    // (after Concept / Responsibilities / Outcome, or under Behind the Scenes).
-    defineField({
-      name: "projectContentSections",
-      title: "Sezioni media / Media sections",
-      type: "array",
-      group: "media",
-      description:
-        "Lista unica dei layout media del progetto. Aggiungi una sezione, scegli dove appare nella pagina, assegna un'etichetta interna se utile, poi scegli la griglia e aggiungi immagini/video. / Single media layout list; add sections, choose placement, optionally label them internally, then choose grid and add image/video items.",
-      of: [defineArrayMember({ type: "projectMediaSection" })],
-    }),
-
-    // ===== Credits =====
-    defineField({
-      name: "credits",
-      title: "Crediti / Credits",
-      type: "array",
-      group: "credits",
-      of: [defineArrayMember({ type: "projectCredit" })],
-    }),
-
-    // ===== Settings =====
-    defineField({
       name: "featured",
-      title: "In evidenza / Featured",
+      title: "In evidenza in homepage",
       type: "boolean",
-      description:
-        "Mostra questo progetto nella griglia in homepage. / Show this project in the homepage projects grid.",
+      description: "Show this project in the homepage projects grid.",
       initialValue: false,
-      group: "settings",
+      group: "listing",
     }),
     defineField({
       name: "order",
-      title: "Ordine / Order",
+      title: "Ordine manuale",
       type: "number",
-      description:
-        "Numero piu basso = appare prima nella lista. / Lower number appears first in the listing.",
-      group: "settings",
+      description: "Lower number appears first in project lists.",
+      group: "listing",
     }),
   ],
 
   orderings: [
     {
-      title: "Ordine manuale / Manual order",
+      title: "Ordine manuale",
       name: "orderAsc",
       by: [{ field: "order", direction: "asc" }],
     },
     {
-      title: "Anno (piu recente prima) / Year newest first",
+      title: "Anno più recente prima",
       name: "yearDesc",
       by: [{ field: "year", direction: "desc" }],
     },
@@ -271,20 +288,14 @@ export const projectType = defineType({
       media: "coverImage",
     },
     prepare({ clientName, projectName, year, season, media }) {
-      const localizedClientName =
-        typeof clientName === "string"
-          ? clientName
-          : clientName?.it || clientName?.en;
-      const localizedProjectName =
-        typeof projectName === "string"
-          ? projectName
-          : projectName?.it || projectName?.en;
+      const localizedClientName = localizedPreviewText(clientName);
+      const localizedProjectName = localizedPreviewText(projectName);
       const previewTitle = [localizedClientName, localizedProjectName]
         .filter(Boolean)
         .join(": ");
       const metaSubtitle = [season, year].filter(Boolean).join(" · ");
       return {
-        title: previewTitle || "Progetto senza titolo / Untitled project",
+        title: previewTitle || "Untitled project",
         subtitle: metaSubtitle,
         media,
       };

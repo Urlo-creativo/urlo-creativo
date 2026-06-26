@@ -1,112 +1,142 @@
 import { CaseIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import {
+  localizedPreviewText,
+  localizedRichTextPreview,
+} from "./utils/preview";
+
+const SERVICE_VARIANT_LABELS: Record<string, string> = {
+  structured: "Structured details",
+  media: "Media + statement",
+  gallery: "Gallery + statement",
+};
+
 export const servicesPageType = defineType({
   name: "servicesPage",
-  title: "Services page",
+  title: "Pagina servizi",
   type: "document",
   icon: CaseIcon,
   groups: [
-    { name: "hero", title: "Hero", default: true },
-    { name: "accordion", title: "Accordion" },
-    { name: "collaboration", title: "Collaboration" },
+    { name: "hero", title: "Sezione iniziale", default: true },
+    { name: "accordion", title: "Fisarmonica" },
+    { name: "collaboration", title: "Collaborazione" },
   ],
   fields: [
     defineField({
       name: "title",
-      title: "Titolo pagina / Page title",
+      title: "Titolo pagina",
       type: "localizedRichText",
       group: "hero",
+      description: "Main headline at the top of the Services page.",
     }),
     defineField({
       name: "items",
-      title: "Servizi / Services",
+      title: "Servizi nella fisarmonica",
       type: "array",
       group: "accordion",
+      description: "Each item is one expandable row in the services accordion.",
+      validation: (Rule) => Rule.max(8),
       of: [
         defineArrayMember({
           type: "object",
           fields: [
             defineField({
               name: "number",
-              title: "Numero / Number",
+              title: "Numero visibile",
               type: "string",
+              description: "Shown at the start of the accordion row, e.g. 01.",
             }),
             defineField({
               name: "title",
-              title: "Titolo / Title",
+              title: "Titolo della voce",
               type: "localizedString",
+              validation: (Rule) =>
+                Rule.custom((value) => {
+                  const title = value as
+                    | { it?: string; en?: string }
+                    | undefined;
+                  return title?.it || title?.en
+                    ? true
+                    : "Add at least one language.";
+                }),
             }),
             defineField({
               name: "previewImage",
-              title: "Immagine anteprima / Preview image",
+              title: "Immagine voce chiusa",
               type: "image",
-              description:
-                "Immagine mostrata nell'intestazione del servizio (stato chiuso). / Image shown in the collapsed service header.",
+              description: "Image shown while this service row is closed.",
               options: { hotspot: true },
               fields: [
                 defineField({
                   name: "alt",
-                  title: "Alt text",
+                  title: "Testo alt",
                   type: "localizedString",
                 }),
               ],
             }),
             defineField({
               name: "variant",
-              title: "Tipo contenuto / Content type",
+              title: "Tipo contenuto aperto",
               type: "string",
-              description:
-                "Determina quali campi compaiono qui sotto. / Controls which fields appear below.",
+              description: "Choose the layout used after the row is opened.",
               options: {
                 layout: "radio",
                 list: [
-                  { title: "Dettagli strutturati / Structured details", value: "structured" },
-                  { title: "Media + statement", value: "media" },
-                  { title: "Gallery + statement", value: "gallery" },
+                  { title: "Dettagli strutturati", value: "structured" },
+                  { title: "Media + dichiarazione", value: "media" },
+                  { title: "Galleria + dichiarazione", value: "gallery" },
                 ],
               },
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "detailGroups",
-              title: "Gruppi dettaglio / Detail groups",
+              title: "Gruppi di dettagli strutturati",
               type: "array",
+              description:
+                "For services that show grouped lists of details inside the open row.",
               hidden: ({ parent }) => parent?.variant !== "structured",
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { variant?: string }
+                    | undefined;
+                  if (parent?.variant === "structured" && !value?.length) {
+                    return "Add at least one detail group for this content type.";
+                  }
+                  return true;
+                }).max(4),
               of: [
                 defineArrayMember({
                   type: "object",
                   fields: [
                     defineField({
                       name: "title",
-                      title: "Titolo / Title",
+                      title: "Titolo gruppo",
                       type: "localizedRichText",
                     }),
                     defineField({
                       name: "itemsText",
-                      title: "Voci, una per riga / Items, one per line",
+                      title: "Voci del gruppo",
                       type: "localizedText",
-                      description:
-                        "Scrivi una voce per riga. / Write one item per line.",
+                      description: "Write one item per line.",
                     }),
                   ],
                   preview: {
                     select: { title: "title", itemsText: "itemsText" },
                     prepare({ title, itemsText }) {
-                      const localizedTitle =
-                        title?.it?.[0]?.children?.map((child: { text?: string }) => child.text).join("") ||
-                        title?.en?.[0]?.children?.map((child: { text?: string }) => child.text).join("");
-                      const text =
-                        typeof itemsText === "string"
-                          ? itemsText
-                          : itemsText?.it || itemsText?.en || "";
+                      const localizedTitle = localizedRichTextPreview(title);
+                      const text = localizedPreviewText(itemsText) || "";
                       const count = text
                         .split(/\r?\n/)
                         .map((line: string) => line.trim())
                         .filter(Boolean).length;
                       return {
-                        title: localizedTitle || "Detail group",
-                        subtitle: count ? `${count} item${count === 1 ? "" : "s"}` : undefined,
+                        title: localizedTitle || "Untitled detail group",
+                        subtitle: count
+                          ? `${count} item${count === 1 ? "" : "s"}`
+                          : "No items added",
                       };
                     },
                   },
@@ -115,27 +145,52 @@ export const servicesPageType = defineType({
             }),
             defineField({
               name: "detailsText",
-              title: "Dettagli, uno per riga / Details, one per line",
+              title: "Dettagli disposizione media",
               type: "localizedText",
-              description:
-                "Scrivi un dettaglio per riga. / Write one detail per line.",
+              description: "Write one detail per line.",
               hidden: ({ parent }) => parent?.variant !== "media",
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { variant?: string }
+                    | undefined;
+                  if (parent?.variant !== "media") {
+                    return true;
+                  }
+                  const text = localizedPreviewText(
+                    value as { it?: string; en?: string } | undefined,
+                  );
+                  return text?.trim()
+                    ? true
+                    : "Add details for this media layout.";
+                }),
             }),
             defineField({
               name: "media",
-              title: "Media",
+              title: "Immagine disposizione media",
               type: "object",
               hidden: ({ parent }) => parent?.variant !== "media",
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { variant?: string }
+                    | undefined;
+                  const media = value as { image?: unknown } | undefined;
+                  if (parent?.variant === "media" && !media?.image) {
+                    return "Add an image for this media layout.";
+                  }
+                  return true;
+                }),
               fields: [
                 defineField({
                   name: "image",
-                  title: "Immagine / Image",
+                  title: "Immagine",
                   type: "image",
                   options: { hotspot: true },
                 }),
                 defineField({
                   name: "alt",
-                  title: "Alt text",
+                  title: "Testo alt",
                   type: "localizedString",
                 }),
               ],
@@ -151,60 +206,71 @@ export const servicesPageType = defineType({
             }),
             defineField({
               name: "statement",
-              title: "Statement evidenziato / Highlight statement",
+              title: "Dichiarazione evidenziata",
               type: "localizedRichText",
               description:
-                "Frase evidenziata mostrata nel contenuto del servizio. / Highlighted statement shown in the service content.",
+                "Highlighted sentence shown inside the open service row.",
             }),
             defineField({
               name: "statementImage",
-              title: "Immagine statement / Statement image",
+              title: "Immagine dichiarazione strutturata",
               type: "image",
               description:
-                "Immagine usata accanto allo statement evidenziato. / Image used beside the highlight statement.",
+                "Image shown beside the statement for structured services.",
               hidden: ({ parent }) => parent?.variant !== "structured",
               options: { hotspot: true },
               fields: [
                 defineField({
                   name: "alt",
-                  title: "Alt text",
+                  title: "Testo alt",
                   type: "localizedString",
                 }),
               ],
             }),
             defineField({
               name: "gallery",
-              title: "Gallery",
+              title: "Galleria",
               type: "array",
+              description: "Images shown in the gallery layout.",
               hidden: ({ parent }) => parent?.variant !== "gallery",
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  const parent = context.parent as
+                    | { variant?: string }
+                    | undefined;
+                  if (parent?.variant === "gallery" && !value?.length) {
+                    return "Add at least one gallery item.";
+                  }
+                  return true;
+                }).max(6),
               of: [
                 defineArrayMember({
                   type: "object",
                   fields: [
                     defineField({
                       name: "label",
-                      title: "Etichetta / Label",
+                      title: "Etichetta immagine",
                       type: "localizedString",
                     }),
                     defineField({
                       name: "image",
-                      title: "Immagine / Image",
+                      title: "Immagine",
                       type: "image",
                       options: { hotspot: true },
+                      validation: (Rule) => Rule.required(),
                     }),
                     defineField({
                       name: "alt",
-                      title: "Alt text",
+                      title: "Testo alt",
                       type: "localizedString",
                     }),
                   ],
                   preview: {
                     select: { title: "label", media: "image" },
                     prepare({ title, media }) {
-                      const localizedTitle =
-                        typeof title === "string" ? title : title?.it || title?.en;
+                      const localizedTitle = localizedPreviewText(title);
                       return {
-                        title: localizedTitle || "Gallery item",
+                        title: localizedTitle || "Untitled gallery item",
                         media,
                       };
                     },
@@ -221,11 +287,13 @@ export const servicesPageType = defineType({
               media: "previewImage",
             },
             prepare({ number, title, variant, media }) {
-              const localizedTitle =
-                typeof title === "string" ? title : title?.it || title?.en;
+              const localizedTitle = localizedPreviewText(title);
               return {
-                title: [number, localizedTitle].filter(Boolean).join(" "),
-                subtitle: variant || "service",
+                title:
+                  [number, localizedTitle].filter(Boolean).join(" ") ||
+                  "Untitled service",
+                subtitle:
+                  SERVICE_VARIANT_LABELS[variant] || "Choose a content type",
                 media,
               };
             },
@@ -235,20 +303,21 @@ export const servicesPageType = defineType({
     }),
     defineField({
       name: "collaborationTitle",
-      title: "Titolo collaborazione / Collaboration title",
+      title: "Titolo collaborazione",
       type: "localizedRichText",
       group: "collaboration",
+      description: "Heading below the services accordion.",
     }),
     defineField({
       name: "collaboration",
-      title: "Testo collaborazione / Collaboration body",
+      title: "Testo collaborazione",
       type: "localizedRichText",
       group: "collaboration",
     }),
   ],
   preview: {
     prepare() {
-      return { title: "Services page" };
+      return { title: "Pagina servizi" };
     },
   },
 });

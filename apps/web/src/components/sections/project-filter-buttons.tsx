@@ -1,13 +1,7 @@
 "use client";
 
 import type { CategoryOption } from "@/lib/sanity/queries";
-
-// Category buttons cycle through the brand toggle colours; "All" is neutral.
-const categoryStyles = [
-  "pill-button-yellow",
-  "pill-button-pink",
-  "pill-button-blue",
-] as const;
+import { projectCategoryPillClass } from "@/lib/project-category-styles";
 
 type ProjectFilterButtonsProps = {
   options: CategoryOption[];
@@ -46,7 +40,7 @@ export function ProjectFilterButtons({
           }
           className={[
             "pill-button min-h-11 px-5 py-2 text-center md:min-w-[348px] md:px-8",
-            categoryStyles[index % categoryStyles.length],
+            projectCategoryPillClass(index),
           ].join(" ")}
         >
           {option.label}

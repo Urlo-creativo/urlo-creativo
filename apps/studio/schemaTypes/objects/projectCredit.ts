@@ -1,48 +1,47 @@
 import { defineField, defineType } from "sanity";
 
+import { localizedPreviewText } from "../utils/preview";
+
 /**
  * One row in a project's credits list, e.g. "Photographer: Jane Doe @jane".
  */
 export const projectCreditType = defineType({
   name: "projectCredit",
-  title: "Credito / Credit",
+  title: "Credito",
   type: "object",
   fields: [
     defineField({
       name: "role",
-      title: "Ruolo / Role",
+      title: "Ruolo credito",
       type: "localizedString",
       description:
-        "Esempi: Founder/Art Director, Photographer, Project Manager. / Examples.",
+        "Examples: Founder/Art Director, Photographer, Project Manager.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "name",
-      title: "Nome / Name",
+      title: "Nome",
       type: "string",
     }),
     defineField({
       name: "handle",
-      title: "Handle",
+      title: "Nome utente social",
       type: "string",
-      description:
-        "Handle social opzionale, es. @username. / Optional social handle.",
+      description: "Optional social handle, e.g. @username.",
     }),
     defineField({
       name: "url",
-      title: "Link / Link",
+      title: "Collegamento",
       type: "url",
-      description:
-        "Link opzionale per handle o nome. / Optional link for the handle/name.",
+      description: "Optional link for the handle or name.",
     }),
   ],
   preview: {
     select: { role: "role", name: "name", handle: "handle" },
     prepare({ role, name, handle }) {
-      const localizedRole =
-        typeof role === "string" ? role : role?.it || role?.en;
+      const localizedRole = localizedPreviewText(role);
       return {
-        title: localizedRole || "Credito / Credit",
+        title: localizedRole || "Untitled credit",
         subtitle: [name, handle].filter(Boolean).join(" · "),
       };
     },

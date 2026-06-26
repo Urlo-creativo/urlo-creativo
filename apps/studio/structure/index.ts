@@ -1,20 +1,25 @@
 import { CaseIcon, HomeIcon, InfoOutlineIcon, UserIcon } from "@sanity/icons";
 import type { StructureResolver } from "sanity/structure";
 
-const customListTypes = new Set(["homePage", "servicesPage", "aboutPage", "person"]);
+const customListTypes = new Set([
+  "homePage",
+  "servicesPage",
+  "aboutPage",
+  "person",
+]);
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title("Content")
+    .title("Contenuti")
     .items([
       S.listItem()
-        .title("Homepage")
+        .title("Pagina home")
         .id("homePage")
         .icon(HomeIcon)
         .schemaType("homePage")
         .child(S.document().schemaType("homePage").documentId("homePage")),
       S.listItem()
-        .title("Services page")
+        .title("Pagina servizi")
         .id("servicesPage")
         .icon(CaseIcon)
         .schemaType("servicesPage")
@@ -22,12 +27,12 @@ export const structure: StructureResolver = (S) =>
           S.document().schemaType("servicesPage").documentId("servicesPage"),
         ),
       S.listItem()
-        .title("About page")
+        .title("Pagina about")
         .id("aboutPage")
         .icon(InfoOutlineIcon)
         .schemaType("aboutPage")
         .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
-      S.documentTypeListItem("person").title("People").icon(UserIcon),
+      S.documentTypeListItem("person").title("Persone").icon(UserIcon),
       S.divider(),
       ...S.documentTypeListItems().filter(
         (item) => !customListTypes.has(item.getId() ?? ""),
