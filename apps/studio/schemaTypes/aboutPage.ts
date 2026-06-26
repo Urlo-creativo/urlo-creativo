@@ -36,7 +36,13 @@ export const aboutPageType = defineType({
         "Immagine sfocata a tutta larghezza sotto l'intro. / Full-width blurred image under the intro.",
       options: { hotspot: true },
       fields: [
-        defineField({ name: "alt", title: "Alt text", type: "localizedString" }),
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
+        }),
       ],
       group: "about",
     }),
@@ -59,6 +65,8 @@ export const aboutPageType = defineType({
       title: "Ruoli core / Core roles",
       type: "array",
       group: "teamCore",
+      description:
+        "Ruoli del team core. L'immagine appare al passaggio del mouse sul ruolo. / Team core roles; the image shows on hover.",
       of: [
         defineArrayMember({
           type: "object",
@@ -106,9 +114,11 @@ export const aboutPageType = defineType({
     }),
     defineField({
       name: "processSteps",
-      title: "Step processo / Process steps (Massimo 5 Steps)",
+      title: "Step processo / Process steps",
       type: "array",
       group: "process",
+      description: "Massimo 6 step. / Maximum 6 steps.",
+      validation: (Rule) => Rule.max(6),
       of: [
         defineArrayMember({
           type: "object",
@@ -127,6 +137,8 @@ export const aboutPageType = defineType({
               name: "color",
               title: "Colore / Color",
               type: "string",
+              description:
+                "Colore accento dello step sul sito. / Step accent colour on the website.",
               initialValue: "pink",
               options: {
                 layout: "radio",
@@ -179,7 +191,13 @@ export const aboutPageType = defineType({
       type: "image",
       options: { hotspot: true },
       fields: [
-        defineField({ name: "alt", title: "Alt text", type: "localizedString" }),
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
+        }),
       ],
       group: "mission",
     }),
@@ -203,15 +221,23 @@ export const aboutPageType = defineType({
       type: "image",
       options: { hotspot: true },
       fields: [
-        defineField({ name: "alt", title: "Alt text", type: "localizedString" }),
+        defineField({
+          name: "alt",
+          title: "Alt text",
+          type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
+        }),
       ],
       group: "history",
     }),
     defineField({
       name: "historyItems",
-      title: "Voci history / History items (massimo 2 voci)",
+      title: "Voci history / History items",
       type: "array",
       group: "history",
+      description: "Massimo 2 voci. / Maximum 2 items.",
+      validation: (Rule) => Rule.max(2),
       of: [
         defineArrayMember({
           type: "object",

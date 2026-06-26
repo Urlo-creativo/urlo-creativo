@@ -72,6 +72,8 @@ export const projectType = defineType({
           name: "alt",
           title: "Testo alt / Alt text",
           type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
         }),
       ],
     }),
@@ -155,6 +157,8 @@ export const projectType = defineType({
           name: "alt",
           title: "Testo alt / Alt text",
           type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilità e SEO. / Describe the image for accessibility and SEO.",
         }),
       ],
       validation: (Rule) => Rule.required(),

@@ -56,6 +56,8 @@ export const servicesPageType = defineType({
               name: "variant",
               title: "Tipo contenuto / Content type",
               type: "string",
+              description:
+                "Determina quali campi compaiono qui sotto. / Controls which fields appear below.",
               options: {
                 layout: "radio",
                 list: [
@@ -64,6 +66,7 @@ export const servicesPageType = defineType({
                   { title: "Gallery + statement", value: "gallery" },
                 ],
               },
+              validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: "detailGroups",
@@ -150,6 +153,8 @@ export const servicesPageType = defineType({
               name: "statement",
               title: "Statement evidenziato / Highlight statement",
               type: "localizedRichText",
+              description:
+                "Frase evidenziata mostrata nel contenuto del servizio. / Highlighted statement shown in the service content.",
             }),
             defineField({
               name: "statementImage",
