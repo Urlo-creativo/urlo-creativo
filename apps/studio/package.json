@@ -10,6 +10,8 @@
     "migrate:project-fields:write": "MIGRATE_PROJECT_FIELDS_WRITE=1 sanity exec migrations/rename-project-title-fields.mjs --with-user-token",
     "migrate:home-title-rich-text": "sanity exec migrations/migrate-home-title-rich-text.mjs --with-user-token",
     "migrate:home-title-rich-text:write": "MIGRATE_HOME_TITLE_RICH_TEXT_WRITE=1 sanity exec migrations/migrate-home-title-rich-text.mjs --with-user-token",
+    "migrate:about-title-rich-text": "sanity exec migrations/migrate-about-title-rich-text.mjs --with-user-token",
+    "migrate:about-title-rich-text:write": "MIGRATE_ABOUT_TITLE_RICH_TEXT_WRITE=1 sanity exec migrations/migrate-about-title-rich-text.mjs --with-user-token",
     "migrate:services-gallery-items": "sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
     "migrate:services-gallery-items:write": "MIGRATE_SERVICES_GALLERY_ITEMS_WRITE=1 sanity exec migrations/migrate-services-gallery-items.mjs --with-user-token",
     "seed:home-page": "sanity exec migrations/seed-home-page-content.mjs --with-user-token",
@@ -17,7 +19,10 @@
     "seed:services-page": "sanity exec migrations/seed-services-page-content.mjs --with-user-token",
     "seed:services-page:write": "SEED_SERVICES_PAGE_WRITE=1 sanity exec migrations/seed-services-page-content.mjs --with-user-token",
     "seed:about-page": "sanity exec migrations/seed-about-page-content.mjs --with-user-token",
-    "seed:about-page:write": "SEED_ABOUT_PAGE_WRITE=1 sanity exec migrations/seed-about-page-content.mjs --with-user-token"
+    "seed:about-page:write": "SEED_ABOUT_PAGE_WRITE=1 sanity exec migrations/seed-about-page-content.mjs --with-user-token",
+    "audit:stale-sanity-fields": "sanity exec migrations/audit-stale-sanity-fields.mjs --with-user-token",
+    "cleanup:services-placeholders": "sanity exec migrations/cleanup-services-placeholder-fallbacks.mjs --with-user-token",
+    "cleanup:services-placeholders:write": "CLEANUP_SERVICES_PLACEHOLDERS_WRITE=1 sanity exec migrations/cleanup-services-placeholder-fallbacks.mjs --with-user-token"
   },
   "dependencies": {
     "@sanity/language-filter": "^5.0.4",

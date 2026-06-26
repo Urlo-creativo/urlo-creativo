@@ -4,11 +4,17 @@ import { notFound } from "next/navigation";
 
 import { ClientMarquee } from "@/components/sections/client-marquee";
 import { PotentialSection } from "@/components/sections/potential-section";
+import { ProjectMediaItemView } from "@/components/sections/project-media";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { PageRichText } from "@/components/ui/page-rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
+import {
+  PLACEHOLDER_ALT,
+  PLACEHOLDER_IMAGE,
+  placeholderText,
+} from "@/content/placeholders";
 import {
   clientsQuery,
   featuredProjectsQuery,
@@ -17,6 +23,7 @@ import {
   type ProjectListItem,
   type SanityClient,
 } from "@/lib/sanity/queries";
+import { hasImageAsset } from "@/lib/sanity/image";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -48,22 +55,41 @@ export default async function Home({
   const methodSteps =
     homeContent?.methodSteps?.length
       ? homeContent.methodSteps.map((step) => ({
-          title: step.title,
-          items: step.items ?? [],
+          title: step.title || placeholderText.title,
+          items: step.items?.length ? step.items : [placeholderText.item],
         }))
       : fallbackMethodSteps;
+  const clientsForMarquee = selectedClients.length
+    ? selectedClients
+    : [{ name: placeholderText.name, logo: PLACEHOLDER_IMAGE, url: null }];
+  const heroMedia = homeContent?.heroMedia;
+  const heroRenderable =
+    heroMedia &&
+    (heroMedia.mediaType === "video"
+      ? Boolean(heroMedia.videoUrl || heroMedia.videoFile)
+      : hasImageAsset(heroMedia.image));
 
   return (
     <main className="overflow-hidden bg-paper">
       <section className="relative h-dvh bg-black text-[var(--color-text-on-hero)]">
-        <Image
-          src="/hero/hero-mountain.png"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="z-0 object-cover"
-        />
+        {heroRenderable ? (
+          <ProjectMediaItemView
+            item={heroMedia}
+            className="absolute inset-0 z-0"
+            priority
+            sizes="100vw"
+            variant="hero"
+          />
+        ) : (
+          <Image
+            src={PLACEHOLDER_IMAGE}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="z-0 object-cover"
+          />
+        )}
         <div
           className="absolute inset-0 z-10"
           style={{
@@ -84,7 +110,7 @@ export default async function Home({
               as="h1"
               value={homeContent?.heroTitle}
               fallback={dictionary.home.heroTitle}
-              className="type-display-xl font-bold uppercase"
+              className="type-display-xl uppercase"
             />
             <PageRichText
               as="p"
@@ -137,7 +163,7 @@ export default async function Home({
             as="h2"
             value={homeContent?.projectsTitle}
             fallback={dictionary.home.projectsTitle}
-            className="type-display font-bold uppercase"
+            className="type-display uppercase"
           />
         </div>
         {/* 2 cols at md keeps images tall enough for 1.1× to reach the title;
@@ -172,15 +198,27 @@ export default async function Home({
                              origin-top-left transition-transform duration-500 ease-out
                              md:group-hover:scale-[1.1]"
                 >
-                  <SanityImage
-                    image={project.coverImage}
-                    alt=""
-                    fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    className="object-cover transition-all duration-500 ease-out
-                               md:grayscale md:blur-[3px]
-                               md:group-hover:grayscale-0 md:group-hover:blur-0"
-                  />
+                  {project.coverImage ? (
+                    <SanityImage
+                      image={project.coverImage}
+                      alt=""
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover transition-all duration-500 ease-out
+                                 md:grayscale md:blur-[3px]
+                                 md:group-hover:grayscale-0 md:group-hover:blur-0"
+                    />
+                  ) : (
+                    <Image
+                      src={PLACEHOLDER_IMAGE}
+                      alt={PLACEHOLDER_ALT}
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover transition-all duration-500 ease-out
+                                 md:grayscale md:blur-[3px]
+                                 md:group-hover:grayscale-0 md:group-hover:blur-0"
+                    />
+                  )}
                 </div>
 
                 {/* On desktop the title is permanently white + mix-blend-difference.
@@ -245,7 +283,7 @@ export default async function Home({
             className="type-display uppercase"
           />
         </div>
-        <ClientMarquee clients={selectedClients} />
+        <ClientMarquee clients={clientsForMarquee} />
       </section>
 
       <section className="py-20 md:pb-[180px] md:pt-[190px]">
@@ -255,19 +293,28 @@ export default async function Home({
             as="h2"
             value={homeContent?.teamTitle}
             fallback={dictionary.home.teamTitle}
-            className="type-display font-bold uppercase"
+            className="type-display uppercase"
           />
         </div>
 
         {/* Full-width photo */}
         <div className="relative mt-8 aspect-[1440/1029] w-full overflow-hidden">
-          <Image
-            src="/projects/people-team.jpg"
-            alt="The Urlo Creativo team"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
+          {hasImageAsset(homeContent?.teamImage) ? (
+            <SanityImage
+              image={homeContent.teamImage}
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+          ) : (
+            <Image
+              src={PLACEHOLDER_IMAGE}
+              alt={PLACEHOLDER_ALT}
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
+          )}
         </div>
 
         {/* Body text + button */}

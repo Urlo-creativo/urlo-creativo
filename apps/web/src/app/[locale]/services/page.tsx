@@ -4,6 +4,13 @@ import { notFound } from "next/navigation";
 import { PageRichText } from "@/components/ui/page-rich-text";
 import { ServiceAccordion, type ServiceItem } from "@/components/sections/service-accordion";
 import { SiteFooter } from "@/components/sections/site-footer";
+import {
+  PLACEHOLDER_ALT,
+  PLACEHOLDER_IMAGE,
+  placeholderBodyRichText,
+  placeholderRichText,
+  placeholderText,
+} from "@/content/placeholders";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 import { client } from "@/lib/sanity/client";
@@ -17,44 +24,15 @@ export const metadata: Metadata = {
   title: "Services",
 };
 
-const serviceImages = [
-  "/services/brand-identity.jpg",
-  "/services/design.jpg",
-  "/services/styling.jpg",
+const serviceImages = [PLACEHOLDER_IMAGE] as const;
+
+const placeholderGallery = [
+  {
+    label: placeholderText.label,
+    fallbackImage: PLACEHOLDER_IMAGE,
+    alt: PLACEHOLDER_ALT,
+  },
 ] as const;
-
-const mediaByServiceIndex = {
-  1: { fallbackImage: "/services/design-development-detail.png", alt: "" },
-} as const;
-
-const statementImageByServiceIndex = {
-  0: { fallbackImage: "/services/design.jpg", alt: "" },
-} as const;
-
-const galleryByServiceIndex = {
-  2: [
-    {
-      label: "PRODUCTION",
-      fallbackImage: "/services/styling-production.png",
-      alt: "",
-    },
-    {
-      label: "ART DIRECTION",
-      fallbackImage: "/services/styling-art-direction.png",
-      alt: "",
-    },
-    {
-      label: "STYLING",
-      fallbackImage: "/services/styling-styling.png",
-      alt: "",
-    },
-    {
-      label: "PHOTO AND VIDEO SHOOTINGS",
-      fallbackImage: "/services/styling-photo-video.png",
-      alt: "",
-    },
-  ],
-} as const;
 
 function linesFromText(value: string | null | undefined) {
   return value
@@ -73,59 +51,45 @@ function serviceItemsFromSanity(
     const fallbackItem = fallbackItems[index];
     const base = {
       number: item.number ?? String(index + 1).padStart(2, "0"),
-      title: item.title ?? "",
+      title: item.title ?? placeholderText.title,
       previewImage: item.previewImage,
     };
 
     if (item.variant === "structured") {
-      const fallbackStatementImage =
-        statementImageByServiceIndex[
-          index as keyof typeof statementImageByServiceIndex
-        ];
-      const statementImage =
-        item.statementImage || fallbackStatementImage
-          ? {
-              ...(fallbackStatementImage ?? {}),
-              image: item.statementImage,
-              alt: item.statementImage?.alt ?? fallbackStatementImage?.alt ?? "",
-            }
-          : undefined;
-
       return {
         ...base,
         details:
           item.detailGroups?.map((detail) => ({
-            title: detail.title,
-            items: linesFromText(detail.itemsText) ?? detail.items ?? [],
+            title: detail.title ?? placeholderRichText,
+            items:
+              linesFromText(detail.itemsText) ??
+              [placeholderText.item],
           })) ?? [],
-        statement: item.statement ?? fallbackItem?.statement,
-        statementImage,
+        statement: item.statement ?? fallbackItem?.statement ?? placeholderBodyRichText,
+        statementImage: {
+          fallbackImage: PLACEHOLDER_IMAGE,
+          image: item.statementImage,
+          alt: item.statementImage?.alt ?? PLACEHOLDER_ALT,
+        },
       };
     }
 
     if (item.variant === "media") {
-      const fallbackMedia =
-        mediaByServiceIndex[index as keyof typeof mediaByServiceIndex];
-      const media =
-        item.media?.image || fallbackMedia
-          ? {
-              ...(fallbackMedia ?? {}),
-              image: item.media?.image,
-              alt: item.media?.alt ?? fallbackMedia?.alt ?? "",
-            }
-          : null;
-
       return {
         ...base,
-        details: linesFromText(item.detailsText) ?? item.details ?? [],
-        ...(media ? { media } : {}),
-        statement: item.statement,
+        details:
+          linesFromText(item.detailsText) ?? [placeholderText.item],
+        media: {
+          fallbackImage: PLACEHOLDER_IMAGE,
+          image: item.media?.image,
+          alt: item.media?.alt ?? PLACEHOLDER_ALT,
+        },
+        statement: item.statement ?? fallbackItem?.statement ?? placeholderBodyRichText,
       };
     }
 
     if (item.variant === "gallery") {
-      const fallbackGallery =
-        galleryByServiceIndex[index as keyof typeof galleryByServiceIndex] ?? [];
+      const fallbackGallery = placeholderGallery;
       const sanityGallery = item.gallery ?? [];
       const galleryLength = Math.max(fallbackGallery.length, sanityGallery.length);
       const gallery = Array.from({ length: galleryLength }, (_, galleryIndex) => {
@@ -138,22 +102,26 @@ function serviceItemsFromSanity(
           label:
             sanityGalleryItem?.label ??
             fallbackGalleryItem?.label ??
-            String(galleryIndex + 1).padStart(2, "0"),
-          alt: sanityGalleryItem?.alt ?? fallbackGalleryItem?.alt ?? "",
+            placeholderText.label,
+          alt: sanityGalleryItem?.alt ?? fallbackGalleryItem?.alt ?? PLACEHOLDER_ALT,
         };
-      }).filter((galleryItem) => galleryItem.image || galleryItem.fallbackImage);
+      }).map((galleryItem) => ({
+        ...galleryItem,
+        fallbackImage: galleryItem.fallbackImage ?? PLACEHOLDER_IMAGE,
+      }));
 
       return {
         ...base,
         details: [],
         gallery,
-        statement: item.statement,
+        statement: item.statement ?? fallbackItem?.statement ?? placeholderBodyRichText,
       };
     }
 
     return {
       ...base,
-      details: linesFromText(item.detailsText) ?? item.details ?? [],
+      details:
+        linesFromText(item.detailsText) ?? [placeholderText.item],
     };
   });
 }
@@ -187,7 +155,7 @@ export default async function ServicesPage({
           as="h1"
           value={servicesContent?.title}
           fallback={services.title}
-          className="type-display font-bold uppercase"
+          className="type-display uppercase"
         />
       </section>
 
@@ -203,13 +171,13 @@ export default async function ServicesPage({
           as="h2"
           value={servicesContent?.collaborationTitle}
           fallback={services.collaborationTitle}
-          className="type-body-lg w-fit font-bold uppercase"
+          className="type-body-lg w-fit uppercase"
         />
         <PageRichText
           as="p"
           value={servicesContent?.collaboration}
           fallback={services.collaboration}
-          className="type-body-lg mt-6 max-w-[1036px] font-bold"
+          className="type-body-lg mt-6 w-full"
         />
       </section>
 

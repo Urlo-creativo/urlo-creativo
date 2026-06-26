@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
+
 type Client = {
   logo: string | null;
   name: string;
@@ -133,12 +135,10 @@ export function ClientMarquee({ clients }: ClientMarqueeProps) {
             className="client-marquee-group"
           >
             {clients.map((client) => {
-              if (!client.logo) return null;
-
               const logo = (
                 <span className="client-marquee-logo-frame">
                   <Image
-                    src={client.logo}
+                    src={client.logo ?? PLACEHOLDER_IMAGE}
                     alt=""
                     width={280}
                     height={120}

@@ -23,6 +23,14 @@ export const homePageType = defineType({
       group: "hero",
     }),
     defineField({
+      name: "heroMedia",
+      title: "Media hero / Hero media",
+      type: "projectMediaItem",
+      group: "hero",
+      description:
+        "Immagine o video per lo sfondo hero. I video vengono riprodotti in autoplay e senza audio sul sito. / Image or video for the hero background. Videos autoplay muted on the website.",
+    }),
+    defineField({
       name: "heroTitle",
       title: "Titolo hero / Hero title",
       type: "localizedRichText",
@@ -111,6 +119,22 @@ export const homePageType = defineType({
       title: "Titolo persone / People title",
       type: "localizedRichText",
       group: "team",
+    }),
+    defineField({
+      name: "teamImage",
+      title: "Immagine persone / People image",
+      type: "image",
+      group: "team",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alt / Alt text",
+          type: "localizedString",
+          description:
+            "Descrivi l'immagine per accessibilita e SEO. / Describe the image for screen readers and SEO.",
+        }),
+      ],
     }),
     defineField({
       name: "teamIntro",

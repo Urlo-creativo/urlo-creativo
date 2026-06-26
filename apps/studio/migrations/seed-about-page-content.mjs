@@ -116,13 +116,15 @@ function slugify(value) {
 
 async function uploadedImage(relativePath, alt = "") {
   const filePath = path.join(publicDir, relativePath);
+  const fallbackPath = path.join(publicDir, "placeholder-image.png");
+  const uploadPath = existsSync(filePath) ? filePath : fallbackPath;
 
-  if (!existsSync(filePath)) {
+  if (!existsSync(uploadPath)) {
     throw new Error(`Missing image file: ${filePath}`);
   }
 
-  const asset = await client.assets.upload("image", createReadStream(filePath), {
-    filename: path.basename(filePath),
+  const asset = await client.assets.upload("image", createReadStream(uploadPath), {
+    filename: path.basename(uploadPath),
   });
 
   return {
@@ -136,43 +138,43 @@ const people = [
   {
     name: "Giulia",
     role: "Founder of Urlo Creativo, Graphic Designer, Project Manager",
-    photo: "about/giulia.png",
+    photo: "placeholder-image.png",
   },
   {
     name: "Federica",
     role: "Graphic Designer, UI/UX Designer",
-    photo: "about/federica.png",
+    photo: "placeholder-image.png",
   },
   {
     name: "Martina",
     role: "Brand Identity Strategist, Copywriter, UX Writer",
-    photo: "about/martina.png",
+    photo: "placeholder-image.png",
   },
   {
     name: "Margherita",
     role: "Surface, Colour and Textile Designer",
-    photo: "about/margherita.png",
+    photo: "placeholder-image.png",
   },
   {
     name: "Valentina",
     role: "Technical Designer and Product Developer",
-    photo: "about/valentina.png",
+    photo: "placeholder-image.png",
   },
   {
     name: "Camilla",
     role: "Stylist",
-    photo: "about/camilla.png",
+    photo: "placeholder-image.png",
   },
 ];
 
 async function buildAboutContent() {
   const coreRoleImages = await Promise.all(
     [
-      "about/team-core-1.png",
-      "about/team-core-2.png",
-      "about/team-core-3.png",
-      "about/team-core-4.png",
-      "about/team-core-5.png",
+      "placeholder-image.png",
+      "placeholder-image.png",
+      "placeholder-image.png",
+      "placeholder-image.png",
+      "placeholder-image.png",
     ].map((image) => uploadedImage(image)),
   );
 
@@ -203,7 +205,7 @@ async function buildAboutContent() {
         ],
       ],
     }),
-    heroImage: await uploadedImage("projects/people-team.jpg"),
+    heroImage: await uploadedImage("placeholder-image.png"),
     statement: localizedRichText({
       it: [
         [
@@ -230,7 +232,10 @@ async function buildAboutContent() {
         ],
       ],
     }),
-    teamCoreTitle: sameString("TEAM CORE"),
+    teamCoreTitle: localizedRichText({
+      it: [[{ text: "TEAM CORE" }]],
+      en: [[{ text: "TEAM CORE" }]],
+    }),
     coreRoles: [
       "Fashion Designer",
       "Copy Writer",
@@ -243,7 +248,10 @@ async function buildAboutContent() {
       role: sameString(role),
       image: coreRoleImages[index],
     })),
-    processTitle: sameString("HOW WE WORK"),
+    processTitle: localizedRichText({
+      it: [[{ text: "HOW WE WORK" }]],
+      en: [[{ text: "HOW WE WORK" }]],
+    }),
     processSteps: [
       ["Discovery", "Brand, context and objective analysis.", "pink"],
       ["Strategy", "Positioning, narrative and communication strategy.", "deepBlue"],
@@ -258,7 +266,10 @@ async function buildAboutContent() {
       description: sameString(description),
       color,
     })),
-    missionTitle: sameString("MISSION"),
+    missionTitle: localizedRichText({
+      it: [[{ text: "MISSION" }]],
+      en: [[{ text: "MISSION" }]],
+    }),
     mission: localizedRichText({
       it: [
         [
@@ -275,7 +286,7 @@ async function buildAboutContent() {
         ],
       ],
     }),
-    missionImage: await uploadedImage("about/mission.jpg"),
+    missionImage: await uploadedImage("placeholder-image.png"),
     missionHighlight: localizedRichText({
       it: [
         [
@@ -320,7 +331,7 @@ async function buildAboutContent() {
         ],
       ],
     }),
-    historyImage: await uploadedImage("about/history-value.png"),
+    historyImage: await uploadedImage("placeholder-image.png"),
     historyItems: [
       {
         _key: "begin",
@@ -379,7 +390,10 @@ async function buildAboutContent() {
         }),
       },
     ],
-    peopleTitle: sameString("PEOPLE"),
+    peopleTitle: localizedRichText({
+      it: [[{ text: "PEOPLE" }]],
+      en: [[{ text: "PEOPLE" }]],
+    }),
   };
 }
 

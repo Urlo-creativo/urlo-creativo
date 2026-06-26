@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -10,6 +11,7 @@ import { SiteFooter } from "@/components/sections/site-footer";
 import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
+import { PLACEHOLDER_ALT, PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { client } from "@/lib/sanity/client";
 import { hasImageAsset } from "@/lib/sanity/image";
 import { localeParams } from "@/lib/sanity/locale";
@@ -78,7 +80,7 @@ function TextSection({
       <StructuredRichText
         as="h2"
         lines={heading}
-        className="type-heading-md font-bold uppercase"
+        className="type-heading-md uppercase"
       />
       <div className="stack-md">{children}</div>
     </section>
@@ -165,13 +167,24 @@ export default async function ProjectDetailPage({
           />
         ) : (
           <div className="relative h-[calc(100vh-var(--project-hero-offset))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
-            <SanityImage
-              image={project.coverImage}
-              priority
-              fill
-              sizes="100vw"
-              className="object-cover"
-            />
+            {hasImageAsset(project.coverImage) ? (
+              <SanityImage
+                image={project.coverImage}
+                priority
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            ) : (
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt={PLACEHOLDER_ALT}
+                priority
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            )}
           </div>
         )}
       </section>

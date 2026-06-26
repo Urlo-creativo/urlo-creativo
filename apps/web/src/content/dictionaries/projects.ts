@@ -22,7 +22,7 @@ function sectionHeading(
   text: string,
   key: keyof typeof sectionStyle,
 ): RichTextToken[][] {
-  return [[{ text, ...sectionStyle[key] }]];
+  return [[{ text, bold: true, ...sectionStyle[key] }]];
 }
 
 const projectsIt = {

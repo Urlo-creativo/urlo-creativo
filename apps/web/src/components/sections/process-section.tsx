@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useState } from "react";
 
 import type { ProcessStepColor } from "@/lib/sanity/queries";
@@ -29,7 +30,7 @@ function textColorFor(color: ProcessStepColor) {
 }
 
 type ProcessSectionProps = {
-  title: string;
+  title: ReactNode;
   stages: readonly string[];
   descriptions: readonly string[];
   colors?: readonly (ProcessStepColor | null | undefined)[];
@@ -49,12 +50,12 @@ export function ProcessSection({
 
   return (
     <section className="page-shell py-20 md:pb-[136px] md:pt-[96px]">
-      <h2 className="type-display font-bold uppercase">
+      <h2 className="type-display uppercase">
         {title}
       </h2>
       <div className="mt-9 space-y-3 md:hidden">
         {stages.map((stage, i) => (
-          <div key={stage} className="border-t border-black pt-3">
+          <div key={`process-mobile-${i}`} className="border-t border-black pt-3">
             <div className="flex gap-3">
               <span
                 aria-hidden
@@ -75,8 +76,8 @@ export function ProcessSection({
       </div>
       <div className="mt-10 hidden md:block md:mt-[58px]">
         <div className="type-caption grid grid-cols-6 pb-1 font-bold uppercase">
-          {stages.map((stage) => (
-            <span key={stage}>{stage}</span>
+          {stages.map((stage, i) => (
+            <span key={`process-label-${i}`}>{stage}</span>
           ))}
         </div>
         {/* Fixed height so expansion overlaps content below without pushing it */}
@@ -86,7 +87,7 @@ export function ProcessSection({
         >
           {stages.map((stage, i) => (
             <div
-              key={stage}
+              key={`process-panel-${i}`}
               className="relative cursor-pointer"
               onMouseEnter={() => setActiveIndex(i)}
               onMouseLeave={() => setActiveIndex(null)}

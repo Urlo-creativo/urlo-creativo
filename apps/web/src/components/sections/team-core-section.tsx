@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AnimatedBar } from "@/components/ui/animated-bar";
@@ -24,7 +25,7 @@ export type TeamCoreRole = {
 };
 
 type TeamCoreSectionProps = {
-  title: string;
+  title: ReactNode;
   roles: readonly TeamCoreRole[];
 };
 
@@ -33,7 +34,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
 
   return (
     <section className="page-shell py-20 md:pb-[148px] md:pt-[172px]">
-      <h2 className="type-display font-bold uppercase">
+      <h2 className="type-display uppercase">
         {title}
       </h2>
 

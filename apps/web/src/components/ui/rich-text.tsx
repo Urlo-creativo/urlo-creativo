@@ -16,9 +16,7 @@ type StructuredRichTextProps = {
 };
 
 function tokenClassName(token: RichTextToken) {
-  // type-* wrappers are all weight-400, so regular tokens need no font-normal
-  // counterweight — only bold/italic tokens emit their own utility.
-  return [token.bold ? "font-bold" : "", token.italic ? "italic" : ""]
+  return [token.bold ? "font-bold" : "font-normal", token.italic ? "italic" : ""]
     .filter(Boolean)
     .join(" ");
 }

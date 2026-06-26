@@ -53,6 +53,7 @@ function MediaCaption({ caption }: { caption: string | null }) {
 
 type MediaItemProps = {
   item: ProjectMediaItem;
+  className?: string;
   sizes?: string;
   priority?: boolean;
   variant?: "default" | "hero";
@@ -60,6 +61,7 @@ type MediaItemProps = {
 
 export function ProjectMediaItemView({
   item,
+  className,
   sizes,
   priority,
   variant = "default",
@@ -70,7 +72,14 @@ export function ProjectMediaItemView({
     if (!hasImageAsset(item.image)) return null;
     if (isHero) {
       return (
-        <figure className="relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
+        <figure
+          className={[
+            "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]",
+            className,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
           <SanityImage
             image={item.image}
             fill
@@ -103,7 +112,7 @@ export function ProjectMediaItemView({
 
   if (embedUrl) {
     return (
-      <figure>
+      <figure className={className}>
         <div
           className={
             isHero
@@ -128,7 +137,7 @@ export function ProjectMediaItemView({
   if (!playableUrl) return null;
 
   return (
-    <figure>
+    <figure className={className}>
       <video
         controls={!isHero}
         autoPlay={isHero}

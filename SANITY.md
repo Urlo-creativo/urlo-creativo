@@ -272,27 +272,26 @@ npm run seed:home-page:write
 
 The frontend reads Sanity first and falls back to the dictionary if a field is
 missing, so content can be migrated field by field without breaking the page.
-Because these fields are now maintained in Sanity, their dictionary entries are
-only short `Lorem ipsum` fallbacks that preserve the expected rich-text shape.
+Because these fields are now maintained in Sanity, their dictionary entries use
+short, obvious `Placeholder ...` fallbacks that preserve the expected shape.
 
 ### 2.9 `servicesPage` (singleton document)
 
 The services page keeps its editorial copy in the `servicesPage` singleton.
 Sanity controls the page title, accordion text, statements, detail lists,
-media images, gallery labels, gallery images, and collaboration copy. Existing
-local service images remain as fallbacks when a media/gallery image has not
-been uploaded yet.
+media images, gallery labels, gallery images, and collaboration copy. Missing
+local image fallbacks use the shared `/placeholder-image.png` asset.
 
 | Field | Type | Notes |
 |---|---|---|
 | `title` | `localizedRichText` | Main services page title. |
 | `items` | array of service objects | Ordered services accordion. Each item has `number`, localized `title`, `variant`, and variant-specific fields. |
-| `items[].previewImage` | image (`+ localized alt`) | Image shown in the collapsed service header (all variants). Local `serviceImages[index]` remains the fallback if empty. |
+| `items[].previewImage` | image (`+ localized alt`) | Image shown in the collapsed service header (all variants). Local `/placeholder-image.png` is the fallback if empty. |
 | `items[].detailGroups` | array of objects | Used by structured services. Each group has a rich-text title and `itemsText` (`localizedText`): write one item per line. Older `items[]` arrays are still read as fallback. |
 | `items[].detailsText` | `localizedText` | Used by media services for the uppercase details list: write one detail per line. Older `details[]` arrays are still read as fallback. |
-| `items[].media` | object | Used by media services. Contains uploaded `image` and localized `alt`; local image remains the fallback if empty. |
+| `items[].media` | object | Used by media services. Contains uploaded `image` and localized `alt`; local `/placeholder-image.png` is the fallback if empty. |
 | `items[].statement` | `localizedRichText` | Statement for the service item. In the first structured service this renders the yellow highlighted statement block; media/gallery services render it inside their own expanded layout. |
-| `items[].statementImage` | image (`+ localized alt`) | Used by structured services for the image beside the yellow highlighted statement block. Local `/services/design.jpg` remains the fallback if empty. |
+| `items[].statementImage` | image (`+ localized alt`) | Used by structured services for the image beside the yellow highlighted statement block. Local `/placeholder-image.png` is the fallback if empty. |
 | `items[].gallery` | array of objects | Used by gallery services. Each item has localized `label`, uploaded `image`, and localized `alt`. |
 | `collaborationTitle` | `localizedRichText` | Collaboration section title. |
 | `collaboration` | `localizedRichText` | Collaboration section body. |
@@ -306,30 +305,31 @@ npm run seed:services-page:write
 
 The frontend reads Sanity first and falls back to the dictionary if a field is
 missing. Because these fields are now maintained in Sanity, their dictionary
-entries are only short `Lorem ipsum` fallbacks that preserve the expected shape.
+entries use short, obvious `Placeholder ...` fallbacks that preserve the
+expected shape.
 
 ### 2.10 `aboutPage` (singleton document)
 
 The About page editorial sections are modelled in the `aboutPage` singleton.
 Document ID fixed as `aboutPage`. The dictionary entries for these fields are
-short `Lorem ipsum` fallbacks only.
+short, obvious `Placeholder ...` fallbacks only.
 
 | Field | Type | Notes |
 |---|---|---|
 | `title` | `localizedRichText` | About page title (e.g. "ABOUT THE AGENCY"). |
 | `intro` | `localizedRichText` | Intro paragraph under the title. |
-| `heroImage` | image (`+ localized alt`) | Full-width blurred image under the intro. Local `/projects/people-team.jpg` is the fallback. |
+| `heroImage` | image (`+ localized alt`) | Full-width blurred image under the intro. Local `/placeholder-image.png` is the fallback. |
 | `statement` | `localizedRichText` | Yellow statement section. |
 | `teamCoreTitle` | `localizedString` | Team core heading. |
-| `coreRoles` | array of objects | Team core hover list. Each item has localized `role` and uploaded hover `image`. Local `/about/team-core-*.png` images remain fallbacks. |
+| `coreRoles` | array of objects | Team core hover list. Each item has localized `role` and uploaded hover `image`. Local `/placeholder-image.png` is the fallback. |
 | `processTitle` | `localizedString` | Process section heading. |
 | `processSteps` | array of objects | Ordered process steps. Each item has localized `stage`, localized `description`, and a `color` from the fixed process palette (`pink`, `deepBlue`, `yellow`, `coral`, `blue`, `orange`). |
 | `missionTitle` | `localizedString` | Mission section heading. |
 | `mission` | `localizedRichText` | Mission body copy. |
-| `missionImage` | image (`+ localized alt`) | Mission image. Local `/about/mission.jpg` is the fallback. |
+| `missionImage` | image (`+ localized alt`) | Mission image. Local `/placeholder-image.png` is the fallback. |
 | `missionHighlight` | `localizedRichText` | Large highlighted mission line. |
 | `historyTitle` | `localizedRichText` | History/value section heading. |
-| `historyImage` | image (`+ localized alt`) | History/value image. Local `/about/history-value.png` is the fallback. |
+| `historyImage` | image (`+ localized alt`) | History/value image. Local `/placeholder-image.png` is the fallback. |
 | `historyItems` | array of objects | Ordered history/value items. Each item has localized `label`, `year`, and localized rich-text `description`. |
 | `peopleTitle` | `localizedString` | "PEOPLE" heading. |
 
@@ -343,7 +343,7 @@ project/client lists.
 |---|---|---|
 | `name` | string | Person name. |
 | `role` | `localizedString` | Role shown under the name. |
-| `photo` | image (`+ localized alt`) | Portrait shown in the People grid. Local `/about/*.png` portraits remain fallbacks by index. |
+| `photo` | image (`+ localized alt`) | Portrait shown in the People grid. Local `/placeholder-image.png` is the fallback. |
 | `order` | number | Controls ordering; lower numbers render first. |
 
 The About page reads `aboutPageQuery` plus `peopleQuery`, then falls back to the

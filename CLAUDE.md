@@ -32,6 +32,12 @@ Where to look first:
   call site — it already handles both and the hero reuses it.
 - **Project category values / labels** → single source `lib/sanity/categories.ts`.
   Don't hardcode category labels anywhere else.
+- **Local Sanity fallbacks / placeholders** →
+  `apps/web/src/content/placeholders.ts`. Any content that should be maintained
+  in Sanity must fall back to short, obvious `Placeholder ...` text and the
+  shared `/placeholder-image.png` image. Do not add realistic mock copy, section-
+  specific fake images, or large repeated fallback arrays. Keep repeated fallback
+  content to one item unless a component genuinely requires more to render.
 - **Buttons** → `.pill-button` + variants. **Footer** → `<SiteFooter>`.
 
 ### Why this rule exists

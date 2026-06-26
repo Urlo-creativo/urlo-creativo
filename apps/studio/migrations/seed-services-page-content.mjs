@@ -109,13 +109,15 @@ function sameRichText(lines) {
 
 async function uploadedImage(relativePath, alt = "") {
   const filePath = path.join(publicDir, relativePath);
+  const fallbackPath = path.join(publicDir, "placeholder-image.png");
+  const uploadPath = existsSync(filePath) ? filePath : fallbackPath;
 
-  if (!existsSync(filePath)) {
+  if (!existsSync(uploadPath)) {
     throw new Error(`Missing image file: ${filePath}`);
   }
 
-  const asset = await client.assets.upload("image", createReadStream(filePath), {
-    filename: path.basename(filePath),
+  const asset = await client.assets.upload("image", createReadStream(uploadPath), {
+    filename: path.basename(uploadPath),
   });
 
   return {
@@ -210,22 +212,10 @@ const content = {
       title: sameString("Design & Product Development"),
       variant: "media",
       detailsText: sameText(
-        [
-          "TREND RESEARCH AND POSITIONING",
-          "COLLECTION STRUCTURE",
-          "MOODBOARD",
-          "FABRIC, PRODUCT AND MATERIAL RESEARCH",
-          "GRAPHIC DEVELOPMENT",
-          "SOURCING AND SUPPLIER FOLLOW-UP",
-        ].join("\n"),
+        "Placeholder item",
       ),
       details: [
-        sameString("TREND RESEARCH AND POSITIONING"),
-        sameString("COLLECTION STRUCTURE"),
-        sameString("MOODBOARD"),
-        sameString("FABRIC, PRODUCT AND MATERIAL RESEARCH"),
-        sameString("GRAPHIC DEVELOPMENT"),
-        sameString("SOURCING AND SUPPLIER FOLLOW-UP"),
+        sameString("Placeholder item"),
       ],
       media: {
         _type: "object",
@@ -333,7 +323,7 @@ const statementPatchFields = {
 
 if (!hasStatementImage) {
   statementPatchFields['items[_key=="brand-identity"].statementImage'] =
-    await uploadedImage("services/design.jpg");
+    await uploadedImage("placeholder-image.png");
 }
 
 await client

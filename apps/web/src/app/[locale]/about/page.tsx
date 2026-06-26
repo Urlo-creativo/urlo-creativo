@@ -11,6 +11,11 @@ import {
   type TeamCoreRole,
 } from "@/components/sections/team-core-section";
 import { client } from "@/lib/sanity/client";
+import {
+  PLACEHOLDER_ALT,
+  PLACEHOLDER_IMAGE,
+  placeholderText,
+} from "@/content/placeholders";
 import { hasImageAsset } from "@/lib/sanity/image";
 import { localeParams } from "@/lib/sanity/locale";
 import {
@@ -25,23 +30,6 @@ import { isLocale, type Locale } from "@/i18n/config";
 export const metadata: Metadata = {
   title: "About Us",
 };
-
-const teamPhotos = [
-  "/about/giulia.png",
-  "/about/federica.png",
-  "/about/martina.png",
-  "/about/margherita.png",
-  "/about/valentina.png",
-  "/about/camilla.png",
-] as const;
-
-const teamCoreImages = [
-  "/about/team-core-1.png",
-  "/about/team-core-2.png",
-  "/about/team-core-3.png",
-  "/about/team-core-4.png",
-  "/about/team-core-5.png",
-] as const;
 
 export default async function AboutPage({
   params,
@@ -63,24 +51,22 @@ export default async function AboutPage({
     client.fetch<PersonListItem[]>(peopleQuery, localeParams(locale)),
   ]);
 
-  const teamCoreTitle = aboutContent?.teamCoreTitle || about.teamCoreTitle;
   const coreRoles: TeamCoreRole[] = aboutContent?.coreRoles?.length
     ? aboutContent.coreRoles.map((item, index) => ({
-        role: item.role ?? about.coreRoles[index] ?? "",
+        role: item.role ?? about.coreRoles[index] ?? placeholderText.role,
         image: hasImageAsset(item.image) ? item.image : null,
-        fallbackImage: teamCoreImages[index] as string | undefined,
+        fallbackImage: PLACEHOLDER_IMAGE,
         alt: item.image?.alt ?? "",
       }))
-    : about.coreRoles.map((role, index) => ({
+    : about.coreRoles.map((role) => ({
         role,
-        fallbackImage: teamCoreImages[index] as string | undefined,
+        fallbackImage: PLACEHOLDER_IMAGE,
       }));
-  const processTitle = aboutContent?.processTitle || about.processTitle;
   const processSteps = aboutContent?.processSteps?.length
     ? aboutContent.processSteps.map((step, index) => ({
-        stage: step.stage ?? about.processStages[index] ?? "",
+        stage: step.stage ?? about.processStages[index] ?? placeholderText.label,
         description:
-          step.description ?? about.processDescriptions[index] ?? "",
+          step.description ?? about.processDescriptions[index] ?? placeholderText.body,
         color: step.color,
       }))
     : about.processStages.map((stage, index) => ({
@@ -88,7 +74,6 @@ export default async function AboutPage({
         description: about.processDescriptions[index] ?? "",
         color: null,
       }));
-  const missionTitle = aboutContent?.missionTitle || about.missionTitle;
   const historyItems = aboutContent?.historyItems?.length
     ? aboutContent.historyItems.map((item, index) => {
         const fallbackDescription =
@@ -110,39 +95,31 @@ export default async function AboutPage({
       })
     : [
         {
-          key: "history-start",
+          key: "history-placeholder",
           label: about.historyStart,
           year: about.historyStartYear,
           description: undefined,
           fallbackDescription: about.historyStartDescription,
         },
-        {
-          key: "history-now",
-          label: about.historyNow,
-          year: about.historyNowYear,
-          description: undefined,
-          fallbackDescription: about.historyNowDescription,
-        },
       ];
-  const peopleTitle = aboutContent?.peopleTitle || about.peopleTitle;
   const teamMembers = people.length
     ? people.map((member, index) => {
         const fallbackMember = about.team[index];
 
         return {
           key: member._id,
-          name: member.name ?? fallbackMember?.name ?? "",
-          role: member.role ?? fallbackMember?.role ?? "",
+          name: member.name ?? fallbackMember?.name ?? placeholderText.name,
+          role: member.role ?? fallbackMember?.role ?? placeholderText.role,
           photo: hasImageAsset(member.photo) ? member.photo : null,
-          fallbackPhoto: teamPhotos[index] as string | undefined,
+          fallbackPhoto: PLACEHOLDER_IMAGE,
         };
       })
     : about.team.map((member, index) => ({
         key: `${member.name}-${index}`,
-        name: member.name,
-        role: member.role,
+        name: member.name || placeholderText.name,
+        role: member.role || placeholderText.role,
         photo: null,
-        fallbackPhoto: teamPhotos[index] as string | undefined,
+        fallbackPhoto: PLACEHOLDER_IMAGE,
       }));
 
   return (
@@ -159,7 +136,7 @@ export default async function AboutPage({
             as="p"
             value={aboutContent?.intro}
             fallback={about.intro}
-            className="type-heading-xl mt-8 w-full font-bold md:mt-9"
+            className="type-heading-xl mt-8 w-full md:mt-9"
           />
         </div>
       </section>
@@ -175,8 +152,8 @@ export default async function AboutPage({
           />
         ) : (
           <Image
-            src="/projects/people-team.jpg"
-            alt=""
+            src={PLACEHOLDER_IMAGE}
+            alt={PLACEHOLDER_ALT}
             fill
             priority
             sizes="100vw"
@@ -196,19 +173,37 @@ export default async function AboutPage({
         </div>
       </section>
 
-      <TeamCoreSection title={teamCoreTitle} roles={coreRoles} />
+      <TeamCoreSection
+        title={
+          <PageRichText
+            as="span"
+            value={aboutContent?.teamCoreTitle}
+            fallback={about.teamCoreTitle}
+          />
+        }
+        roles={coreRoles}
+      />
 
       <ProcessSection
-        title={processTitle}
+        title={
+          <PageRichText
+            as="span"
+            value={aboutContent?.processTitle}
+            fallback={about.processTitle}
+          />
+        }
         stages={processSteps.map((step) => step.stage)}
         descriptions={processSteps.map((step) => step.description)}
         colors={processSteps.map((step) => step.color)}
       />
 
       <section className="page-shell py-20 md:pb-[170px] md:pt-[96px]">
-        <h2 className="type-display font-bold uppercase">
-          {missionTitle}
-        </h2>
+        <PageRichText
+          as="h2"
+          value={aboutContent?.missionTitle}
+          fallback={about.missionTitle}
+          className="type-display uppercase"
+        />
         <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-start md:gap-[140px]">
           <PageRichText
             as="p"
@@ -226,8 +221,8 @@ export default async function AboutPage({
               />
             ) : (
               <Image
-                src="/about/mission.jpg"
-                alt=""
+                src={PLACEHOLDER_IMAGE}
+                alt={PLACEHOLDER_ALT}
                 fill
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover object-center"
@@ -261,8 +256,8 @@ export default async function AboutPage({
               />
             ) : (
               <Image
-                src="/about/history-value.png"
-                alt=""
+                src={PLACEHOLDER_IMAGE}
+                alt={PLACEHOLDER_ALT}
                 fill
                 sizes="(min-width: 768px) 45vw, 100vw"
                 className="object-cover object-center"
@@ -295,7 +290,12 @@ export default async function AboutPage({
       </section>
 
       <section className="page-shell pb-24 pt-10 md:pb-[190px] md:pt-[82px]">
-        <h2 className="type-display font-bold uppercase">{peopleTitle}</h2>
+        <PageRichText
+          as="h2"
+          value={aboutContent?.peopleTitle}
+          fallback={about.peopleTitle}
+          className="type-display uppercase"
+        />
         <div className="mt-12 grid gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {teamMembers.map((member) => (
             <article key={member.key}>
@@ -311,7 +311,7 @@ export default async function AboutPage({
                 ) : member.fallbackPhoto ? (
                   <Image
                     src={member.fallbackPhoto}
-                    alt={`Portrait of ${member.name}`}
+                    alt={PLACEHOLDER_ALT}
                     fill
                     sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
                     className="object-cover object-center"

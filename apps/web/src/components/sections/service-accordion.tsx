@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
 import { SanityImage } from "@/components/ui/sanity-image";
+import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import type {
   PortableRichTextValue,
   SanityImage as SanityImageType,
@@ -241,7 +242,7 @@ export function ServiceAccordion({
                     />
                   ) : (
                     <Image
-                      src={images[index]}
+                      src={images[index] ?? images[0] ?? PLACEHOLDER_IMAGE}
                       alt=""
                       fill
                       sizes="(min-width: 768px) 471px, 100vw"
@@ -286,7 +287,7 @@ export function ServiceAccordion({
                       <div className="space-y-20 md:space-y-[112px]">
                         {item.gallery.map((galleryItem, galleryIndex) => (
                           <div
-                            key={galleryItem.label}
+                            key={`${item.number}-gallery-${galleryIndex}`}
                             className="grid gap-6 md:grid-cols-[minmax(260px,430px)_minmax(220px,1fr)] md:gap-16"
                           >
                             <div
@@ -330,9 +331,9 @@ export function ServiceAccordion({
                   ) : isMediaServiceItem(item) ? (
                     <div className="grid gap-12 md:grid-cols-[minmax(0,760px)_minmax(320px,520px)] md:items-start md:gap-[120px]">
                       <div className="divide-y divide-[var(--uc-gray-200)]">
-                        {item.details.map((detail) => (
+                        {item.details.map((detail, detailIndex) => (
                           <p
-                            key={String(detail)}
+                            key={`${item.number}-media-detail-${detailIndex}`}
                             className="type-heading-md py-7 font-bold uppercase md:py-9"
                           >
                             {String(detail)}
@@ -374,7 +375,7 @@ export function ServiceAccordion({
                         <ServiceRichText
                           as="p"
                           value={item.statement}
-                          className="type-heading-md mt-8 font-bold"
+                          className="type-heading-md mt-8"
                         />
                       </div>
                     </div>
@@ -383,13 +384,13 @@ export function ServiceAccordion({
                       {item.details.map((detail, detailIndex) =>
                         isStructuredDetail(detail) ? (
                           <div
-                            key={detail.items.join("|")}
+                            key={`${item.number}-structured-detail-${detailIndex}`}
                             className="grid gap-8 py-9 md:grid-cols-[minmax(260px,430px)_minmax(0,1fr)] md:gap-[116px] md:py-12"
                           >
                             <ServiceRichText
                               as="h3"
                               value={detail.title}
-                              className="type-heading-md font-bold uppercase"
+                              className="type-heading-md uppercase"
                             />
                             <div className="type-heading-md text-[var(--color-text-muted)]">
                               <div
@@ -407,15 +408,17 @@ export function ServiceAccordion({
                                     : "0ms",
                                 }}
                               >
-                                {detail.items.map((line) => (
-                                  <p key={line}>{line}</p>
+                                {detail.items.map((line, lineIndex) => (
+                                  <p key={`${item.number}-detail-${detailIndex}-line-${lineIndex}`}>
+                                    {line}
+                                  </p>
                                 ))}
                               </div>
                             </div>
                           </div>
                         ) : (
                           <p
-                            key={detail}
+                            key={`${item.number}-plain-detail-${detailIndex}`}
                             className="type-body-md py-7 font-bold uppercase md:py-9"
                           >
                             {detail}
@@ -446,7 +449,12 @@ export function ServiceAccordion({
                           />
                         ) : (
                           <Image
-                            src={item.statementImage?.fallbackImage ?? images[1]}
+                            src={
+                              item.statementImage?.fallbackImage ??
+                              images[index] ??
+                              images[0] ??
+                              PLACEHOLDER_IMAGE
+                            }
                             alt={item.statementImage?.alt ?? ""}
                             fill
                             sizes="(min-width: 768px) 357px, 100vw"
@@ -457,7 +465,7 @@ export function ServiceAccordion({
                       <ServiceRichText
                         as="p"
                         value={item.statement}
-                        className="type-heading-xl font-bold"
+                        className="type-heading-xl"
                       />
                     </div>
                   </div>

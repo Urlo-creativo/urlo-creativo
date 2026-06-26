@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 
 import { ProjectFilterButtons } from "@/components/sections/project-filter-buttons";
 import { SanityImage } from "@/components/ui/sanity-image";
+import { PLACEHOLDER_ALT, PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { localizedPath, type Locale } from "@/i18n/config";
 import {
   getCategoryOptions,
@@ -84,12 +86,12 @@ export function ProjectsListing({
       >
         <div
           className={`relative aspect-[4/3] w-full overflow-hidden border border-black bg-[var(--color-bg-muted)] shadow-[0_24px_60px_rgba(0,0,0,0.16)] transition-[opacity,transform] duration-300 ease-out ${
-            hoveredProject?.coverImage
+            hoveredProject
               ? "scale-100 opacity-100"
               : "scale-95 opacity-0"
           }`}
         >
-          {hoveredProject?.coverImage && (
+          {hoveredProject?.coverImage ? (
             <SanityImage
               image={hoveredProject.coverImage}
               alt=""
@@ -98,7 +100,15 @@ export function ProjectsListing({
               width={760}
               className="object-cover"
             />
-          )}
+          ) : hoveredProject ? (
+            <Image
+              src={PLACEHOLDER_IMAGE}
+              alt={PLACEHOLDER_ALT}
+              fill
+              sizes="380px"
+              className="object-cover"
+            />
+          ) : null}
         </div>
       </div>
 
@@ -109,7 +119,7 @@ export function ProjectsListing({
               href={localizedPath(locale, `/projects/${project.slug}`)}
               className="group grid gap-6 py-8 outline-none md:grid-cols-[104px_minmax(0,1fr)] md:items-center md:gap-16 md:py-12"
               onPointerEnter={(event) => {
-                if (event.pointerType === "touch" || !project.coverImage) {
+                if (event.pointerType === "touch") {
                   return;
                 }
                 movePreview(event.clientX, event.clientY);
@@ -121,7 +131,6 @@ export function ProjectsListing({
                 setHoveredProjectId(null);
               }}
               onFocus={(event) => {
-                if (!project.coverImage) return;
                 const rect = event.currentTarget.getBoundingClientRect();
                 movePreview(
                   rect.left + rect.width * 0.72,
@@ -150,8 +159,8 @@ export function ProjectsListing({
                   </p>
                 )}
 
-                {project.coverImage && (
-                  <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:hidden">
+                <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:hidden">
+                  {project.coverImage ? (
                     <SanityImage
                       image={project.coverImage}
                       alt=""
@@ -159,8 +168,16 @@ export function ProjectsListing({
                       sizes="100vw"
                       className="object-cover"
                     />
-                  </div>
-                )}
+                  ) : (
+                    <Image
+                      src={PLACEHOLDER_IMAGE}
+                      alt={PLACEHOLDER_ALT}
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                    />
+                  )}
+                </div>
               </div>
             </Link>
           </article>

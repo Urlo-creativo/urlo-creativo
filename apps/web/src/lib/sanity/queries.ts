@@ -114,6 +114,7 @@ export type ProjectCredit = {
 };
 
 export type HomePageContent = {
+  heroMedia: ProjectMediaItem | null;
   heroKicker: PortableRichTextValue;
   heroTitle: PortableRichTextValue;
   heroSubheading: PortableRichTextValue;
@@ -129,6 +130,7 @@ export type HomePageContent = {
   projectsTitle: PortableRichTextValue;
   selectedClients: PortableRichTextValue;
   teamTitle: PortableRichTextValue;
+  teamImage: SanityImage | null;
   teamIntro: PortableRichTextValue;
 };
 
@@ -144,10 +146,8 @@ export type ServicesPageContent = {
       _key: string;
       title: PortableRichTextValue;
       itemsText: string | null;
-      items: string[] | null;
     }> | null;
     detailsText: string | null;
-    details: string[] | null;
     media: {
       image: SanityImage | null;
       alt: string | null;
@@ -170,20 +170,20 @@ export type AboutPageContent = {
   intro: PortableRichTextValue;
   heroImage: SanityImage | null;
   statement: PortableRichTextValue;
-  teamCoreTitle: string | null;
+  teamCoreTitle: PortableRichTextValue;
   coreRoles: Array<{
     _key: string;
     role: string | null;
     image: SanityImage | null;
   }> | null;
-  processTitle: string | null;
+  processTitle: PortableRichTextValue;
   processSteps: Array<{
     _key: string;
     stage: string | null;
     description: string | null;
     color: ProcessStepColor | null;
   }> | null;
-  missionTitle: string | null;
+  missionTitle: PortableRichTextValue;
   mission: PortableRichTextValue;
   missionImage: SanityImage | null;
   missionHighlight: PortableRichTextValue;
@@ -195,7 +195,7 @@ export type AboutPageContent = {
     year: string | null;
     description: PortableRichTextValue;
   }> | null;
-  peopleTitle: string | null;
+  peopleTitle: PortableRichTextValue;
 };
 
 export type ProcessStepColor =
@@ -272,7 +272,7 @@ const imageFragment = `{
 }`;
 
 const mediaItemFragment = `{
-  _key,
+  "_key": coalesce(_key, "media-item"),
   mediaType,
   image ${imageFragment},
   videoUrl,
@@ -335,6 +335,7 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
 export const projectSlugsQuery = `*[_type == "project" && defined(slug.current)].slug.current`;
 
 export const homePageQuery = `*[_id == "homePage"][0]{
+  heroMedia ${mediaItemFragment},
   ${localizedValue("heroKicker")},
   ${localizedValue("heroTitle")},
   ${localizedValue("heroSubheading")},
@@ -350,6 +351,7 @@ export const homePageQuery = `*[_id == "homePage"][0]{
   ${localizedValue("projectsTitle")},
   ${localizedValue("selectedClients")},
   ${localizedValue("teamTitle")},
+  teamImage ${imageFragment},
   ${localizedValue("teamIntro")}
 }`;
 
@@ -364,11 +366,9 @@ export const servicesPageQuery = `*[_id == "servicesPage"][0]{
     detailGroups[]{
       _key,
       ${localizedValue("title")},
-      ${localizedValue("itemsText")},
-      ${localizedArray("items")}
+      ${localizedValue("itemsText")}
     },
     ${localizedValue("detailsText")},
-    ${localizedArray("details")},
     media{
       image ${imageFragment},
       ${localizedValue("alt")}

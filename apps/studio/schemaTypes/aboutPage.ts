@@ -51,7 +51,7 @@ export const aboutPageType = defineType({
     defineField({
       name: "teamCoreTitle",
       title: "Titolo team core / Team core title",
-      type: "localizedString",
+      type: "localizedRichText",
       group: "teamCore",
     }),
     defineField({
@@ -101,7 +101,7 @@ export const aboutPageType = defineType({
     defineField({
       name: "processTitle",
       title: "Titolo processo / Process title",
-      type: "localizedString",
+      type: "localizedRichText",
       group: "process",
     }),
     defineField({
@@ -164,7 +164,7 @@ export const aboutPageType = defineType({
     defineField({
       name: "missionTitle",
       title: "Titolo mission / Mission title",
-      type: "localizedString",
+      type: "localizedRichText",
       group: "mission",
     }),
     defineField({
@@ -251,7 +251,7 @@ export const aboutPageType = defineType({
     defineField({
       name: "peopleTitle",
       title: "Titolo People / People title",
-      type: "localizedString",
+      type: "localizedRichText",
       group: "people",
     }),
   ],

@@ -160,7 +160,7 @@ export function MethodSteps({ steps }: MethodStepsProps) {
     >
       <div className="space-y-8 md:hidden">
         {steps.map((step, index) => (
-          <section key={step.title} className="border-t border-black pt-4">
+          <section key={`method-mobile-${index}`} className="border-t border-black pt-4">
             <h3
               ref={(el) => {
                 mobileTitleRefs.current[index] = el;
@@ -182,8 +182,8 @@ export function MethodSteps({ steps }: MethodStepsProps) {
               </span>
             </h3>
             <ul className="type-body-md mt-4 space-y-3">
-              {step.items.map((item) => (
-                <li key={item}>{item}</li>
+              {step.items.map((item, itemIndex) => (
+                <li key={`method-mobile-${index}-item-${itemIndex}`}>{item}</li>
               ))}
             </ul>
           </section>
@@ -193,7 +193,7 @@ export function MethodSteps({ steps }: MethodStepsProps) {
       <div ref={railRef} className="method-rail hidden gap-8 md:grid md:grid-cols-3 md:gap-20">
         {steps.map((step, index) => (
           <h3
-            key={step.title}
+            key={`method-heading-${index}`}
             ref={(el) => {
               headingRefs.current[index] = el;
             }}
@@ -213,11 +213,11 @@ export function MethodSteps({ steps }: MethodStepsProps) {
       </div>
 
       <div className="mt-6 hidden gap-12 md:grid md:grid-cols-3 md:gap-20">
-        {steps.map((step) => (
-          <div key={step.title}>
+        {steps.map((step, stepIndex) => (
+          <div key={`method-items-${stepIndex}`}>
             <ul className="type-body-lg space-y-5">
-              {step.items.map((item) => (
-                <li key={item}>{item}</li>
+              {step.items.map((item, itemIndex) => (
+                <li key={`method-items-${stepIndex}-${itemIndex}`}>{item}</li>
               ))}
             </ul>
           </div>

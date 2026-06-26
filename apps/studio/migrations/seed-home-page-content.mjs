@@ -1,3 +1,7 @@
+import { createReadStream, existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { getCliClient } from "sanity/cli";
 
 const apiVersion = process.env.SANITY_API_VERSION || "2026-06-18";
@@ -6,6 +10,8 @@ const client = getCliClient({ apiVersion }).withConfig({
   useCdn: false,
 });
 const shouldWrite = process.env.SEED_HOME_PAGE_WRITE === "1";
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.resolve(scriptDir, "../../web/public");
 
 const highlightMarks = {
   scroll: {
@@ -95,11 +101,40 @@ function localizedString({ it, en }) {
   };
 }
 
+function sameString(value) {
+  return localizedString({ it: value, en: value });
+}
+
+async function uploadedImage(relativePath, alt = "") {
+  const filePath = path.join(publicDir, relativePath);
+  const fallbackPath = path.join(publicDir, "placeholder-image.png");
+  const uploadPath = existsSync(filePath) ? filePath : fallbackPath;
+
+  if (!existsSync(uploadPath)) {
+    throw new Error(`Missing image file: ${filePath}`);
+  }
+
+  const asset = await client.assets.upload("image", createReadStream(uploadPath), {
+    filename: path.basename(uploadPath),
+  });
+
+  return {
+    _type: "image",
+    asset: { _type: "reference", _ref: asset._id },
+    alt: sameString(alt),
+  };
+}
+
 const content = {
   heroKicker: localizedRichText({
     it: [[{ text: "URLO CREATIVO È UN HUB MULTIDISCIPLINARE\nidentità di brand · design · sviluppo prodotto · art direction" }]],
     en: [[{ text: "URLO CREATIVO IS A MULTIDISCIPLINARY STUDIO\nbrand identity • design • product development • art direction" }]],
   }),
+  heroMedia: {
+    _type: "projectMediaItem",
+    mediaType: "image",
+    image: await uploadedImage("placeholder-image.png"),
+  },
   heroTitle: localizedRichText({
     it: [[{ text: "URLO CREATIVO" }]],
     en: [[{ text: "URLO CREATIVO" }]],
@@ -270,6 +305,7 @@ const content = {
     it: [[{ text: "LE PERSONE" }]],
     en: [[{ text: "PEOPLE" }]],
   }),
+  teamImage: await uploadedImage("placeholder-image.png"),
   teamIntro: localizedRichText({
     it: [
       [
