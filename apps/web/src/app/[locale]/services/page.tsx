@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { PageRichText, hasPortableText } from "@/components/ui/page-rich-text";
-import type { RichTextToken } from "@/components/ui/rich-text";
+import { PageRichText } from "@/components/ui/page-rich-text";
 import { ServiceAccordion, type ServiceItem } from "@/components/sections/service-accordion";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -11,7 +10,6 @@ import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
 import {
   servicesPageQuery,
-  type PortableRichTextValue,
   type ServicesPageContent,
 } from "@/lib/sanity/queries";
 
@@ -27,6 +25,10 @@ const serviceImages = [
 
 const mediaByServiceIndex = {
   1: { fallbackImage: "/services/design-development-detail.png", alt: "" },
+} as const;
+
+const statementImageByServiceIndex = {
+  0: { fallbackImage: "/services/design.jpg", alt: "" },
 } as const;
 
 const galleryByServiceIndex = {
@@ -54,10 +56,21 @@ const galleryByServiceIndex = {
   ],
 } as const;
 
-type ServiceRichText = PortableRichTextValue | RichTextToken[][];
+function linesFromText(value: string | null | undefined) {
+  return value
+    ? value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : null;
+}
 
-function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
+function serviceItemsFromSanity(
+  content: ServicesPageContent,
+  fallbackItems: readonly ServiceItem[],
+): ServiceItem[] {
   return (content.items ?? []).map((item, index) => {
+    const fallbackItem = fallbackItems[index];
     const base = {
       number: item.number ?? String(index + 1).padStart(2, "0"),
       title: item.title ?? "",
@@ -65,13 +78,28 @@ function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
     };
 
     if (item.variant === "structured") {
+      const fallbackStatementImage =
+        statementImageByServiceIndex[
+          index as keyof typeof statementImageByServiceIndex
+        ];
+      const statementImage =
+        item.statementImage || fallbackStatementImage
+          ? {
+              ...(fallbackStatementImage ?? {}),
+              image: item.statementImage,
+              alt: item.statementImage?.alt ?? fallbackStatementImage?.alt ?? "",
+            }
+          : undefined;
+
       return {
         ...base,
         details:
           item.detailGroups?.map((detail) => ({
             title: detail.title,
-            items: detail.items ?? [],
+            items: linesFromText(detail.itemsText) ?? detail.items ?? [],
           })) ?? [],
+        statement: item.statement ?? fallbackItem?.statement,
+        statementImage,
       };
     }
 
@@ -89,7 +117,7 @@ function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
 
       return {
         ...base,
-        details: item.details ?? [],
+        details: linesFromText(item.detailsText) ?? item.details ?? [],
         ...(media ? { media } : {}),
         statement: item.statement,
       };
@@ -125,7 +153,7 @@ function serviceItemsFromSanity(content: ServicesPageContent): ServiceItem[] {
 
     return {
       ...base,
-      details: item.details ?? [],
+      details: linesFromText(item.detailsText) ?? item.details ?? [],
     };
   });
 }
@@ -149,12 +177,8 @@ export default async function ServicesPage({
   );
 
   const serviceItems = servicesContent?.items?.length
-    ? serviceItemsFromSanity(servicesContent)
+    ? serviceItemsFromSanity(servicesContent, services.items)
     : services.items;
-  const sanityStatement = servicesContent?.statement;
-  const serviceStatement: ServiceRichText = hasPortableText(sanityStatement)
-    ? sanityStatement
-    : services.statement;
 
   return (
     <main className="page-top bg-paper text-black">
@@ -171,7 +195,6 @@ export default async function ServicesPage({
         <ServiceAccordion
           items={serviceItems}
           images={serviceImages}
-          statement={serviceStatement}
         />
       </section>
 

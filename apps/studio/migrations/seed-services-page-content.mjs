@@ -1,3 +1,7 @@
+import { createReadStream, existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { getCliClient } from "sanity/cli";
 
 const apiVersion = process.env.SANITY_API_VERSION || "2026-06-18";
@@ -6,6 +10,8 @@ const client = getCliClient({ apiVersion }).withConfig({
   useCdn: false,
 });
 const shouldWrite = process.env.SEED_SERVICES_PAGE_WRITE === "1";
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.resolve(scriptDir, "../../web/public");
 
 const highlightMarks = {
   scroll: {
@@ -81,24 +87,46 @@ function localizedString({ it, en }) {
   };
 }
 
+function localizedText({ it, en }) {
+  return {
+    _type: "localizedText",
+    it,
+    en,
+  };
+}
+
 function sameString(value) {
   return localizedString({ it: value, en: value });
+}
+
+function sameText(value) {
+  return localizedText({ it: value, en: value });
 }
 
 function sameRichText(lines) {
   return localizedRichText({ it: lines, en: lines });
 }
 
+async function uploadedImage(relativePath, alt = "") {
+  const filePath = path.join(publicDir, relativePath);
+
+  if (!existsSync(filePath)) {
+    throw new Error(`Missing image file: ${filePath}`);
+  }
+
+  const asset = await client.assets.upload("image", createReadStream(filePath), {
+    filename: path.basename(filePath),
+  });
+
+  return {
+    _type: "image",
+    asset: { _type: "reference", _ref: asset._id },
+    alt: sameString(alt),
+  };
+}
+
 const content = {
   title: sameRichText([[{ text: "SERVICES" }]]),
-  statement: sameRichText([
-    [
-      { text: "We " },
-      { text: "identify", highlight: "blue", trigger: "load" },
-      { text: " the brand and define its " },
-      { text: "personality.", highlight: "pink", trigger: "load" },
-    ],
-  ]),
   items: [
     {
       _key: "brand-identity",
@@ -106,6 +134,14 @@ const content = {
       number: "01",
       title: sameString("Brand Identity & Communication"),
       variant: "structured",
+      statement: sameRichText([
+        [
+          { text: "We " },
+          { text: "identify", highlight: "blue", trigger: "load" },
+          { text: " the brand and define its " },
+          { text: "personality.", highlight: "pink", trigger: "load" },
+        ],
+      ]),
       detailGroups: [
         {
           _key: "brand-strategy",
@@ -113,6 +149,13 @@ const content = {
           title: sameRichText([
             [{ text: "Brand strategy", highlight: "blue", trigger: "load" }],
           ]),
+          itemsText: sameText(
+            [
+              "Brand analysis and context",
+              "Positioning definition",
+              "Tone of voice construction",
+            ].join("\n"),
+          ),
           items: [
             sameString("Brand analysis and context"),
             sameString("Positioning definition"),
@@ -125,6 +168,11 @@ const content = {
           title: sameRichText([
             [{ text: "Visual identity", highlight: "pink", trigger: "load" }],
           ]),
+          itemsText: sameText(
+            ["Logo development", "Visual systems", "Guidelines", "Brand book"].join(
+              "\n",
+            ),
+          ),
           items: [
             sameString("Logo development"),
             sameString("Visual systems"),
@@ -138,6 +186,14 @@ const content = {
           title: sameRichText([
             [{ text: "Communication", highlight: "yellow", trigger: "load" }],
           ]),
+          itemsText: sameText(
+            [
+              "Website",
+              "Newsletter",
+              "Editorial content",
+              "Digital and social communication",
+            ].join("\n"),
+          ),
           items: [
             sameString("Website"),
             sameString("Newsletter"),
@@ -153,6 +209,16 @@ const content = {
       number: "02",
       title: sameString("Design & Product Development"),
       variant: "media",
+      detailsText: sameText(
+        [
+          "TREND RESEARCH AND POSITIONING",
+          "COLLECTION STRUCTURE",
+          "MOODBOARD",
+          "FABRIC, PRODUCT AND MATERIAL RESEARCH",
+          "GRAPHIC DEVELOPMENT",
+          "SOURCING AND SUPPLIER FOLLOW-UP",
+        ].join("\n"),
+      ),
       details: [
         sameString("TREND RESEARCH AND POSITIONING"),
         sameString("COLLECTION STRUCTURE"),
@@ -249,5 +315,31 @@ await client.createIfNotExists({
 await client.patch("servicesPage").setIfMissing(content).commit({
   visibility: "async",
 });
+
+const hasStatementImage = await client.fetch(
+  `defined(*[_id == "servicesPage"][0].items[_key == "brand-identity"][0].statementImage.asset._ref)`,
+);
+const statementPatchFields = {
+  'items[_key=="brand-identity"].statement': content.items[0].statement,
+  'items[_key=="brand-identity"].detailGroups[_key=="brand-strategy"].itemsText':
+    content.items[0].detailGroups[0].itemsText,
+  'items[_key=="brand-identity"].detailGroups[_key=="visual-identity"].itemsText':
+    content.items[0].detailGroups[1].itemsText,
+  'items[_key=="brand-identity"].detailGroups[_key=="communication"].itemsText':
+    content.items[0].detailGroups[2].itemsText,
+  'items[_key=="design-product-development"].detailsText':
+    content.items[1].detailsText,
+};
+
+if (!hasStatementImage) {
+  statementPatchFields['items[_key=="brand-identity"].statementImage'] =
+    await uploadedImage("services/design.jpg");
+}
+
+await client
+  .patch("servicesPage")
+  .setIfMissing(statementPatchFields)
+  .unset(["statement"])
+  .commit({ visibility: "async" });
 
 console.log("Services page content seeded to Sanity.");

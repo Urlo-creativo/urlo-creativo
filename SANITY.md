@@ -286,13 +286,13 @@ been uploaded yet.
 | Field | Type | Notes |
 |---|---|---|
 | `title` | `localizedRichText` | Main services page title. |
-| `statement` | `localizedRichText` | Yellow statement shown inside the first accordion section. |
 | `items` | array of service objects | Ordered services accordion. Each item has `number`, localized `title`, `variant`, and variant-specific fields. |
 | `items[].previewImage` | image (`+ localized alt`) | Image shown in the collapsed service header (all variants). Local `serviceImages[index]` remains the fallback if empty. |
-| `items[].detailGroups` | array of objects | Used by structured services. Each group has a rich-text title and localized item list. |
-| `items[].details` | array of `localizedString` | Used by media services for the uppercase details list. Hidden for gallery services. |
+| `items[].detailGroups` | array of objects | Used by structured services. Each group has a rich-text title and `itemsText` (`localizedText`): write one item per line. Older `items[]` arrays are still read as fallback. |
+| `items[].detailsText` | `localizedText` | Used by media services for the uppercase details list: write one detail per line. Older `details[]` arrays are still read as fallback. |
 | `items[].media` | object | Used by media services. Contains uploaded `image` and localized `alt`; local image remains the fallback if empty. |
-| `items[].statement` | `localizedRichText` | Used by media/gallery services. |
+| `items[].statement` | `localizedRichText` | Statement for the service item. In the first structured service this renders the yellow highlighted statement block; media/gallery services render it inside their own expanded layout. |
+| `items[].statementImage` | image (`+ localized alt`) | Used by structured services for the image beside the yellow highlighted statement block. Local `/services/design.jpg` remains the fallback if empty. |
 | `items[].gallery` | array of objects | Used by gallery services. Each item has localized `label`, uploaded `image`, and localized `alt`. |
 | `collaborationTitle` | `localizedRichText` | Collaboration section title. |
 | `collaboration` | `localizedRichText` | Collaboration section body. |

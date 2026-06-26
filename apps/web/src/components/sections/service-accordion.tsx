@@ -28,6 +28,11 @@ export type ServiceItem = {
     alt: string;
   };
   statement?: ServiceRichText;
+  statementImage?: {
+    fallbackImage?: string;
+    image?: SanityImageType | null;
+    alt: string;
+  };
   gallery?: readonly {
     fallbackImage?: string;
     image?: SanityImageType | null;
@@ -48,7 +53,6 @@ type GalleryServiceItem = ServiceItem &
 type ServiceAccordionProps = {
   images: readonly string[];
   items: readonly ServiceItem[];
-  statement: ServiceRichText;
 };
 
 function isTokenLines(value: ServiceRichText): value is RichTextToken[][] {
@@ -98,7 +102,6 @@ function prefersReducedMotion() {
 export function ServiceAccordion({
   images,
   items,
-  statement,
 }: ServiceAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const articleRefs = useRef<Array<HTMLElement | null>>([]);
@@ -423,7 +426,7 @@ export function ServiceAccordion({
                   )}
                 </div>
 
-                {index === 0 ? (
+                {index === 0 && item.statement ? (
                   <div
                     className="bg-yellow py-20 md:py-[96px]"
                     style={{
@@ -433,17 +436,27 @@ export function ServiceAccordion({
                   >
                     <div className="page-shell grid gap-12 md:grid-cols-[minmax(220px,430px)_minmax(0,560px)] md:items-center md:gap-[116px]">
                       <div className="relative aspect-[357/248] w-full max-w-[357px] overflow-hidden">
-                        <Image
-                          src={images[1]}
-                          alt=""
-                          fill
-                          sizes="(min-width: 768px) 357px, 100vw"
-                          className="object-cover object-center"
-                        />
+                        {item.statementImage?.image ? (
+                          <SanityImage
+                            image={item.statementImage.image}
+                            alt={item.statementImage.alt}
+                            fill
+                            sizes="(min-width: 768px) 357px, 100vw"
+                            className="object-cover object-center"
+                          />
+                        ) : (
+                          <Image
+                            src={item.statementImage?.fallbackImage ?? images[1]}
+                            alt={item.statementImage?.alt ?? ""}
+                            fill
+                            sizes="(min-width: 768px) 357px, 100vw"
+                            className="object-cover object-center"
+                          />
+                        )}
                       </div>
                       <ServiceRichText
                         as="p"
-                        value={statement}
+                        value={item.statement}
                         className="type-heading-xl font-bold"
                       />
                     </div>

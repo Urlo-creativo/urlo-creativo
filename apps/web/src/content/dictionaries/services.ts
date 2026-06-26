@@ -29,6 +29,9 @@ const servicesIt = {
           items: ["Lorem ipsum", "Dolor sit", "Amet"],
         },
       ],
+      statement: [
+        [{ text: "Lorem ipsum dolor sit amet." }],
+      ] satisfies RichTextToken[][],
     },
     {
       number: "02",
@@ -73,9 +76,6 @@ const servicesIt = {
       details: ["Lorem ipsum", "Dolor sit", "Amet"],
     },
   ],
-  statement: [
-    [{ text: "Lorem ipsum dolor sit amet." }],
-  ] satisfies RichTextToken[][],
   collaborationTitle: [
     [{ text: "Lorem ipsum" }],
   ] satisfies RichTextToken[][],
@@ -114,6 +114,9 @@ const servicesEn = {
           items: ["Lorem ipsum", "Dolor sit", "Amet"],
         },
       ],
+      statement: [
+        [{ text: "Lorem ipsum dolor sit amet." }],
+      ] satisfies RichTextToken[][],
     },
     {
       number: "02",
@@ -158,9 +161,6 @@ const servicesEn = {
       details: ["Lorem ipsum", "Dolor sit", "Amet"],
     },
   ],
-  statement: [
-    [{ text: "Lorem ipsum dolor sit amet." }],
-  ] satisfies RichTextToken[][],
   collaborationTitle: [
     [{ text: "Lorem ipsum" }],
   ] satisfies RichTextToken[][],

@@ -134,7 +134,6 @@ export type HomePageContent = {
 
 export type ServicesPageContent = {
   title: PortableRichTextValue;
-  statement: PortableRichTextValue;
   items: Array<{
     _key: string;
     number: string | null;
@@ -144,14 +143,17 @@ export type ServicesPageContent = {
     detailGroups: Array<{
       _key: string;
       title: PortableRichTextValue;
+      itemsText: string | null;
       items: string[] | null;
     }> | null;
+    detailsText: string | null;
     details: string[] | null;
     media: {
       image: SanityImage | null;
       alt: string | null;
     } | null;
     statement: PortableRichTextValue;
+    statementImage: SanityImage | null;
     gallery: Array<{
       _key: string;
       label: string | null;
@@ -353,7 +355,6 @@ export const homePageQuery = `*[_id == "homePage"][0]{
 
 export const servicesPageQuery = `*[_id == "servicesPage"][0]{
   ${localizedValue("title")},
-  ${localizedValue("statement")},
   items[]{
     _key,
     number,
@@ -363,14 +364,17 @@ export const servicesPageQuery = `*[_id == "servicesPage"][0]{
     detailGroups[]{
       _key,
       ${localizedValue("title")},
+      ${localizedValue("itemsText")},
       ${localizedArray("items")}
     },
+    ${localizedValue("detailsText")},
     ${localizedArray("details")},
     media{
       image ${imageFragment},
       ${localizedValue("alt")}
     },
     ${localizedValue("statement")},
+    statementImage ${imageFragment},
     gallery[]{
       _key,
       ${localizedValue("label")},
