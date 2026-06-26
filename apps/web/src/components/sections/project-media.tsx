@@ -1,6 +1,8 @@
 import { SanityImage } from "@/components/ui/sanity-image";
+import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { hasImageAsset } from "@/lib/sanity/image";
 import type {
+  PortableRichTextValue,
   ProjectMediaItem,
   ProjectMediaSection,
 } from "@/lib/sanity/queries";
@@ -176,25 +178,21 @@ function renderItems(
 function LayoutBody({ section }: { section: ProjectMediaSection }) {
   const items = section.mediaItems ?? [];
   if (items.length === 0) return null;
+  const isFullWidth = section.widthMode === "fullWidth";
 
   switch (section.layout) {
     case "oneColumnCollage":
       return (
-        <div className="mx-auto flex max-w-content flex-col grid-gap-lg">
-          {items.map((item, index) => (
-            <div
-              key={item._key}
-              className={[
-                "w-full md:w-[78%]",
-                index % 3 === 1 ? "md:self-end" : "",
-                index % 3 === 2 ? "md:self-center" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
+        <div className="flex w-full flex-col grid-gap-lg">
+          {items.map((item) => (
+            <div key={item._key} className="w-full">
               <ProjectMediaItemView
                 item={item}
-                sizes="(min-width: 768px) 70vw, 100vw"
+                sizes={
+                  isFullWidth
+                    ? "100vw"
+                    : "(min-width: 1440px) 1200px, calc(100vw - 48px)"
+                }
               />
             </div>
           ))}
@@ -208,7 +206,11 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
             <div key={item._key} className="mb-[var(--space-grid-md)] break-inside-avoid">
               <ProjectMediaItemView
                 item={item}
-                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                sizes={
+                  isFullWidth
+                    ? "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    : "(min-width: 1024px) 29vw, (min-width: 768px) 42vw, 100vw"
+                }
               />
             </div>
           ))}
@@ -220,7 +222,9 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
         <div className="grid grid-cols-2 grid-gap-md md:grid-cols-3">
           {renderItems(
             items,
-            "(min-width: 768px) 33vw, 50vw",
+            isFullWidth
+              ? "(min-width: 768px) 33vw, 50vw"
+              : "(min-width: 768px) 29vw, 50vw",
           )}
         </div>
       );
@@ -229,7 +233,10 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
     default:
       return (
         <div className="grid grid-cols-1 grid-gap-md md:grid-cols-2">
-          {renderItems(items, "(min-width: 768px) 50vw, 100vw")}
+          {renderItems(
+            items,
+            isFullWidth ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 42vw, 100vw",
+          )}
         </div>
       );
   }
@@ -237,16 +244,51 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
 
 // --- Section wrapper -------------------------------------------------------
 
+function hasPortableTextValue(value: PortableRichTextValue): boolean {
+  if (!value) return false;
+  if (typeof value === "string") return value.trim().length > 0;
+  return value.length > 0;
+}
+
 export function ProjectMediaSectionBlock({
   section,
+  fallbackHeading,
 }: {
   section: ProjectMediaSection;
+  fallbackHeading?: string;
 }) {
   if (!section.mediaItems || section.mediaItems.length === 0) return null;
+  const isFullWidth = section.widthMode === "fullWidth";
+  const shouldRenderHeading =
+    section.placement === "behindTheScenes" &&
+    (hasPortableTextValue(section.heading) || fallbackHeading);
 
   return (
-    <section>
-      <LayoutBody section={section} />
+    <section
+      className={
+        isFullWidth
+          ? "relative left-1/2 w-screen -translate-x-1/2"
+          : undefined
+      }
+    >
+      {shouldRenderHeading && (
+        <div className={isFullWidth ? "page-shell" : undefined}>
+          {hasPortableTextValue(section.heading) ? (
+            <PortableRichText
+              as="h2"
+              blocks={section.heading}
+              className="type-display uppercase"
+            />
+          ) : (
+            <h2 className="type-display font-bold uppercase">
+              {fallbackHeading}
+            </h2>
+          )}
+        </div>
+      )}
+      <div className={shouldRenderHeading ? "mt-8 md:mt-12" : undefined}>
+        <LayoutBody section={section} />
+      </div>
     </section>
   );
 }

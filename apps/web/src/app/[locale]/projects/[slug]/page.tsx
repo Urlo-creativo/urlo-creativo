@@ -96,15 +96,21 @@ function TextSection({
 // nothing when the zone is empty.
 function MediaZone({
   sections,
+  fallbackHeading,
 }: {
   sections: ProjectMediaSection[] | null | undefined;
+  fallbackHeading?: string;
 }) {
   const list = sections ?? [];
   if (list.length === 0) return null;
   return (
     <div className="flex flex-col grid-gap-lg">
-      {list.map((section) => (
-        <ProjectMediaSectionBlock key={section._key} section={section} />
+      {list.map((section, index) => (
+        <ProjectMediaSectionBlock
+          key={section._key}
+          section={section}
+          fallbackHeading={index === 0 ? fallbackHeading : undefined}
+        />
       ))}
     </div>
   );
@@ -279,7 +285,7 @@ export default async function ProjectDetailPage({
         </section>
 
         {/* Interleaved text + media flow */}
-        <div className="flex flex-col grid-gap-lg pb-[var(--space-section-y)]">
+        <div className="flex flex-col grid-gap-lg pb-[var(--space-section-y)] pt-14 md:pt-20">
           {/* 7. Challenge */}
           {project.challenge && project.challenge.length > 0 && (
             <TextSection heading={detailLabels.challenge}>
@@ -348,11 +354,14 @@ export default async function ProjectDetailPage({
           {/* 15. Credits */}
           {credits.length > 0 && (
             <section>
-              <h2 className="type-heading-md mb-8 font-bold uppercase">
+              <h2 className="type-heading-md mb-9 font-bold uppercase">
                 {detailLabels.credits}
               </h2>
-              <dl className="grid gap-x-12 gap-y-6 md:grid-cols-2">
+              <dl>
                 {credits.map((credit) => {
+                  const roleLabel = credit.role.trim().endsWith(":")
+                    ? credit.role
+                    : `${credit.role}:`;
                   const handle = credit.url ? (
                     <a
                       href={credit.url}
@@ -368,20 +377,20 @@ export default async function ProjectDetailPage({
                   return (
                     <div
                       key={credit._key}
-                      className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-black pb-3"
+                      className="grid gap-5 border-b border-[var(--uc-gray-200)] py-8 md:grid-cols-2 md:gap-16"
                     >
-                      <dt className="type-body-sm">
+                      <dt className="type-body-lg">
                         <span className="font-bold uppercase">
-                          {credit.role}
+                          {roleLabel}
                         </span>
                         {credit.name && (
-                          <span className="block text-[var(--color-text-muted)]">
+                          <span className="block font-normal text-[var(--color-text)]">
                             {credit.name}
                           </span>
                         )}
                       </dt>
                       {handle && (
-                        <dd className="type-body-sm text-[var(--color-text-muted)]">
+                        <dd className="type-body-lg text-[var(--color-text-muted)]">
                           {handle}
                         </dd>
                       )}
@@ -392,24 +401,22 @@ export default async function ProjectDetailPage({
             </section>
           )}
 
-          {/* 16–17. Behind the Scenes (fixed heading) + its media */}
+          {/* 16–17. Behind the Scenes heading + its media */}
           {mediaBehindTheScenes.length > 0 && (
-            <>
-              <h2 className="type-display font-bold uppercase">
-                {detailLabels.behindTheScenes}
-              </h2>
-              <MediaZone sections={mediaBehindTheScenes} />
-            </>
+            <MediaZone
+              sections={mediaBehindTheScenes}
+              fallbackHeading={detailLabels.behindTheScenes}
+            />
           )}
         </div>
 
         {/* Back to projects */}
-        <section className="pb-[var(--space-section-y)]">
+        <section className="flex justify-end pb-[var(--space-section-y)]">
           <Link
             href={localizedPath(locale, "/projects")}
             className="pill-button"
           >
-            {nav.projects}
+            {detailLabels.seeOtherProjects}
           </Link>
         </section>
       </div>

@@ -39,8 +39,8 @@ function stringToRichText(value) {
   };
 }
 
-const aboutPage = await client.fetch(
-  `*[_id == "aboutPage"][0]{
+const aboutPages = await client.fetch(
+  `*[_id in ["aboutPage", "drafts.aboutPage"]]{
     _id,
     teamCoreTitle,
     processTitle,
@@ -49,30 +49,36 @@ const aboutPage = await client.fetch(
   }`,
 );
 
-if (!aboutPage) {
+if (!aboutPages.length) {
   console.log("No aboutPage document found.");
   process.exit(0);
 }
 
-const set = {};
+const patches = [];
 
-for (const field of fields) {
-  const value = aboutPage[field];
-  if (!value || value._type === "localizedRichText") continue;
-  set[field] = stringToRichText(value);
+for (const aboutPage of aboutPages) {
+  const set = {};
+
+  for (const field of fields) {
+    const value = aboutPage[field];
+    if (!value || value._type === "localizedRichText") continue;
+    set[field] = stringToRichText(value);
+  }
+
+  if (Object.keys(set).length > 0) {
+    patches.push({ id: aboutPage._id, set });
+  }
 }
 
-const fieldNames = Object.keys(set);
-
-if (fieldNames.length === 0) {
+if (patches.length === 0) {
   console.log("No about page title fields need rich-text migration.");
   process.exit(0);
 }
 
 console.log(
-  `${shouldWrite ? "Migrating" : "Dry run:"} about page title fields: ${fieldNames.join(
-    ", ",
-  )}`,
+  `${shouldWrite ? "Migrating" : "Dry run:"} about page title fields in ${patches
+    .map((patch) => patch.id)
+    .join(", ")}`,
 );
 
 if (!shouldWrite) {
@@ -82,6 +88,8 @@ if (!shouldWrite) {
   process.exit(0);
 }
 
-await client.patch("aboutPage").set(set).commit({ visibility: "async" });
+for (const patch of patches) {
+  await client.patch(patch.id).set(patch.set).commit({ visibility: "async" });
+}
 
 console.log("About page title fields migrated to localizedRichText.");

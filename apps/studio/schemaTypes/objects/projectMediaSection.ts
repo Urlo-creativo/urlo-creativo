@@ -1,13 +1,18 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const LAYOUT_VARIANTS = [
-  { title: "Collage a una colonna", value: "oneColumnCollage" },
+  { title: "Una colonna full-width", value: "oneColumnCollage" },
   { title: "Griglia a due colonne", value: "twoColumnGrid" },
   { title: "Mosaico", value: "masonry" },
   {
     title: "Griglia compatta a tre colonne",
     value: "compactThreeColumnGrid",
   },
+] as const;
+
+const WIDTH_MODE_OPTIONS = [
+  { title: "Fill container", value: "container" },
+  { title: "Full width", value: "fullWidth" },
 ] as const;
 
 const PLACEMENT_OPTIONS = [
@@ -58,6 +63,14 @@ export const projectMediaSectionType = defineType({
       description: "For Studio organization only. Not shown on the website.",
     }),
     defineField({
+      name: "heading",
+      title: "Titolo Behind the Scenes / Behind the Scenes title",
+      type: "localizedRichText",
+      description:
+        "Shown only for media sections placed in Dietro le quinte / Behind the Scenes.",
+      hidden: ({ parent }) => parent?.placement !== "behindTheScenes",
+    }),
+    defineField({
       name: "layout",
       title: "Variante disposizione",
       type: "string",
@@ -66,6 +79,20 @@ export const projectMediaSectionType = defineType({
         layout: "radio",
       },
       initialValue: "twoColumnGrid",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "widthMode",
+      title: "Larghezza / Width",
+      type: "string",
+      description:
+        "Fill container resta dentro il contenitore pagina. Full width estende la sezione media a tutta la larghezza viewport.",
+      options: {
+        list: [...WIDTH_MODE_OPTIONS],
+        layout: "radio",
+        direction: "horizontal",
+      },
+      initialValue: "container",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -84,6 +111,7 @@ export const projectMediaSectionType = defineType({
     select: {
       internalLabel: "internalLabel",
       layout: "layout",
+      widthMode: "widthMode",
       placement: "placement",
       item0: "mediaItems.0",
       item1: "mediaItems.1",
@@ -104,6 +132,7 @@ export const projectMediaSectionType = defineType({
     prepare({
       internalLabel,
       layout,
+      widthMode,
       placement,
       item0,
       item1,
@@ -137,12 +166,13 @@ export const projectMediaSectionType = defineType({
       ].filter(Boolean).length;
       const count = item12 ? `${visibleItems}+` : String(visibleItems);
       const variant = layout ? (LAYOUT_TITLES[layout] ?? layout) : "No layout";
+      const width = widthMode === "fullWidth" ? "Full width" : "Container";
       const where = placement
         ? (PLACEMENT_TITLES[placement] ?? placement)
         : "No placement";
 
       return {
-        title: `${where} · ${variant} · ${count} media`,
+        title: `${where} · ${variant} · ${width} · ${count} media`,
         subtitle: internalLabel || "No internal label",
         media: firstImage || firstPoster,
       };

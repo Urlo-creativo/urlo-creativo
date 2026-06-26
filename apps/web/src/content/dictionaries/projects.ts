@@ -40,6 +40,7 @@ const projectsIt = {
     outcome: sectionHeading("Risultato", "outcome"),
     credits: "Crediti",
     behindTheScenes: "Dietro le quinte",
+    seeOtherProjects: "Vedi altri progetti",
   },
 };
 
@@ -59,6 +60,7 @@ const projectsEn = {
     outcome: sectionHeading("Outcome", "outcome"),
     credits: "Credits",
     behindTheScenes: "Behind the Scenes",
+    seeOtherProjects: "See other projects",
   },
 };
 

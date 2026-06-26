@@ -101,7 +101,9 @@ export type ProjectMediaSection = {
   _key: string;
   placement: ProjectMediaPlacement;
   internalLabel: string | null;
+  heading: PortableRichTextValue;
   layout: ProjectMediaLayout;
+  widthMode: "container" | "fullWidth";
   mediaItems: ProjectMediaItem[];
 };
 
@@ -285,7 +287,9 @@ const mediaSectionFragment = `{
   _key,
   placement,
   internalLabel,
+  ${localizedValue("heading")},
   layout,
+  "widthMode": coalesce(widthMode, "container"),
   mediaItems[] ${mediaItemFragment}
 }`;
 
