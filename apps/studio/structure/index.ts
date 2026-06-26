@@ -1,13 +1,16 @@
-import { CaseIcon, HomeIcon, InfoOutlineIcon, UserIcon } from "@sanity/icons";
+import {
+  CaseIcon,
+  HomeIcon,
+  ImagesIcon,
+  InfoOutlineIcon,
+  UserIcon,
+  UsersIcon,
+} from "@sanity/icons";
 import type { StructureResolver } from "sanity/structure";
 
-const customListTypes = new Set([
-  "homePage",
-  "servicesPage",
-  "aboutPage",
-  "person",
-]);
-
+// Singleton pages first, then a divider, then the repeatable collections.
+// Collections get explicit plural titles + icons so the most-edited content
+// (Progetti) reads clearly instead of inheriting the singular schema title.
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Contenuti")
@@ -32,9 +35,10 @@ export const structure: StructureResolver = (S) =>
         .icon(InfoOutlineIcon)
         .schemaType("aboutPage")
         .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
-      S.documentTypeListItem("person").title("Persone").icon(UserIcon),
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => !customListTypes.has(item.getId() ?? ""),
-      ),
+      S.documentTypeListItem("project").title("Progetti").icon(ImagesIcon),
+      S.documentTypeListItem("person").title("Persone").icon(UserIcon),
+      S.documentTypeListItem("client")
+        .title("Clienti selezionati")
+        .icon(UsersIcon),
     ]);

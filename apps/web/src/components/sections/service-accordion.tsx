@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
-import { SanityImage } from "@/components/ui/sanity-image";
+import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
 import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import type {
   PortableRichTextValue,
@@ -233,22 +232,14 @@ export function ServiceAccordion({
                     .filter(Boolean)
                     .join(" ")}
                 >
-                  {item.previewImage ? (
-                    <SanityImage
-                      image={item.previewImage}
-                      fill
-                      sizes="(min-width: 768px) 471px, 100vw"
-                      className="object-cover object-center"
-                    />
-                  ) : (
-                    <Image
-                      src={images[index] ?? images[0] ?? PLACEHOLDER_IMAGE}
-                      alt=""
-                      fill
-                      sizes="(min-width: 768px) 471px, 100vw"
-                      className="object-cover object-center"
-                    />
-                  )}
+                  <SanityImageOrPlaceholder
+                    image={item.previewImage}
+                    fallbackSrc={images[index] ?? images[0] ?? PLACEHOLDER_IMAGE}
+                    fallbackAlt=""
+                    fill
+                    sizes="(min-width: 768px) 471px, 100vw"
+                    className="object-cover object-center"
+                  />
                 </div>
               </div>
             </button>
@@ -303,23 +294,15 @@ export function ServiceAccordion({
                                   : "0ms",
                               }}
                             >
-                              {galleryItem.image ? (
-                                <SanityImage
-                                  image={galleryItem.image}
-                                  alt={galleryItem.alt}
-                                  fill
-                                  sizes="(min-width: 768px) 430px, 100vw"
-                                  className="object-cover object-center"
-                                />
-                              ) : galleryItem.fallbackImage ? (
-                                <Image
-                                  src={galleryItem.fallbackImage}
-                                  alt={galleryItem.alt}
-                                  fill
-                                  sizes="(min-width: 768px) 430px, 100vw"
-                                  className="object-cover object-center"
-                                />
-                              ) : null}
+                              <SanityImageOrPlaceholder
+                                image={galleryItem.image}
+                                alt={galleryItem.alt}
+                                fallbackSrc={galleryItem.fallbackImage}
+                                fallbackAlt={galleryItem.alt}
+                                fill
+                                sizes="(min-width: 768px) 430px, 100vw"
+                                className="object-cover object-center"
+                              />
                             </div>
                             <p className="type-heading-md pt-1 font-bold italic uppercase">
                               {galleryItem.label}
@@ -354,23 +337,15 @@ export function ServiceAccordion({
                         }}
                       >
                         <div className="relative aspect-[888/990] w-full max-w-[528px] overflow-hidden">
-                          {item.media.image ? (
-                            <SanityImage
-                              image={item.media.image}
-                              alt={item.media.alt}
-                              fill
-                              sizes="(min-width: 768px) 520px, 100vw"
-                              className="object-contain object-center"
-                            />
-                          ) : item.media.fallbackImage ? (
-                            <Image
-                              src={item.media.fallbackImage}
-                              alt={item.media.alt}
-                              fill
-                              sizes="(min-width: 768px) 520px, 100vw"
-                              className="object-contain object-center"
-                            />
-                          ) : null}
+                          <SanityImageOrPlaceholder
+                            image={item.media.image}
+                            alt={item.media.alt}
+                            fallbackSrc={item.media.fallbackImage}
+                            fallbackAlt={item.media.alt}
+                            fill
+                            sizes="(min-width: 768px) 520px, 100vw"
+                            className="object-contain object-center"
+                          />
                         </div>
                         <ServiceRichText
                           as="p"
@@ -439,28 +414,20 @@ export function ServiceAccordion({
                   >
                     <div className="page-shell grid gap-12 md:grid-cols-[minmax(220px,430px)_minmax(0,560px)] md:items-center md:gap-[116px]">
                       <div className="relative aspect-[357/248] w-full max-w-[357px] overflow-hidden">
-                        {item.statementImage?.image ? (
-                          <SanityImage
-                            image={item.statementImage.image}
-                            alt={item.statementImage.alt}
-                            fill
-                            sizes="(min-width: 768px) 357px, 100vw"
-                            className="object-cover object-center"
-                          />
-                        ) : (
-                          <Image
-                            src={
-                              item.statementImage?.fallbackImage ??
-                              images[index] ??
-                              images[0] ??
-                              PLACEHOLDER_IMAGE
-                            }
-                            alt={item.statementImage?.alt ?? ""}
-                            fill
-                            sizes="(min-width: 768px) 357px, 100vw"
-                            className="object-cover object-center"
-                          />
-                        )}
+                        <SanityImageOrPlaceholder
+                          image={item.statementImage?.image}
+                          alt={item.statementImage?.alt}
+                          fallbackSrc={
+                            item.statementImage?.fallbackImage ??
+                            images[index] ??
+                            images[0] ??
+                            PLACEHOLDER_IMAGE
+                          }
+                          fallbackAlt={item.statementImage?.alt ?? ""}
+                          fill
+                          sizes="(min-width: 768px) 357px, 100vw"
+                          className="object-cover object-center"
+                        />
                       </div>
                       <ServiceRichText
                         as="p"

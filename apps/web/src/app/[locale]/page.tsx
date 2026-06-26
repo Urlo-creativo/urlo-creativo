@@ -7,11 +7,10 @@ import { PotentialSection } from "@/components/sections/potential-section";
 import { ProjectMediaItemView } from "@/components/sections/project-media";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { PageRichText } from "@/components/ui/page-rich-text";
-import { SanityImage } from "@/components/ui/sanity-image";
+import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
 import { client } from "@/lib/sanity/client";
 import { localeParams } from "@/lib/sanity/locale";
 import {
-  PLACEHOLDER_ALT,
   PLACEHOLDER_IMAGE,
   placeholderText,
 } from "@/content/placeholders";
@@ -198,27 +197,16 @@ export default async function Home({
                              origin-top-left transition-transform duration-500 ease-out
                              md:group-hover:scale-[1.1]"
                 >
-                  {project.coverImage ? (
-                    <SanityImage
-                      image={project.coverImage}
-                      alt=""
-                      fill
-                      sizes="(min-width: 768px) 33vw, 100vw"
-                      className="object-cover transition-all duration-500 ease-out
-                                 md:grayscale md:blur-[3px]
-                                 md:group-hover:grayscale-0 md:group-hover:blur-0"
-                    />
-                  ) : (
-                    <Image
-                      src={PLACEHOLDER_IMAGE}
-                      alt={PLACEHOLDER_ALT}
-                      fill
-                      sizes="(min-width: 768px) 33vw, 100vw"
-                      className="object-cover transition-all duration-500 ease-out
-                                 md:grayscale md:blur-[3px]
-                                 md:group-hover:grayscale-0 md:group-hover:blur-0"
-                    />
-                  )}
+                  <SanityImageOrPlaceholder
+                    image={project.coverImage}
+                    alt=""
+                    fallbackSrc={PLACEHOLDER_IMAGE}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-[filter] duration-500 ease-out
+                               md:grayscale md:blur-[3px]
+                               md:group-hover:grayscale-0 md:group-hover:blur-0"
+                  />
                 </div>
 
                 {/* On desktop the title is permanently white + mix-blend-difference.
@@ -299,22 +287,13 @@ export default async function Home({
 
         {/* Full-width photo */}
         <div className="relative mt-8 aspect-[1440/1029] w-full overflow-hidden">
-          {hasImageAsset(homeContent?.teamImage) ? (
-            <SanityImage
-              image={homeContent.teamImage}
-              fill
-              sizes="100vw"
-              className="object-cover"
-            />
-          ) : (
-            <Image
-              src={PLACEHOLDER_IMAGE}
-              alt={PLACEHOLDER_ALT}
-              fill
-              sizes="100vw"
-              className="object-cover"
-            />
-          )}
+          <SanityImageOrPlaceholder
+            image={homeContent?.teamImage}
+            fallbackSrc={PLACEHOLDER_IMAGE}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
         </div>
 
         {/* Body text + button */}

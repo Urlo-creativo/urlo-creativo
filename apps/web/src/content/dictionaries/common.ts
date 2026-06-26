@@ -1,9 +1,8 @@
-// Site-wide content (nav, footer) plus per-locale metadata. nav/footer IT are
-// currently English placeholders — translate them. Footer and contact share the
-// same address block; dedupe into one `contactInfo` source when this moves to
-// Sanity.
+// Site-wide content (nav, footer) plus per-locale metadata. Footer and contact
+// share the same address block; dedupe into one `contactInfo` source when this
+// moves to Sanity.
 
-// ⚠️ IT — Italian copy. Currently an English placeholder; translate each string.
+// IT — Italian copy.
 const commonIt = {
   metadata: {
     description:
@@ -11,15 +10,15 @@ const commonIt = {
   },
   nav: {
     home: "Home",
-    services: "Services",
-    projects: "Projects",
-    about: "About Us",
-    contact: "Contact",
+    services: "Servizi",
+    projects: "Progetti",
+    about: "Chi siamo",
+    contact: "Contatti",
   },
   footer: {
     title: "CONTATTI",
     address:
-      "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      "Via Luigi Alamanni, 8\n20141 – Milan\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
       { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },
@@ -45,7 +44,7 @@ const commonEn = {
   footer: {
     title: "CONTACT",
     address:
-      "Via Corrado II il Salico, 28\nMilan | 20141\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
+      "Via Luigi Alamanni, 8\n20141 – Milan\n\n+39 3703028027\ninfo@consulenzecreativeperetto.com",
     socials: [
       { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
       { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },

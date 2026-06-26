@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,8 +12,11 @@ import {
   StructuredRichText,
   type RichTextToken,
 } from "@/components/ui/rich-text";
-import { SanityImage } from "@/components/ui/sanity-image";
-import { PLACEHOLDER_ALT, PLACEHOLDER_IMAGE } from "@/content/placeholders";
+import {
+  SanityImage,
+  SanityImageOrPlaceholder,
+} from "@/components/ui/sanity-image";
+import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { projectCategoryPillClass } from "@/lib/project-category-styles";
 import { client } from "@/lib/sanity/client";
 import { hasImageAsset } from "@/lib/sanity/image";
@@ -197,24 +199,14 @@ export default async function ProjectDetailPage({
           />
         ) : (
           <div className="relative h-[calc(100vh-var(--project-hero-offset))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
-            {hasImageAsset(project.coverImage) ? (
-              <SanityImage
-                image={project.coverImage}
-                priority
-                fill
-                sizes="100vw"
-                className="object-cover"
-              />
-            ) : (
-              <Image
-                src={PLACEHOLDER_IMAGE}
-                alt={PLACEHOLDER_ALT}
-                priority
-                fill
-                sizes="100vw"
-                className="object-cover"
-              />
-            )}
+            <SanityImageOrPlaceholder
+              image={project.coverImage}
+              fallbackSrc={PLACEHOLDER_IMAGE}
+              priority
+              fill
+              sizes="100vw"
+              className="object-cover"
+            />
           </div>
         )}
       </section>

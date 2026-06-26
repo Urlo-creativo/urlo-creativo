@@ -363,10 +363,16 @@ Dictionary tokens may define:
   text: string;
   bold?: boolean;
   italic?: boolean;
-  highlight?: "pink" | "yellow";
+  highlight?: "blue" | "coral" | "orange" | "pink" | "yellow";
   trigger?: "scroll" | "load" | "static";
 }
 ```
+
+Highlight colours map to one `.highlight-text-*` class each: `yellow`
+(`--color-highlight-yellow`), `pink` (`--color-highlight-pink`), `orange`
+(`--color-highlight-orange`), `blue` (`--uc-blue`), and `coral` (`--uc-coral`).
+`yellow` and `pink` are the primary editorial highlights; the other three are
+available but used sparingly.
 
 Highlight triggers:
 

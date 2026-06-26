@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { hasImageAsset, sanityImageProps } from "@/lib/sanity/image";
 import type { SanityImage as SanityImageType } from "@/lib/sanity/queries";
+import { PLACEHOLDER_ALT } from "@/content/placeholders";
 
 type SharedProps = {
   image: SanityImageType | null | undefined;
@@ -72,6 +73,59 @@ export function SanityImage({
       priority={priority}
       placeholder={props.blurDataURL ? "blur" : "empty"}
       blurDataURL={props.blurDataURL}
+      className={className}
+    />
+  );
+}
+
+type SanityImageOrPlaceholderProps = SanityImageProps & {
+  /** Static src to render when `image` has no asset. Omit to render nothing. */
+  fallbackSrc?: string;
+  /** Alt for the fallback image. Defaults to the generic placeholder alt. */
+  fallbackAlt?: string;
+};
+
+/**
+ * `SanityImage` that degrades to a static placeholder when the asset is missing.
+ * Collapses the repeated `hasImageAsset(x) ? <SanityImage/> : <Image/>` branch
+ * used across pages and sections. Renders nothing when there is no asset and no
+ * `fallbackSrc`, so decorative/list slots stay empty rather than being forced to
+ * show a placeholder (preserving each call site's original null behaviour).
+ */
+export function SanityImageOrPlaceholder({
+  fallbackSrc,
+  fallbackAlt = PLACEHOLDER_ALT,
+  ...props
+}: SanityImageOrPlaceholderProps) {
+  if (hasImageAsset(props.image)) {
+    return <SanityImage {...props} />;
+  }
+  if (!fallbackSrc) return null;
+
+  const { className, sizes, priority } = props;
+
+  if (props.fill) {
+    return (
+      <Image
+        src={fallbackSrc}
+        alt={fallbackAlt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={className}
+      />
+    );
+  }
+
+  const width = props.width ?? 1600;
+  return (
+    <Image
+      src={fallbackSrc}
+      alt={fallbackAlt}
+      width={width}
+      height={width}
+      sizes={sizes}
+      priority={priority}
       className={className}
     />
   );

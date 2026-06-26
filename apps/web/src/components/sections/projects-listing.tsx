@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 
 import { ProjectFilterButtons } from "@/components/sections/project-filter-buttons";
-import { SanityImage } from "@/components/ui/sanity-image";
-import { PLACEHOLDER_ALT, PLACEHOLDER_IMAGE } from "@/content/placeholders";
+import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
+import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { localizedPath, type Locale } from "@/i18n/config";
 import {
   getCategoryOptions,
@@ -91,21 +90,14 @@ export function ProjectsListing({
               : "scale-95 opacity-0"
           }`}
         >
-          {hoveredProject?.coverImage ? (
-            <SanityImage
+          {hoveredProject ? (
+            <SanityImageOrPlaceholder
               image={hoveredProject.coverImage}
               alt=""
+              fallbackSrc={PLACEHOLDER_IMAGE}
               fill
               sizes="380px"
               width={760}
-              className="object-cover"
-            />
-          ) : hoveredProject ? (
-            <Image
-              src={PLACEHOLDER_IMAGE}
-              alt={PLACEHOLDER_ALT}
-              fill
-              sizes="380px"
               className="object-cover"
             />
           ) : null}
@@ -160,23 +152,14 @@ export function ProjectsListing({
                 )}
 
                 <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:hidden">
-                  {project.coverImage ? (
-                    <SanityImage
-                      image={project.coverImage}
-                      alt=""
-                      fill
-                      sizes="100vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src={PLACEHOLDER_IMAGE}
-                      alt={PLACEHOLDER_ALT}
-                      fill
-                      sizes="100vw"
-                      className="object-cover"
-                    />
-                  )}
+                  <SanityImageOrPlaceholder
+                    image={project.coverImage}
+                    alt=""
+                    fallbackSrc={PLACEHOLDER_IMAGE}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </Link>

@@ -1,10 +1,9 @@
-import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProcessSection } from "@/components/sections/process-section";
 import { PageRichText } from "@/components/ui/page-rich-text";
-import { SanityImage } from "@/components/ui/sanity-image";
+import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
 import { SiteFooter } from "@/components/sections/site-footer";
 import {
   TeamCoreSection,
@@ -12,7 +11,6 @@ import {
 } from "@/components/sections/team-core-section";
 import { client } from "@/lib/sanity/client";
 import {
-  PLACEHOLDER_ALT,
   PLACEHOLDER_IMAGE,
   placeholderText,
 } from "@/content/placeholders";
@@ -142,24 +140,14 @@ export default async function AboutPage({
       </section>
 
       <section className="relative mt-20 h-[360px] overflow-hidden bg-[var(--color-bg-muted)] md:mt-[104px] md:h-[1018px]">
-        {hasImageAsset(aboutContent?.heroImage) ? (
-          <SanityImage
-            image={aboutContent.heroImage}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center blur-[8px] md:scale-[1.06]"
-          />
-        ) : (
-          <Image
-            src={PLACEHOLDER_IMAGE}
-            alt={PLACEHOLDER_ALT}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center blur-[8px] md:scale-[1.06]"
-          />
-        )}
+        <SanityImageOrPlaceholder
+          image={aboutContent?.heroImage}
+          fallbackSrc={PLACEHOLDER_IMAGE}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center blur-[8px] md:scale-[1.06]"
+        />
       </section>
 
       <section className="section-y bg-yellow">
@@ -212,22 +200,13 @@ export default async function AboutPage({
             className="type-body-xl"
           />
           <div className="relative aspect-[575/337] overflow-hidden">
-            {hasImageAsset(aboutContent?.missionImage) ? (
-              <SanityImage
-                image={aboutContent.missionImage}
-                fill
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover object-center"
-              />
-            ) : (
-              <Image
-                src={PLACEHOLDER_IMAGE}
-                alt={PLACEHOLDER_ALT}
-                fill
-                sizes="(min-width: 768px) 40vw, 100vw"
-                className="object-cover object-center"
-              />
-            )}
+            <SanityImageOrPlaceholder
+              image={aboutContent?.missionImage}
+              fallbackSrc={PLACEHOLDER_IMAGE}
+              fill
+              sizes="(min-width: 768px) 40vw, 100vw"
+              className="object-cover object-center"
+            />
           </div>
         </div>
         <PageRichText
@@ -247,22 +226,13 @@ export default async function AboutPage({
             className="type-heading-xl uppercase"
           />
           <div className="relative z-10 ml-auto aspect-[310/244] w-[220px] origin-top-left cursor-pointer overflow-hidden transition-transform duration-500 ease-out hover:scale-[1.1] md:w-[310px] md:self-start lg:w-[360px]">
-            {hasImageAsset(aboutContent?.historyImage) ? (
-              <SanityImage
-                image={aboutContent.historyImage}
-                fill
-                sizes="(min-width: 768px) 45vw, 100vw"
-                className="object-cover object-center"
-              />
-            ) : (
-              <Image
-                src={PLACEHOLDER_IMAGE}
-                alt={PLACEHOLDER_ALT}
-                fill
-                sizes="(min-width: 768px) 45vw, 100vw"
-                className="object-cover object-center"
-              />
-            )}
+            <SanityImageOrPlaceholder
+              image={aboutContent?.historyImage}
+              fallbackSrc={PLACEHOLDER_IMAGE}
+              fill
+              sizes="(min-width: 768px) 45vw, 100vw"
+              className="object-cover object-center"
+            />
           </div>
         </div>
         <div className="mt-6 grid gap-6 md:grid-cols-2">
@@ -282,7 +252,7 @@ export default async function AboutPage({
                 as="p"
                 value={item.description}
                 fallback={item.fallbackDescription}
-                className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-all md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100"
+                className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-[opacity,transform] md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100"
               />
             </div>
           ))}
@@ -300,23 +270,14 @@ export default async function AboutPage({
           {teamMembers.map((member) => (
             <article key={member.key}>
               <div className="media-portrait relative overflow-hidden bg-gray-100">
-                {member.photo ? (
-                  <SanityImage
-                    image={member.photo}
-                    alt={member.photo.alt ?? `Portrait of ${member.name}`}
-                    fill
-                    sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
-                    className="object-cover object-center"
-                  />
-                ) : member.fallbackPhoto ? (
-                  <Image
-                    src={member.fallbackPhoto}
-                    alt={PLACEHOLDER_ALT}
-                    fill
-                    sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
-                    className="object-cover object-center"
-                  />
-                ) : null}
+                <SanityImageOrPlaceholder
+                  image={member.photo}
+                  alt={member.photo?.alt ?? `Portrait of ${member.name}`}
+                  fallbackSrc={member.fallbackPhoto}
+                  fill
+                  sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw"
+                  className="object-cover object-center"
+                />
               </div>
               <h3 className="type-body-lg mt-4 font-bold uppercase">
                 {member.name}

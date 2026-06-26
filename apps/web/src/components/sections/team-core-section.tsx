@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { AnimatedBar } from "@/components/ui/animated-bar";
-import { SanityImage } from "@/components/ui/sanity-image";
+import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
 import type { SanityImage as SanityImageType } from "@/lib/sanity/queries";
 
 // Each image has its own position + size for a scattered editorial layout
@@ -64,7 +63,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
             return (
               <div
                 key={`${item.role}-image-${i}`}
-                className="absolute transition-all duration-300 ease-out"
+                className="absolute transition-[opacity,transform] duration-300 ease-out"
                 style={{
                   top: s.top,
                   left: s.left,
@@ -74,23 +73,15 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
                   transform: activeIndex === i ? "translateY(0)" : "translateY(8px)",
                 }}
               >
-                {item.image ? (
-                  <SanityImage
-                    image={item.image}
-                    alt={item.alt ?? item.image.alt ?? ""}
-                    fill
-                    sizes="35vw"
-                    className="object-cover"
-                  />
-                ) : item.fallbackImage ? (
-                  <Image
-                    src={item.fallbackImage}
-                    alt={item.alt ?? ""}
-                    fill
-                    sizes="35vw"
-                    className="object-cover"
-                  />
-                ) : null}
+                <SanityImageOrPlaceholder
+                  image={item.image}
+                  alt={item.alt}
+                  fallbackSrc={item.fallbackImage}
+                  fallbackAlt={item.alt ?? ""}
+                  fill
+                  sizes="35vw"
+                  className="object-cover"
+                />
               </div>
             );
           })}
