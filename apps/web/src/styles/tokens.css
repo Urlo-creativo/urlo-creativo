@@ -43,6 +43,8 @@
   /* Light copy over the dark hero image (slightly off-white, by design). */
   --color-text-on-hero: #f4f4f4;
   --color-border-primary: var(--uc-black);
+  --color-border-muted: var(--uc-gray-200);
+  --color-focus-ring: var(--uc-blue-deep);
   --color-selection-bg: var(--uc-yellow);
   --color-selection-fg: var(--uc-black);
   --color-selection-on-yellow-bg: var(--uc-blue-deep);
@@ -62,6 +64,9 @@
   --color-button-neutral: var(--uc-black);
   --color-button-neutral-text: var(--uc-white);
   --color-hover-soft: rgba(0, 0, 0, 0.07);
+  --color-interactive-hover: rgba(0, 0, 0, 0.12);
+  --color-interactive-active-soft: rgba(0, 0, 0, 0.14);
+  --color-interactive-active: rgba(0, 0, 0, 0.2);
   --color-nav-bg: rgba(235, 235, 235, 0.75);
   --color-nav-divider: rgba(0, 0, 0, 0.28);
   --color-rail-blue: var(--uc-blue-deep);
@@ -128,6 +133,12 @@
   --touch-target-min: 44px;
   --pill-button-x: 32px;
   --mobile-pill-button-x: 28px;
+  --nav-top: 31px;
+  --nav-shell-size: 50px;
+  --nav-link-width: 104px;
+  --nav-link-height: 34px;
+  --nav-locale-width: 52px;
+  --nav-locale-height: 40px;
 
   /* ===== Z-index scale =====
      Only the app-shell layers are tokenized; self-contained stacking contexts
@@ -141,7 +152,12 @@
      recurring choreographies: panel open/close and scroll/viewport reveals. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
   --dur: 220ms;
+  --dur-medium: 300ms;
   --dur-panel: 500ms;
+  --dur-slow: 500ms;
   --dur-reveal: 900ms;
+  --dur-highlight: 1200ms;
+  --dur-highlight-delay: 220ms;
 }

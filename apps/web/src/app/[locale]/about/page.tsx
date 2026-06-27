@@ -225,7 +225,7 @@ export default async function AboutPage({
             fallback={about.historyTitle}
             className="type-heading-xl uppercase"
           />
-          <div className="relative z-10 ml-auto aspect-[310/244] w-[220px] origin-top-left cursor-pointer overflow-hidden transition-transform duration-500 ease-out hover:scale-[1.1] md:w-[310px] md:self-start lg:w-[360px]">
+          <div className="relative z-10 ml-auto aspect-[310/244] w-[220px] origin-top-left cursor-pointer overflow-hidden transition-transform duration-500 ease-out hover:scale-[1.1] motion-reduce:transition-none motion-reduce:hover:scale-100 md:w-[310px] md:self-start lg:w-[360px]">
             <SanityImageOrPlaceholder
               image={aboutContent?.historyImage}
               fallbackSrc={PLACEHOLDER_IMAGE}
@@ -239,7 +239,7 @@ export default async function AboutPage({
           {historyItems.map((item) => (
             <div
               key={item.key}
-              className="group/history-item relative border-y border-black py-2 outline-none md:cursor-pointer"
+              className="focus-ring group/history-item relative border-y border-black py-2 md:cursor-pointer"
               tabIndex={0}
             >
               <div className="flex min-h-[48px] items-center justify-between gap-4 md:min-h-[60px]">
@@ -252,7 +252,7 @@ export default async function AboutPage({
                 as="p"
                 value={item.description}
                 fallback={item.fallbackDescription}
-                className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-[opacity,transform] md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100"
+                className="type-body-sm text-measure-narrow mt-4 md:pointer-events-none md:absolute md:left-0 md:top-full md:z-20 md:mt-6 md:translate-y-2 md:opacity-0 md:transition-[opacity,transform] md:duration-300 md:ease-out md:group-hover/history-item:translate-y-0 md:group-hover/history-item:opacity-100 md:group-focus/history-item:translate-y-0 md:group-focus/history-item:opacity-100 md:motion-reduce:translate-y-0 md:motion-reduce:transition-none"
               />
             </div>
           ))}

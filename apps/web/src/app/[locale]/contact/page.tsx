@@ -50,7 +50,7 @@ export default async function ContactPage({
                 href={social.href}
                 target="_blank"
                 rel="noreferrer"
-                className="flex min-h-11 w-fit items-center transition-opacity hover:opacity-60"
+                className="subtle-link focus-ring flex min-h-11 w-fit items-center"
               >
                 {social.label}
               </a>

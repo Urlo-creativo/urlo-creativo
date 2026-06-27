@@ -200,7 +200,7 @@ export function ServiceAccordion({
               aria-expanded={isOpen}
               aria-controls={panelId}
               className={[
-                "grid w-full items-center text-left transition-[gap,padding] duration-500 ease-out md:grid-cols-[1fr_minmax(0,471px)]",
+                "focus-ring grid w-full items-center text-left transition-[gap,padding] duration-500 ease-out md:grid-cols-[1fr_minmax(0,471px)]",
                 hasActiveService
                   ? "gap-0 py-8 md:gap-0 md:py-10"
                   : "gap-6 py-10 md:gap-16 md:py-14",
@@ -313,7 +313,7 @@ export function ServiceAccordion({
                     </div>
                   ) : isMediaServiceItem(item) ? (
                     <div className="grid gap-12 md:grid-cols-[minmax(0,760px)_minmax(320px,520px)] md:items-start md:gap-[120px]">
-                      <div className="divide-y divide-[var(--uc-gray-200)]">
+                      <div className="divide-y divide-[var(--color-border-muted)]">
                         {item.details.map((detail, detailIndex) => (
                           <p
                             key={`${item.number}-media-detail-${detailIndex}`}
@@ -355,7 +355,7 @@ export function ServiceAccordion({
                       </div>
                     </div>
                   ) : (
-                    <div className="divide-y divide-[var(--uc-gray-200)]">
+                    <div className="divide-y divide-[var(--color-border-muted)]">
                       {item.details.map((detail, detailIndex) =>
                         isStructuredDetail(detail) ? (
                           <div

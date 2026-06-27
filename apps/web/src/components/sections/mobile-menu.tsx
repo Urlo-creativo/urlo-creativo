@@ -40,7 +40,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="relative z-[var(--z-header)] grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md"
+        className="site-nav-icon site-nav-chrome focus-ring"
       >
         <span className="relative block h-3.5 w-6" aria-hidden>
           <span
@@ -62,7 +62,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[var(--z-overlay)] bg-paper text-black">
+        <div className="fixed inset-0 z-[var(--z-overlay)] overscroll-contain bg-paper text-black">
           <nav
             className="page-shell page-top flex h-full flex-col gap-1 pb-16"
             aria-label="Mobile navigation"
@@ -74,7 +74,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`type-heading-xl font-bold uppercase transition-opacity ${
+                  className={`focus-ring type-heading-xl font-bold uppercase transition-opacity ${
                     active ? "opacity-100" : "opacity-50 hover:opacity-100"
                   }`}
                 >
@@ -89,7 +89,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
                   key={l.hrefLang}
                   hrefLang={l.hrefLang}
                   onClick={() => setOpen(false)}
-                  className="type-nav uppercase opacity-60 transition-opacity hover:opacity-100"
+                  className="focus-ring type-nav uppercase opacity-60 transition-opacity hover:opacity-100"
                 >
                   {l.label}
                 </LocaleLink>

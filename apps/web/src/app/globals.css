@@ -11,6 +11,7 @@
 html {
   overflow-y: scroll;
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-top) + var(--nav-shell-size) + 24px);
   scrollbar-gutter: stable;
 }
 
@@ -21,6 +22,7 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   letter-spacing: 0.02em;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img,
@@ -34,6 +36,15 @@ canvas {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a,
+button {
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
 }
 
 ::selection {
@@ -58,6 +69,11 @@ a {
 }
 
 @layer components {
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 4px;
+  }
+
   .page-shell {
     width: min(100%, var(--page-max));
     margin-inline: auto;
@@ -163,6 +179,7 @@ a {
     line-height: 1;
     font-weight: 400;
     letter-spacing: 0;
+    overflow-wrap: anywhere;
   }
 
   .type-display {
@@ -170,6 +187,7 @@ a {
     line-height: 1;
     font-weight: 400;
     letter-spacing: 0;
+    overflow-wrap: anywhere;
   }
 
   .type-heading-xl {
@@ -177,6 +195,7 @@ a {
     line-height: 1.06;
     font-weight: 400;
     letter-spacing: 0;
+    overflow-wrap: anywhere;
   }
 
   .type-heading-md {
@@ -184,6 +203,7 @@ a {
     line-height: 1.08;
     font-weight: 400;
     letter-spacing: 0;
+    overflow-wrap: anywhere;
   }
 
   .type-body-xl {
@@ -228,8 +248,85 @@ a {
     letter-spacing: 0;
   }
 
+  .site-nav-chrome {
+    height: var(--nav-shell-size);
+    background: var(--color-nav-bg);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .site-nav-icon {
+    position: relative;
+    z-index: var(--z-header);
+    display: grid;
+    width: var(--nav-shell-size);
+    height: var(--nav-shell-size);
+    place-items: center;
+    border-radius: var(--radius-full);
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .site-nav-icon:hover {
+    opacity: 0.7;
+  }
+
+  .site-nav-link {
+    display: flex;
+    width: var(--nav-link-width);
+    height: var(--nav-link-height);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .site-nav-link:hover {
+    background: var(--color-interactive-hover);
+  }
+
+  .site-nav-link:active {
+    background: var(--color-interactive-active);
+  }
+
+  .site-nav-link-active {
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+  }
+
+  .site-nav-link-active:hover,
+  .site-nav-link-active:active {
+    background: var(--color-bg-inverse);
+  }
+
+  .site-locale-link {
+    display: flex;
+    width: var(--nav-locale-width);
+    height: var(--nav-locale-height);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .site-locale-link:hover {
+    background: var(--color-hover-soft);
+  }
+
+  .site-locale-link:active {
+    background: var(--color-interactive-active-soft);
+  }
+
+  .subtle-link {
+    transition: opacity var(--dur-medium) var(--ease-out);
+  }
+
+  .subtle-link:hover,
+  .subtle-link:focus-visible {
+    opacity: 0.6;
+  }
+
   .role-item {
-    transition: background-color 150ms ease;
+    transition: background-color var(--dur-fast) ease;
   }
 
   .role-item:hover {
@@ -283,9 +380,9 @@ a {
     opacity: 0;
     transform: translate(-60%, -50%) scale(0.04);
     transition:
-      background 420ms var(--ease-out),
-      opacity 160ms var(--ease-out),
-      transform 420ms var(--ease-out);
+      background var(--dur-slow) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
   }
 
   .pill-button:hover::before,
@@ -375,7 +472,8 @@ a {
   }
 
   .highlight-text-load.highlight-text-revealed {
-    animation: highlight-reveal 1200ms ease-in-out 220ms forwards;
+    animation: highlight-reveal var(--dur-highlight) ease-in-out
+      var(--dur-highlight-delay) forwards;
   }
 
   .highlight-text-static {
@@ -489,6 +587,19 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .highlight-text-load.highlight-text-revealed {
     animation: none;
     background-size: 100% 0.5em;

@@ -86,11 +86,15 @@ export function ProcessSection({
           style={{ height: "48px", overflow: "visible" }}
         >
           {stages.map((stage, i) => (
-            <div
+            <button
+              type="button"
               key={`process-panel-${i}`}
-              className="relative cursor-pointer"
+              aria-label={`${stage}: ${descriptions[i]}`}
+              className="focus-ring relative h-full cursor-pointer appearance-none bg-transparent p-0 text-left"
               onMouseEnter={() => setActiveIndex(i)}
               onMouseLeave={() => setActiveIndex(null)}
+              onFocus={() => setActiveIndex(i)}
+              onBlur={() => setActiveIndex(null)}
             >
               <div
                 className="absolute inset-x-0 top-0 z-10 flex items-center overflow-hidden transition-[height] duration-300 ease-out"
@@ -107,7 +111,7 @@ export function ProcessSection({
                   {descriptions[i]}
                 </p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

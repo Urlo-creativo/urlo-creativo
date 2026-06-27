@@ -213,7 +213,7 @@ export default async function ProjectDetailPage({
 
       <div className="page-shell">
         {/* 2–6. Title, graphic, category, season, roles */}
-        <section className="border-b border-[var(--uc-gray-200)] py-20 md:pb-[72px] md:pt-[92px]">
+        <section className="border-b border-[var(--color-border-muted)] py-20 md:pb-[72px] md:pt-[92px]">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div>
               <h1 className="type-display font-bold uppercase">
@@ -359,7 +359,7 @@ export default async function ProjectDetailPage({
                       href={credit.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="transition-opacity hover:opacity-60"
+                      className="subtle-link focus-ring"
                     >
                       {credit.handle ?? credit.url}
                     </a>
@@ -369,14 +369,14 @@ export default async function ProjectDetailPage({
                   return (
                     <div
                       key={credit._key}
-                      className="grid gap-5 border-b border-[var(--uc-gray-200)] py-8 md:grid-cols-2 md:gap-16"
+                      className="grid gap-5 border-b border-[var(--color-border-muted)] py-8 md:grid-cols-2 md:gap-16"
                     >
                       <dt className="type-body-lg">
                         <span className="font-bold uppercase">
                           {roleLabel}
                         </span>
                         {credit.name && (
-                          <span className="block font-normal text-[var(--color-text)]">
+                          <span className="block font-normal text-[var(--color-text-primary)]">
                             {credit.name}
                           </span>
                         )}

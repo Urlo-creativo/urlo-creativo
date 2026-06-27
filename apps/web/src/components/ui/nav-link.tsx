@@ -17,10 +17,10 @@ export function NavLink({ href, children }: NavLinkProps) {
     <Link
       href={href}
       className={[
-        "type-nav flex h-[34px] w-[104px] items-center justify-center rounded-full transition-colors duration-150",
+        "site-nav-link focus-ring type-nav",
         isActive
-          ? "bg-black text-white"
-          : "text-black hover:bg-black/[0.12] active:bg-black/[0.20]",
+          ? "site-nav-link-active"
+          : "text-black",
       ].join(" ")}
     >
       {children}

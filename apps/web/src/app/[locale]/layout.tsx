@@ -74,7 +74,7 @@ export default async function LocaleLayout({
           locale={locale}
           localeLabel={localeLabels[locale]}
         />
-        {children}
+        <div id="main-content">{children}</div>
       </body>
     </html>
   );

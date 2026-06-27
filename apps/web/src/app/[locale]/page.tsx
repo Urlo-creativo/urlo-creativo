@@ -188,14 +188,15 @@ export default async function Home({
                     ? `${projectTitle} (${project.year})`
                     : projectTitle
                 }
-                className="group relative isolate block bg-paper"
+                className="focus-ring group relative isolate block bg-paper"
               >
 
                 {/* Image grows from the top-left anchor on hover */}
                 <div
                   className="relative aspect-square overflow-hidden md:media-portrait
                              origin-top-left transition-transform duration-500 ease-out
-                             md:group-hover:scale-[1.1]"
+                             motion-reduce:transition-none
+                             md:group-hover:scale-[1.1] md:motion-reduce:group-hover:scale-100"
                 >
                   <SanityImageOrPlaceholder
                     image={project.coverImage}
@@ -205,6 +206,7 @@ export default async function Home({
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover transition-[filter] duration-500 ease-out
                                md:grayscale md:blur-[3px]
+                               motion-reduce:transition-none
                                md:group-hover:grayscale-0 md:group-hover:blur-0"
                   />
                 </div>

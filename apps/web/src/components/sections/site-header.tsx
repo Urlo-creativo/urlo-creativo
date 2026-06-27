@@ -43,14 +43,14 @@ export function SiteHeader({
   }));
 
   return (
-    <header className="fixed left-0 right-0 top-[31px] z-[var(--z-header)]">
+    <header className="fixed left-0 right-0 top-[var(--nav-top)] z-[var(--z-header)]">
       {/* page-shell so the logo's left edge aligns with page content (e.g. the hero kicker) */}
       <div className="page-shell flex items-center justify-between gap-3 text-black">
         {/* Logo — standalone pill, aligned to content left */}
         <Link
           href={localizedPath(locale)}
           aria-label="Urlo Creativo home"
-          className="relative z-[var(--z-header)] grid h-[50px] w-[50px] place-items-center rounded-full bg-[var(--color-nav-bg)] backdrop-blur-md transition-opacity hover:opacity-70"
+          className="site-nav-icon site-nav-chrome focus-ring"
         >
           <Image
             src="/brand/logo-mark.png"
@@ -62,7 +62,7 @@ export function SiteHeader({
         </Link>
 
         {/* Pages + language in one pill */}
-        <div className="hidden h-[50px] items-center rounded-pill bg-[var(--color-nav-bg)] px-3 backdrop-blur-md md:flex">
+        <div className="site-nav-chrome hidden items-center rounded-pill px-3 md:flex">
           <nav className="flex items-center" aria-label="Main navigation">
             {navItems.map((item) => (
               <NavLink key={item.href} href={localizedPath(locale, item.href)}>
@@ -80,7 +80,7 @@ export function SiteHeader({
             <LocaleLink
               key={l}
               hrefLang={l}
-              className="type-nav flex h-[40px] w-[52px] items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/[0.07] active:bg-black/[0.14]"
+              className="site-locale-link focus-ring type-nav"
             >
               {localeLabels[l].toUpperCase()}
             </LocaleLink>

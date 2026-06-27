@@ -84,7 +84,7 @@ export function ProjectsListing({
         }}
       >
         <div
-          className={`relative aspect-[4/3] w-full overflow-hidden border border-black bg-[var(--color-bg-muted)] shadow-[0_24px_60px_rgba(0,0,0,0.16)] transition-[opacity,transform] duration-300 ease-out ${
+          className={`relative aspect-[4/3] w-full overflow-hidden border border-black bg-[var(--color-bg-muted)] shadow-[0_24px_60px_rgba(0,0,0,0.16)] transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
             hoveredProject
               ? "scale-100 opacity-100"
               : "scale-95 opacity-0"
@@ -109,7 +109,7 @@ export function ProjectsListing({
           <article key={project._id} className="border-b border-black">
             <Link
               href={localizedPath(locale, `/projects/${project.slug}`)}
-              className="group grid gap-6 py-8 outline-none md:grid-cols-[104px_minmax(0,1fr)] md:items-center md:gap-16 md:py-12"
+              className="focus-ring group grid gap-6 py-8 md:grid-cols-[104px_minmax(0,1fr)] md:items-center md:gap-16 md:py-12"
               onPointerEnter={(event) => {
                 if (event.pointerType === "touch") {
                   return;
@@ -137,7 +137,7 @@ export function ProjectsListing({
               </p>
 
               <div>
-                <h2 className="type-heading-xl font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60">
+                <h2 className="type-heading-xl font-bold transition-opacity duration-300 group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none">
                   <span>{project.clientName}</span>
                   {project.projectName && (
                     <span>

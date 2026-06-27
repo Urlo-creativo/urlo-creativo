@@ -19,6 +19,7 @@ export function ProjectFilterButtons({
   return (
     <div
       className="mt-10 flex flex-wrap gap-3 md:mt-[70px]"
+      role="group"
       aria-label="Project categories"
     >
       <button
