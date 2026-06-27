@@ -19,7 +19,7 @@ export const personType = defineType({
       name: "role",
       title: "Ruolo",
       type: "localizedString",
-      description: "Shown below the person's name in the People grid.",
+      description: "Mostrato sotto il nome nella griglia Persone.",
     }),
     defineField({
       name: "photo",
@@ -32,7 +32,7 @@ export const personType = defineType({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the portrait for screen readers and SEO.",
+          description: "Descrivi il ritratto per accessibilità e SEO.",
         }),
       ],
     }),
@@ -41,7 +41,7 @@ export const personType = defineType({
       title: "Ordine manuale",
       type: "number",
       description:
-        "Controls position in the People grid. Lower number appears first.",
+        "Controlla la posizione nella griglia Persone. Il numero più basso appare prima.",
     }),
   ],
   orderings: [
@@ -55,7 +55,7 @@ export const personType = defineType({
     select: { title: "name", role: "role", media: "photo" },
     prepare({ title, role, media }) {
       return {
-        title: title || "Person",
+        title: title || "Persona senza nome",
         subtitle: localizedPreviewText(role) || undefined,
         media,
       };

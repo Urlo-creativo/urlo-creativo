@@ -23,7 +23,7 @@ export const homePageType = defineType({
       title: "Testo breve sopra il titolo",
       type: "localizedRichText",
       group: "hero",
-      description: "Small line above the main homepage headline.",
+      description: "Breve testo sopra il titolo principale della home.",
     }),
     defineField({
       name: "heroMedia",
@@ -31,42 +31,42 @@ export const homePageType = defineType({
       type: "projectMediaItem",
       group: "hero",
       description:
-        "Image or video behind the homepage hero. Videos autoplay muted.",
+        "Immagine o video di sfondo nella prima sezione. I video partono senza audio.",
     }),
     defineField({
       name: "heroTitle",
       title: "Titolo sezione iniziale",
       type: "localizedRichText",
       group: "hero",
-      description: "Main headline at the top of the homepage.",
+      description: "Titolo principale in alto nella home.",
     }),
     defineField({
       name: "heroSubheading",
       title: "Sottotitolo sezione iniziale",
       type: "localizedRichText",
       group: "hero",
-      description: "Short text below the hero headline.",
+      description: "Breve testo sotto il titolo principale.",
     }),
     defineField({
       name: "mission",
       title: "Dichiarazione missione",
       type: "localizedRichText",
       group: "mission",
-      description: "Large mission copy immediately after the hero.",
+      description: "Testo grande subito dopo la sezione iniziale.",
     }),
     defineField({
       name: "potentialTitle",
       title: "Titolo intro metodo",
       type: "localizedRichText",
       group: "methodSteps",
-      description: "Headline above the method step list.",
+      description: "Titolo sopra la lista degli step del metodo.",
     }),
     defineField({
       name: "methodSteps",
       title: "Step metodo",
       type: "array",
       group: "methodSteps",
-      description: "The compact method columns shown below the intro title.",
+      description: "Colonne compatte mostrate sotto il titolo intro metodo.",
       validation: (Rule) => Rule.max(4),
       of: [
         defineArrayMember({
@@ -83,14 +83,14 @@ export const homePageType = defineType({
                     | undefined;
                   return title?.it || title?.en
                     ? true
-                    : "Add at least one language.";
+                    : "Aggiungi almeno una lingua.";
                 }),
             }),
             defineField({
               name: "items",
               title: "Righe dello step",
               type: "array",
-              description: "Short lines listed under this step.",
+              description: "Brevi righe elencate sotto questo step.",
               of: [defineArrayMember({ type: "localizedString" })],
               validation: (Rule) => Rule.max(6),
             }),
@@ -101,10 +101,10 @@ export const homePageType = defineType({
               const localizedTitle = localizedPreviewText(title);
               const count = Array.isArray(items) ? items.length : 0;
               return {
-                title: localizedTitle || "Untitled method step",
+                title: localizedTitle || "Step senza titolo",
                 subtitle: count
-                  ? `${count} line${count === 1 ? "" : "s"}`
-                  : "No lines added",
+                  ? `${count} rig${count === 1 ? "a" : "he"}`
+                  : "Nessuna riga inserita",
               };
             },
           },
@@ -116,7 +116,7 @@ export const homePageType = defineType({
       title: "Etichetta metodologia",
       type: "localizedRichText",
       group: "methodology",
-      description: "Small label above the methodology body.",
+      description: "Piccola etichetta sopra il testo metodologia.",
     }),
     defineField({
       name: "methodology",
@@ -129,14 +129,14 @@ export const homePageType = defineType({
       title: "Titolo sezione progetti",
       type: "localizedRichText",
       group: "projects",
-      description: "Heading above the featured projects grid.",
+      description: "Titolo sopra la griglia dei progetti in evidenza.",
     }),
     defineField({
       name: "selectedClients",
       title: "Titolo clienti selezionati",
       type: "localizedRichText",
       group: "clients",
-      description: "Heading above the selected client logo marquee.",
+      description: "Titolo sopra la fascia dei loghi clienti.",
     }),
     defineField({
       name: "teamTitle",
@@ -149,14 +149,14 @@ export const homePageType = defineType({
       title: "Immagine persone",
       type: "image",
       group: "team",
-      description: "Image shown beside the people section intro.",
+      description: "Immagine mostrata nella sezione persone della home.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
     }),

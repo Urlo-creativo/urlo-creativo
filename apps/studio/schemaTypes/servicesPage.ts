@@ -7,9 +7,9 @@ import {
 } from "./utils/preview";
 
 const SERVICE_VARIANT_LABELS: Record<string, string> = {
-  structured: "Structured details",
-  media: "Media + statement",
-  gallery: "Gallery + statement",
+  structured: "Dettagli strutturati",
+  media: "Media + dichiarazione",
+  gallery: "Galleria + dichiarazione",
 };
 
 export const servicesPageType = defineType({
@@ -28,14 +28,14 @@ export const servicesPageType = defineType({
       title: "Titolo pagina",
       type: "localizedRichText",
       group: "hero",
-      description: "Main headline at the top of the Services page.",
+      description: "Titolo principale in alto nella pagina Servizi.",
     }),
     defineField({
       name: "items",
       title: "Servizi nella fisarmonica",
       type: "array",
       group: "accordion",
-      description: "Each item is one expandable row in the services accordion.",
+      description: "Ogni voce è una riga apribile nella pagina Servizi.",
       validation: (Rule) => Rule.max(8),
       of: [
         defineArrayMember({
@@ -45,7 +45,7 @@ export const servicesPageType = defineType({
               name: "number",
               title: "Numero visibile",
               type: "string",
-              description: "Shown at the start of the accordion row, e.g. 01.",
+              description: "Mostrato all'inizio della riga, per esempio 01.",
             }),
             defineField({
               name: "title",
@@ -58,14 +58,14 @@ export const servicesPageType = defineType({
                     | undefined;
                   return title?.it || title?.en
                     ? true
-                    : "Add at least one language.";
+                    : "Aggiungi almeno una lingua.";
                 }),
             }),
             defineField({
               name: "previewImage",
               title: "Immagine voce chiusa",
               type: "image",
-              description: "Image shown while this service row is closed.",
+              description: "Immagine mostrata quando la voce è chiusa.",
               options: { hotspot: true },
               fields: [
                 defineField({
@@ -79,7 +79,7 @@ export const servicesPageType = defineType({
               name: "variant",
               title: "Tipo contenuto aperto",
               type: "string",
-              description: "Choose the layout used after the row is opened.",
+              description: "Scegli la disposizione usata quando la riga è aperta.",
               options: {
                 layout: "radio",
                 list: [
@@ -120,7 +120,7 @@ export const servicesPageType = defineType({
                       name: "itemsText",
                       title: "Voci del gruppo",
                       type: "localizedText",
-                      description: "Write one item per line.",
+                      description: "Scrivi una voce per riga.",
                     }),
                   ],
                   preview: {
@@ -133,10 +133,10 @@ export const servicesPageType = defineType({
                         .map((line: string) => line.trim())
                         .filter(Boolean).length;
                       return {
-                        title: localizedTitle || "Untitled detail group",
+                        title: localizedTitle || "Gruppo senza titolo",
                         subtitle: count
-                          ? `${count} item${count === 1 ? "" : "s"}`
-                          : "No items added",
+                          ? `${count} voc${count === 1 ? "e" : "i"}`
+                          : "Nessuna voce inserita",
                       };
                     },
                   },
@@ -147,7 +147,7 @@ export const servicesPageType = defineType({
               name: "detailsText",
               title: "Dettagli disposizione media",
               type: "localizedText",
-              description: "Write one detail per line.",
+              description: "Scrivi un dettaglio per riga.",
               hidden: ({ parent }) => parent?.variant !== "media",
               validation: (Rule) =>
                 Rule.custom((value, context) => {
@@ -162,7 +162,7 @@ export const servicesPageType = defineType({
                   );
                   return text?.trim()
                     ? true
-                    : "Add details for this media layout.";
+                    : "Aggiungi almeno un dettaglio per questa disposizione.";
                 }),
             }),
             defineField({
@@ -177,7 +177,7 @@ export const servicesPageType = defineType({
                     | undefined;
                   const media = value as { image?: unknown } | undefined;
                   if (parent?.variant === "media" && !media?.image) {
-                    return "Add an image for this media layout.";
+                    return "Aggiungi un'immagine per questa disposizione.";
                   }
                   return true;
                 }),
@@ -209,14 +209,14 @@ export const servicesPageType = defineType({
               title: "Dichiarazione evidenziata",
               type: "localizedRichText",
               description:
-                "Highlighted sentence shown inside the open service row.",
+                "Frase evidenziata mostrata quando la voce è aperta.",
             }),
             defineField({
               name: "statementImage",
               title: "Immagine dichiarazione strutturata",
               type: "image",
               description:
-                "Image shown beside the statement for structured services.",
+                "Immagine accanto alla dichiarazione nei servizi strutturati.",
               hidden: ({ parent }) => parent?.variant !== "structured",
               options: { hotspot: true },
               fields: [
@@ -231,7 +231,7 @@ export const servicesPageType = defineType({
               name: "gallery",
               title: "Galleria",
               type: "array",
-              description: "Images shown in the gallery layout.",
+              description: "Immagini mostrate nella disposizione galleria.",
               hidden: ({ parent }) => parent?.variant !== "gallery",
               validation: (Rule) =>
                 Rule.custom((value, context) => {
@@ -270,7 +270,7 @@ export const servicesPageType = defineType({
                     prepare({ title, media }) {
                       const localizedTitle = localizedPreviewText(title);
                       return {
-                        title: localizedTitle || "Untitled gallery item",
+                        title: localizedTitle || "Immagine senza etichetta",
                         media,
                       };
                     },
@@ -291,9 +291,9 @@ export const servicesPageType = defineType({
               return {
                 title:
                   [number, localizedTitle].filter(Boolean).join(" ") ||
-                  "Untitled service",
+                  "Servizio senza titolo",
                 subtitle:
-                  SERVICE_VARIANT_LABELS[variant] || "Choose a content type",
+                  SERVICE_VARIANT_LABELS[variant] || "Scegli un tipo contenuto",
                 media,
               };
             },
@@ -306,7 +306,7 @@ export const servicesPageType = defineType({
       title: "Titolo collaborazione",
       type: "localizedRichText",
       group: "collaboration",
-      description: "Heading below the services accordion.",
+      description: "Titolo sotto la fisarmonica dei servizi.",
     }),
     defineField({
       name: "collaboration",

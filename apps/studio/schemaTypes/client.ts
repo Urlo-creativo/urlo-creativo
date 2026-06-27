@@ -17,7 +17,7 @@ export const clientType = defineType({
       name: "logo",
       title: "Logo",
       type: "image",
-      description: "Logo shown in the selected clients marquee.",
+      description: "Logo mostrato nella fascia Clienti selezionati.",
       options: { hotspot: false },
       validation: (Rule) => Rule.required(),
     }),
@@ -25,13 +25,15 @@ export const clientType = defineType({
       name: "url",
       title: "URL sito web",
       type: "url",
+      description: "Link opzionale al sito del cliente.",
+      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
     }),
     defineField({
       name: "order",
       title: "Ordine manuale",
       type: "number",
       description:
-        "Controls position in the marquee. Lower number appears first.",
+        "Controlla la posizione nella fascia loghi. Il numero più basso appare prima.",
     }),
   ],
   orderings: [

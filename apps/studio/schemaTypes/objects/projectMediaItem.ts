@@ -40,14 +40,14 @@ export const projectMediaItemType = defineType({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const parent = context.parent as { mediaType?: string } | undefined;
           if (parent?.mediaType === "image" && !value) {
-            return "Add an image or switch the media type to Video.";
+            return "Aggiungi un'immagine o passa il tipo media a Video.";
           }
           return true;
         }),
@@ -59,14 +59,14 @@ export const projectMediaItemType = defineType({
       title: "File video",
       type: "file",
       options: { accept: "video/*" },
-      description: "Upload a video file, or use an external video URL below.",
+      description: "Carica un video oppure usa un URL video esterno.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
     }),
     defineField({
       name: "videoUrl",
       title: "URL video esterno",
       type: "url",
-      description: "Hosted .mp4/.webm, Vimeo, or YouTube URL.",
+      description: "URL .mp4/.webm, Vimeo o YouTube.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
     }),
     defineField({
@@ -74,7 +74,7 @@ export const projectMediaItemType = defineType({
       title: "Poster video",
       type: "image",
       options: { hotspot: true },
-      description: "Optional still image shown before the video plays.",
+      description: "Immagine opzionale mostrata prima del video.",
       hidden: ({ parent }) => parent?.mediaType !== "video",
       fields: [
         defineField({
@@ -90,7 +90,7 @@ export const projectMediaItemType = defineType({
       name: "caption",
       title: "Didascalia",
       type: "localizedString",
-      description: "Optional caption shown below media section items.",
+      description: "Didascalia opzionale sotto gli elementi media.",
       // Media items inside an array carry a `_key`; the single `heroMedia`
       // object field does not. Hide the caption on the hero, where it isn't
       // rendered and makes no sense.
@@ -104,7 +104,7 @@ export const projectMediaItemType = defineType({
         | { mediaType?: string; videoFile?: unknown; videoUrl?: string }
         | undefined;
       if (item?.mediaType === "video" && !item.videoFile && !item.videoUrl) {
-        return "Add a video file or an external video URL.";
+        return "Aggiungi un file video oppure un URL video esterno.";
       }
       return true;
     }),
@@ -121,8 +121,10 @@ export const projectMediaItemType = defineType({
       const isVideo = mediaType === "video";
       const localizedCaption = localizedPreviewText(caption);
       return {
-        title: localizedCaption || (isVideo ? "Video" : "Image"),
-        subtitle: isVideo ? `Video${videoUrl ? " · URL" : ""}` : "Image",
+        title: localizedCaption || (isVideo ? "Video" : "Immagine"),
+        subtitle: isVideo
+          ? `Video${videoUrl ? " · URL esterno" : " · file"}`
+          : "Immagine",
         media: isVideo ? poster : image,
       };
     },

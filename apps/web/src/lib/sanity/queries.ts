@@ -6,7 +6,7 @@ export type SanityClient = {
   order: number | null;
 };
 
-export const clientsQuery = `*[_type == "client"] | order(order asc) {
+export const clientsQuery = `*[_type == "client"] | order(coalesce(order, 9999) asc, name asc) {
   _id,
   name,
   "logo": logo.asset->url,
@@ -306,12 +306,12 @@ const listFields = `
 `;
 
 export const projectsListQuery = `*[_type == "project" && defined(slug.current)]
-  | order(order asc, year desc) {
+  | order(coalesce(order, 9999) asc, year desc) {
   ${listFields}
 }`;
 
 export const featuredProjectsQuery = `*[_type == "project" && featured == true && defined(slug.current)]
-  | order(order asc, year desc) {
+  | order(coalesce(order, 9999) asc, year desc) {
   ${listFields}
 }`;
 

@@ -22,7 +22,10 @@ import {
   type ProjectListItem,
   type SanityClient,
 } from "@/lib/sanity/queries";
-import { hasImageAsset } from "@/lib/sanity/image";
+import {
+  isRenderableProjectMediaItem,
+  projectDisplayTitle,
+} from "@/lib/project-content";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
@@ -62,16 +65,11 @@ export default async function Home({
     ? selectedClients
     : [{ name: placeholderText.name, logo: PLACEHOLDER_IMAGE, url: null }];
   const heroMedia = homeContent?.heroMedia;
-  const heroRenderable =
-    heroMedia &&
-    (heroMedia.mediaType === "video"
-      ? Boolean(heroMedia.videoUrl || heroMedia.videoFile)
-      : hasImageAsset(heroMedia.image));
 
   return (
     <main className="overflow-hidden bg-paper">
       <section className="relative h-dvh bg-black text-[var(--color-text-on-hero)]">
-        {heroRenderable ? (
+        {isRenderableProjectMediaItem(heroMedia) ? (
           <ProjectMediaItemView
             item={heroMedia}
             className="absolute inset-0 z-0"
@@ -169,9 +167,7 @@ export default async function Home({
             3 cols only kicks in at lg (≥1024px) where images are large enough */}
         <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-[80px]">
           {featuredProjects.map((project) => {
-            const projectTitle = [project.clientName, project.projectName]
-              .filter(Boolean)
-              .join(": ");
+            const projectTitle = projectDisplayTitle(project);
             return (
               /* `isolate` creates a shared compositing group so the text's
                  mix-blend-difference blends against the image that overlaps it.

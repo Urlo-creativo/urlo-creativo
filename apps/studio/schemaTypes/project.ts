@@ -40,20 +40,20 @@ export const projectType = defineType({
       title: "Media iniziale",
       type: "projectMediaItem",
       description:
-        "Large image or video at the top of the project detail page. Falls back to the cover image if empty.",
+        "Immagine o video grande in alto nella pagina progetto. Se vuoto usa la copertina.",
       group: "hero",
     }),
     defineField({
       name: "clientName",
       title: "Nome cliente",
       type: "localizedString",
-      description: "Main project title line, e.g. Kappa x Ducati.",
+      description: "Prima riga del titolo progetto, per esempio Kappa x Ducati.",
       group: "hero",
       validation: (Rule) =>
         Rule.custom((value) => {
           const title = value as { it?: string; en?: string } | undefined;
           if (!title?.it && !title?.en) {
-            return "Add at least one language.";
+            return "Aggiungi almeno una lingua.";
           }
           return true;
         }),
@@ -78,7 +78,7 @@ export const projectType = defineType({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
     }),
@@ -96,14 +96,14 @@ export const projectType = defineType({
       name: "season",
       title: "Stagione / collezione",
       type: "string",
-      description: "Shown below the project title, e.g. FW 24/25 or SS 25.",
+      description: "Mostrata sotto il titolo progetto, per esempio FW 24/25 o SS 25.",
       group: "hero",
     }),
     defineField({
       name: "year",
       title: "Anno",
       type: "string",
-      description: "Shown below the project title and used for sorting.",
+      description: "Mostrato sotto il titolo progetto e usato per ordinare.",
       group: "hero",
     }),
     defineField({
@@ -206,14 +206,14 @@ export const projectType = defineType({
       type: "image",
       group: "listing",
       description:
-        "Image used in project listings and as the hero fallback if Hero media is empty.",
+        "Immagine usata nelle liste progetto e come fallback se manca il media iniziale.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
       validation: (Rule) => Rule.required(),
@@ -222,7 +222,7 @@ export const projectType = defineType({
       name: "excerpt",
       title: "Riassunto per lista",
       type: "localizedText",
-      description: "Short summary shown on the projects listing page.",
+      description: "Breve riassunto mostrato nella lista progetti.",
       group: "listing",
     }),
     defineField({
@@ -261,7 +261,7 @@ export const projectType = defineType({
       name: "order",
       title: "Ordine manuale",
       type: "number",
-      description: "Lower number appears first in project lists.",
+      description: "Il numero più basso appare prima nelle liste progetto.",
       group: "listing",
     }),
   ],
@@ -295,7 +295,7 @@ export const projectType = defineType({
         .join(": ");
       const metaSubtitle = [season, year].filter(Boolean).join(" · ");
       return {
-        title: previewTitle || "Untitled project",
+        title: previewTitle || "Progetto senza titolo",
         subtitle: metaSubtitle,
         media,
       };

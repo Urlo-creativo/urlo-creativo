@@ -26,27 +26,27 @@ export const aboutPageType = defineType({
       title: "Titolo pagina",
       type: "localizedRichText",
       group: "about",
-      description: "Main headline at the top of the About page.",
+      description: "Titolo principale in alto nella pagina About.",
     }),
     defineField({
       name: "intro",
       title: "Testo intro",
       type: "localizedRichText",
       group: "about",
-      description: "Large intro paragraph below the page title.",
+      description: "Paragrafo grande sotto il titolo pagina.",
     }),
     defineField({
       name: "heroImage",
       title: "Immagine grande sfocata",
       type: "image",
-      description: "Full-width blurred image under the intro.",
+      description: "Immagine grande sotto l'intro.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
       group: "about",
@@ -56,7 +56,7 @@ export const aboutPageType = defineType({
       title: "Dichiarazione gialla",
       type: "localizedRichText",
       group: "about",
-      description: "Large highlighted statement after the hero image.",
+      description: "Testo grande evidenziato dopo l'immagine iniziale.",
     }),
 
     // ===== Team core =====
@@ -72,7 +72,7 @@ export const aboutPageType = defineType({
       type: "array",
       group: "teamCore",
       description:
-        "Roles shown in the Team core section. The image appears on hover.",
+        "Ruoli mostrati nella sezione Team principale. L'immagine appare al passaggio del mouse.",
       validation: (Rule) => Rule.max(8),
       of: [
         defineArrayMember({
@@ -89,14 +89,14 @@ export const aboutPageType = defineType({
                     | undefined;
                   return role?.it || role?.en
                     ? true
-                    : "Add at least one language.";
+                    : "Aggiungi almeno una lingua.";
                 }),
             }),
             defineField({
               name: "image",
               title: "Immagine al passaggio del mouse",
               type: "image",
-              description: "Optional image shown when this role is hovered.",
+              description: "Immagine opzionale mostrata al passaggio del mouse.",
               options: { hotspot: true },
               fields: [
                 defineField({
@@ -111,7 +111,7 @@ export const aboutPageType = defineType({
             select: { title: "role", media: "image" },
             prepare({ title, media }) {
               return {
-                title: localizedPreviewText(title) || "Untitled core role",
+                title: localizedPreviewText(title) || "Ruolo senza titolo",
                 media,
               };
             },
@@ -132,7 +132,7 @@ export const aboutPageType = defineType({
       title: "Step processo",
       type: "array",
       group: "process",
-      description: "Steps shown in the circular Process section. Maximum 6.",
+      description: "Step mostrati nella sezione Processo. Massimo 6.",
       validation: (Rule) => Rule.max(6),
       of: [
         defineArrayMember({
@@ -149,7 +149,7 @@ export const aboutPageType = defineType({
                     | undefined;
                   return stage?.it || stage?.en
                     ? true
-                    : "Add at least one language.";
+                    : "Aggiungi almeno una lingua.";
                 }),
             }),
             defineField({
@@ -182,7 +182,7 @@ export const aboutPageType = defineType({
               const localizedTitle = localizedPreviewText(title);
               const localizedSubtitle = localizedPreviewText(subtitle);
               return {
-                title: localizedTitle || "Untitled process step",
+                title: localizedTitle || "Step senza titolo",
                 subtitle: [localizedSubtitle, color]
                   .filter(Boolean)
                   .join(" · "),
@@ -210,14 +210,14 @@ export const aboutPageType = defineType({
       name: "missionImage",
       title: "Immagine mission",
       type: "image",
-      description: "Image beside the Mission body.",
+      description: "Immagine accanto al testo mission.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
       group: "mission",
@@ -227,7 +227,7 @@ export const aboutPageType = defineType({
       title: "Highlight mission",
       type: "localizedRichText",
       group: "mission",
-      description: "Short uppercase line below the Mission image and body.",
+      description: "Breve frase sotto immagine e testo mission.",
     }),
 
     // ===== History =====
@@ -241,14 +241,14 @@ export const aboutPageType = defineType({
       name: "historyImage",
       title: "Immagine storia",
       type: "image",
-      description: "Image shown next to the History title.",
+      description: "Immagine mostrata accanto al titolo storia.",
       options: { hotspot: true },
       fields: [
         defineField({
           name: "alt",
           title: "Testo alt",
           type: "localizedString",
-          description: "Describe the image for screen readers and SEO.",
+          description: "Descrivi l'immagine per accessibilità e SEO.",
         }),
       ],
       group: "history",
@@ -258,7 +258,7 @@ export const aboutPageType = defineType({
       title: "Voci storia",
       type: "array",
       group: "history",
-      description: "Interactive history rows. Maximum 2.",
+      description: "Righe interattive della storia. Massimo 2.",
       validation: (Rule) => Rule.max(2),
       of: [
         defineArrayMember({
@@ -275,7 +275,7 @@ export const aboutPageType = defineType({
                     | undefined;
                   return label?.it || label?.en
                     ? true
-                    : "Add at least one language.";
+                    : "Aggiungi almeno una lingua.";
                 }),
             }),
             defineField({
@@ -300,7 +300,7 @@ export const aboutPageType = defineType({
             prepare({ title, subtitle, description }) {
               const summary = localizedRichTextPreview(description);
               return {
-                title: localizedPreviewText(title) || "Untitled history item",
+                title: localizedPreviewText(title) || "Voce storia senza titolo",
                 subtitle: [subtitle, summary].filter(Boolean).join(" · "),
               };
             },
@@ -316,7 +316,7 @@ export const aboutPageType = defineType({
       type: "localizedRichText",
       group: "people",
       description:
-        "Heading above the people grid. Team members are edited from the People list in the left sidebar.",
+        "Titolo sopra la griglia persone. Le persone si modificano dalla lista Persone nella sidebar.",
     }),
   ],
   preview: {

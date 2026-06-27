@@ -15,7 +15,7 @@ export const projectCreditType = defineType({
       title: "Ruolo credito",
       type: "localizedString",
       description:
-        "Examples: Founder/Art Director, Photographer, Project Manager.",
+        "Esempi: Founder/Art Director, Photographer, Project Manager.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -27,13 +27,14 @@ export const projectCreditType = defineType({
       name: "handle",
       title: "Nome utente social",
       type: "string",
-      description: "Optional social handle, e.g. @username.",
+      description: "Handle social opzionale, per esempio @username.",
     }),
     defineField({
       name: "url",
       title: "Collegamento",
       type: "url",
-      description: "Optional link for the handle or name.",
+      description: "Link opzionale per handle o nome.",
+      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
     }),
   ],
   preview: {
@@ -41,7 +42,7 @@ export const projectCreditType = defineType({
     prepare({ role, name, handle }) {
       const localizedRole = localizedPreviewText(role);
       return {
-        title: localizedRole || "Untitled credit",
+        title: localizedRole || "Credito senza ruolo",
         subtitle: [name, handle].filter(Boolean).join(" · "),
       };
     },

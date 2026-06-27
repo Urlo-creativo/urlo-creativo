@@ -1,7 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 const LAYOUT_VARIANTS = [
-  { title: "Una colonna full-width", value: "oneColumnCollage" },
+  { title: "Una colonna grande", value: "oneColumnCollage" },
   { title: "Griglia a due colonne", value: "twoColumnGrid" },
   { title: "Mosaico", value: "masonry" },
   {
@@ -11,8 +11,8 @@ const LAYOUT_VARIANTS = [
 ] as const;
 
 const WIDTH_MODE_OPTIONS = [
-  { title: "Fill container", value: "container" },
-  { title: "Full width", value: "fullWidth" },
+  { title: "Dentro il contenitore pagina", value: "container" },
+  { title: "A tutta larghezza", value: "fullWidth" },
 ] as const;
 
 const PLACEMENT_OPTIONS = [
@@ -48,7 +48,7 @@ export const projectMediaSectionType = defineType({
       title: "Posizione nella pagina",
       type: "string",
       description:
-        "Choose where this media section appears in the project detail flow.",
+        "Scegli dove appare questa sezione nel flusso della pagina progetto.",
       options: {
         list: [...PLACEMENT_OPTIONS],
         layout: "radio",
@@ -64,10 +64,10 @@ export const projectMediaSectionType = defineType({
     }),
     defineField({
       name: "heading",
-      title: "Titolo Behind the Scenes / Behind the Scenes title",
+      title: "Titolo Dietro le quinte",
       type: "localizedRichText",
       description:
-        "Shown only for media sections placed in Dietro le quinte / Behind the Scenes.",
+        "Visibile solo se la sezione è posizionata in Dietro le quinte.",
       hidden: ({ parent }) => parent?.placement !== "behindTheScenes",
     }),
     defineField({
@@ -83,10 +83,10 @@ export const projectMediaSectionType = defineType({
     }),
     defineField({
       name: "widthMode",
-      title: "Larghezza / Width",
+      title: "Larghezza",
       type: "string",
       description:
-        "Fill container resta dentro il contenitore pagina. Full width estende la sezione media a tutta la larghezza viewport.",
+        "Dentro il contenitore segue i margini pagina. A tutta larghezza estende la sezione fino ai bordi dello schermo.",
       options: {
         list: [...WIDTH_MODE_OPTIONS],
         layout: "radio",
@@ -165,15 +165,18 @@ export const projectMediaSectionType = defineType({
         item11,
       ].filter(Boolean).length;
       const count = item12 ? `${visibleItems}+` : String(visibleItems);
-      const variant = layout ? (LAYOUT_TITLES[layout] ?? layout) : "No layout";
-      const width = widthMode === "fullWidth" ? "Full width" : "Container";
+      const variant = layout
+        ? (LAYOUT_TITLES[layout] ?? layout)
+        : "Nessun layout";
+      const width =
+        widthMode === "fullWidth" ? "A tutta larghezza" : "Contenitore";
       const where = placement
         ? (PLACEMENT_TITLES[placement] ?? placement)
-        : "No placement";
+        : "Nessuna posizione";
 
       return {
         title: `${where} · ${variant} · ${width} · ${count} media`,
-        subtitle: internalLabel || "No internal label",
+        subtitle: internalLabel || "Nessuna etichetta interna",
         media: firstImage || firstPoster,
       };
     },

@@ -7,47 +7,19 @@ import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-tex
 import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
 import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import type {
-  PortableRichTextValue,
-  SanityImage as SanityImageType,
-} from "@/lib/sanity/queries";
-
-type ServiceRichText = PortableRichTextValue | RichTextToken[][];
-type ServiceDetail = string | StructuredServiceDetail;
-type StructuredServiceDetail = {
-  title: ServiceRichText;
-  items: readonly string[];
-};
-export type ServiceItem = {
-  number: string;
-  title: string;
-  previewImage?: SanityImageType | null;
-  details: readonly ServiceDetail[];
-  media?: {
-    fallbackImage?: string;
-    image?: SanityImageType | null;
-    alt: string;
-  };
-  statement?: ServiceRichText;
-  statementImage?: {
-    fallbackImage?: string;
-    image?: SanityImageType | null;
-    alt: string;
-  };
-  gallery?: readonly {
-    fallbackImage?: string;
-    image?: SanityImageType | null;
-    label: string;
-    alt: string;
-  }[];
-};
+  ServiceDetail,
+  ServiceItem,
+  ServiceRichTextValue,
+  StructuredServiceDetail,
+} from "@/lib/service-items";
 type MediaServiceItem = ServiceItem & {
   media: NonNullable<ServiceItem["media"]>;
-  statement: ServiceRichText;
+  statement: ServiceRichTextValue;
 };
 type GalleryServiceItem = ServiceItem &
   {
     gallery: NonNullable<ServiceItem["gallery"]>;
-    statement: ServiceRichText;
+    statement: ServiceRichTextValue;
   };
 
 type ServiceAccordionProps = {
@@ -55,7 +27,7 @@ type ServiceAccordionProps = {
   items: readonly ServiceItem[];
 };
 
-function isTokenLines(value: ServiceRichText): value is RichTextToken[][] {
+function isTokenLines(value: ServiceRichTextValue): value is RichTextToken[][] {
   return Array.isArray(value) && (value.length === 0 || Array.isArray(value[0]));
 }
 
@@ -66,7 +38,7 @@ function ServiceRichText({
 }: {
   as?: "p" | "h1" | "h2" | "h3" | "span";
   className?: string;
-  value: ServiceRichText;
+  value: ServiceRichTextValue;
 }) {
   if (isTokenLines(value)) {
     return <StructuredRichText as={as} lines={value} className={className} />;

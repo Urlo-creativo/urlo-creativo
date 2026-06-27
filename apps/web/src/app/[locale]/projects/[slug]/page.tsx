@@ -27,11 +27,16 @@ import {
   projectBySlugQuery,
   projectSlugsQuery,
   type Project,
-  type ProjectMediaPlacement,
   type ProjectMediaSection,
 } from "@/lib/sanity/queries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, localizedPath, locales, type Locale } from "@/i18n/config";
+import {
+  isRenderableProjectMediaItem,
+  projectDisplayTitle,
+  projectMediaSectionsByPlacement,
+  projectResponsibilities,
+} from "@/lib/project-content";
 
 export const revalidate = 60;
 
@@ -48,12 +53,6 @@ async function getProject(
     slug,
     ...localeParams(locale),
   });
-}
-
-function projectDisplayTitle(
-  project: Pick<Project, "clientName" | "projectName">,
-) {
-  return [project.clientName, project.projectName].filter(Boolean).join(": ");
 }
 
 export async function generateMetadata({
@@ -118,30 +117,6 @@ function MediaZone({
   );
 }
 
-// Sections live in one ordered array; split them by their chosen placement,
-// preserving the editor's relative order within each placement.
-function sectionsAt(
-  sections: ProjectMediaSection[] | null | undefined,
-  placement: ProjectMediaPlacement,
-): ProjectMediaSection[] {
-  return (sections ?? []).filter((section) => section.placement === placement);
-}
-
-function linesFromResponsibilities(
-  value: Project["responsibilities"],
-): string[] {
-  if (Array.isArray(value)) {
-    return value.map((item) => item.trim()).filter(Boolean);
-  }
-
-  return value
-    ? value
-        .split(/\r?\n/)
-        .map((line) => line.trim())
-        .filter(Boolean)
-    : [];
-}
-
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -160,37 +135,26 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  const { footer, nav, projects } = getDictionary(locale);
+  const { footer, projects } = getDictionary(locale);
   const { detailLabels, categoryLabels } = projects;
 
   // Hero is a projectMediaItem (image or video). Render it via the shared
   // media view; fall back to the cover image when it has no usable source.
   const hero = project.heroMedia;
-  const heroRenderable =
-    hero &&
-    (hero.mediaType === "video"
-      ? Boolean(hero.videoUrl || hero.videoFile)
-      : hasImageAsset(hero.image));
 
-  const responsibilities = linesFromResponsibilities(project.responsibilities);
+  const responsibilities = projectResponsibilities(project.responsibilities);
   const roles = project.roles ?? [];
   const credits = project.credits ?? [];
   const seasonLabel = project.season ?? project.year;
-
-  const sections = project.projectContentSections;
-  const mediaAfterConcept = sectionsAt(sections, "afterConcept");
-  const mediaAfterResponsibilities = sectionsAt(
-    sections,
-    "afterResponsibilities",
+  const mediaSections = projectMediaSectionsByPlacement(
+    project.projectContentSections,
   );
-  const mediaAfterOutcome = sectionsAt(sections, "afterOutcome");
-  const mediaBehindTheScenes = sectionsAt(sections, "behindTheScenes");
 
   return (
     <main className="bg-paper text-black">
       {/* 1. Hero */}
       <section className="[--project-hero-offset:96px] pt-[var(--project-hero-offset)] md:[--project-hero-offset:112px]">
-        {heroRenderable ? (
+        {isRenderableProjectMediaItem(hero) ? (
           <ProjectMediaItemView
             item={hero}
             priority
@@ -299,7 +263,7 @@ export default async function ProjectDetailPage({
           )}
 
           {/* 9. Media after Concept */}
-          <MediaZone sections={mediaAfterConcept} />
+          <MediaZone sections={mediaSections.afterConcept} />
 
           {/* 10. Process */}
           {project.process && project.process.length > 0 && (
@@ -328,7 +292,7 @@ export default async function ProjectDetailPage({
           )}
 
           {/* 12. Media after Responsibilities */}
-          <MediaZone sections={mediaAfterResponsibilities} />
+          <MediaZone sections={mediaSections.afterResponsibilities} />
 
           {/* 13. Outcome */}
           {project.outcome && project.outcome.length > 0 && (
@@ -341,7 +305,7 @@ export default async function ProjectDetailPage({
           )}
 
           {/* 14. Media after Outcome */}
-          <MediaZone sections={mediaAfterOutcome} />
+          <MediaZone sections={mediaSections.afterOutcome} />
 
           {/* 15. Credits */}
           {credits.length > 0 && (
@@ -394,9 +358,9 @@ export default async function ProjectDetailPage({
           )}
 
           {/* 16–17. Behind the Scenes heading + its media */}
-          {mediaBehindTheScenes.length > 0 && (
+          {mediaSections.behindTheScenes.length > 0 && (
             <MediaZone
-              sections={mediaBehindTheScenes}
+              sections={mediaSections.behindTheScenes}
               fallbackHeading={detailLabels.behindTheScenes}
             />
           )}
