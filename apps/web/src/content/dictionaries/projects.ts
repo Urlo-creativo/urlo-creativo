@@ -27,7 +27,6 @@ function sectionHeading(
 
 const projectsIt = {
   title: "PROGETTI",
-  allLabel: "TUTTI",
   emptyAll: "Nessun progetto ancora.",
   emptyCategory: "Nessun progetto in questa categoria.",
   categoryLabels: categoryLabelsFor("it"),
@@ -47,7 +46,6 @@ const projectsIt = {
 // EN — English copy.
 const projectsEn = {
   title: "PROJECTS",
-  allLabel: "ALL",
   emptyAll: "No projects yet.",
   emptyCategory: "No projects in this category.",
   categoryLabels: categoryLabelsFor("en"),

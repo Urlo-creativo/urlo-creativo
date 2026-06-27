@@ -16,7 +16,6 @@ import {
 type ProjectsListingProps = {
   projects: ProjectListItem[];
   locale: Locale;
-  allLabel: string;
   emptyAllLabel: string;
   emptyCategoryLabel: string;
   categoryLabels: CategoryLabels;
@@ -25,12 +24,11 @@ type ProjectsListingProps = {
 export function ProjectsListing({
   projects,
   locale,
-  allLabel,
   emptyAllLabel,
   emptyCategoryLabel,
   categoryLabels,
 }: ProjectsListingProps) {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -39,12 +37,25 @@ export function ProjectsListing({
     [categoryLabels, projects],
   );
 
+  const selectedCategorySet = useMemo(
+    () => new Set(selectedCategories),
+    [selectedCategories],
+  );
+
   const visibleProjects = useMemo(() => {
-    if (!selected) return projects;
+    if (
+      selectedCategories.length === 0 ||
+      selectedCategories.length === options.length
+    ) {
+      return projects;
+    }
+
     return projects.filter((project) =>
-      (project.categories ?? []).includes(selected),
+      (project.categories ?? []).some((category) =>
+        selectedCategorySet.has(category),
+      ),
     );
-  }, [projects, selected]);
+  }, [options.length, projects, selectedCategories.length, selectedCategorySet]);
 
   const hoveredProject = useMemo(
     () => visibleProjects.find((project) => project._id === hoveredProjectId),
@@ -53,7 +64,15 @@ export function ProjectsListing({
 
   useEffect(() => {
     setHoveredProjectId(null);
-  }, [selected]);
+  }, [selectedCategories]);
+
+  function toggleCategory(value: string) {
+    setSelectedCategories((current) =>
+      current.includes(value)
+        ? current.filter((category) => category !== value)
+        : [...current, value],
+    );
+  }
 
   function movePreview(x: number, y: number) {
     if (!previewRef.current) return;
@@ -70,9 +89,8 @@ export function ProjectsListing({
     <>
       <ProjectFilterButtons
         options={options}
-        allLabel={allLabel}
-        selected={selected}
-        onSelect={setSelected}
+        selected={selectedCategories}
+        onToggle={toggleCategory}
       />
 
       <div

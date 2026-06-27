@@ -5,16 +5,14 @@ import { projectCategoryPillClass } from "@/lib/project-category-styles";
 
 type ProjectFilterButtonsProps = {
   options: CategoryOption[];
-  allLabel: string;
-  selected: string | null;
-  onSelect: (value: string | null) => void;
+  selected: string[];
+  onToggle: (value: string) => void;
 };
 
 export function ProjectFilterButtons({
   options,
-  allLabel,
   selected,
-  onSelect,
+  onToggle,
 }: ProjectFilterButtonsProps) {
   return (
     <div
@@ -22,23 +20,12 @@ export function ProjectFilterButtons({
       role="group"
       aria-label="Project categories"
     >
-      <button
-        type="button"
-        aria-pressed={selected === null}
-        onClick={() => onSelect(null)}
-        className="pill-button pill-button-neutral min-h-11 px-5 py-2 text-center md:min-w-[144px] md:px-8"
-      >
-        {allLabel}
-      </button>
-
       {options.map((option, index) => (
         <button
           key={option.value}
           type="button"
-          aria-pressed={selected === option.value}
-          onClick={() =>
-            onSelect(selected === option.value ? null : option.value)
-          }
+          aria-pressed={selected.includes(option.value)}
+          onClick={() => onToggle(option.value)}
           className={[
             "pill-button min-h-11 px-5 py-2 text-center md:min-w-[348px] md:px-8",
             projectCategoryPillClass(index),

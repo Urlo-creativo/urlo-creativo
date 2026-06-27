@@ -43,7 +43,6 @@ export default async function ProjectsPage({
         <ProjectsListing
           projects={items}
           locale={locale}
-          allLabel={projects.allLabel}
           emptyAllLabel={projects.emptyAll}
           emptyCategoryLabel={projects.emptyCategory}
           categoryLabels={projects.categoryLabels}
