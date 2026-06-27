@@ -318,18 +318,6 @@ export default async function ProjectDetailPage({
                   const roleLabel = credit.role.trim().endsWith(":")
                     ? credit.role
                     : `${credit.role}:`;
-                  const handle = credit.url ? (
-                    <a
-                      href={credit.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="subtle-link focus-ring"
-                    >
-                      {credit.handle ?? credit.url}
-                    </a>
-                  ) : (
-                    credit.handle
-                  );
                   return (
                     <div
                       key={credit._key}
@@ -340,14 +328,14 @@ export default async function ProjectDetailPage({
                           {roleLabel}
                         </span>
                         {credit.name && (
-                          <span className="block font-normal text-[var(--color-text-primary)]">
+                          <span className="block whitespace-pre-line font-normal text-[var(--color-text-primary)]">
                             {credit.name}
                           </span>
                         )}
                       </dt>
-                      {handle && (
-                        <dd className="type-body-lg text-[var(--color-text-muted)]">
-                          {handle}
+                      {credit.handle && (
+                        <dd className="type-body-lg whitespace-pre-line text-[var(--color-text-muted)]">
+                          {credit.handle}
                         </dd>
                       )}
                     </div>

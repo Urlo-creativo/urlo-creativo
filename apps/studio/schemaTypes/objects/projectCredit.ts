@@ -21,20 +21,16 @@ export const projectCreditType = defineType({
     defineField({
       name: "name",
       title: "Nome",
-      type: "string",
+      type: "text",
+      rows: 3,
+      description: "Scrivi un nome per riga se ci sono più persone.",
     }),
     defineField({
       name: "handle",
       title: "Nome utente social",
-      type: "string",
-      description: "Handle social opzionale, per esempio @username.",
-    }),
-    defineField({
-      name: "url",
-      title: "Collegamento",
-      type: "url",
-      description: "Link opzionale per handle o nome.",
-      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
+      type: "text",
+      rows: 3,
+      description: "Scrivi un handle per riga, per esempio @username.",
     }),
   ],
   preview: {

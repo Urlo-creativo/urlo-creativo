@@ -112,7 +112,6 @@ export type ProjectCredit = {
   role: string;
   name: string | null;
   handle: string | null;
-  url: string | null;
 };
 
 export type HomePageContent = {
@@ -340,8 +339,7 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
     _key,
     ${localizedValue("role")},
     name,
-    handle,
-    url
+    handle
   },
   projectContentSections[] ${mediaSectionFragment}
 }`;
