@@ -1,5 +1,9 @@
 import { SanityImage } from "@/components/ui/sanity-image";
 import { PortableRichText } from "@/components/ui/portable-rich-text";
+import {
+  ViewportAutoplayEmbed,
+  ViewportAutoplayVideo,
+} from "@/components/sections/viewport-autoplay-media";
 import { hasImageAsset } from "@/lib/sanity/image";
 import type {
   PortableRichTextValue,
@@ -32,13 +36,21 @@ function getEmbedUrl(url: string): string | null {
   return null;
 }
 
-function getHeroEmbedUrl(url: string): string {
+function getAutoplayEmbedUrl(url: string): string {
   const parsed = new URL(url);
   parsed.searchParams.set("autoplay", "1");
   parsed.searchParams.set("mute", "1");
   parsed.searchParams.set("muted", "1");
   parsed.searchParams.set("playsinline", "1");
   parsed.searchParams.set("controls", "0");
+  parsed.searchParams.set("loop", "1");
+  parsed.searchParams.set("autopause", "0");
+
+  if (parsed.hostname.includes("youtube.com")) {
+    const videoId = parsed.pathname.split("/").filter(Boolean).at(-1);
+    if (videoId) parsed.searchParams.set("playlist", videoId);
+  }
+
   return parsed.toString();
 }
 
@@ -115,21 +127,15 @@ export function ProjectMediaItemView({
   if (embedUrl) {
     return (
       <figure className={className}>
-        <div
+        <ViewportAutoplayEmbed
+          src={getAutoplayEmbedUrl(embedUrl)}
+          title={item.caption ?? "Project video"}
           className={
             isHero
               ? "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-black"
               : "relative aspect-video w-full overflow-hidden bg-black"
           }
-        >
-          <iframe
-            src={isHero ? getHeroEmbedUrl(embedUrl) : embedUrl}
-            title={item.caption ?? "Project video"}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-          />
-        </div>
+        />
         {!isHero && <MediaCaption caption={item.caption} />}
       </figure>
     );
@@ -140,12 +146,9 @@ export function ProjectMediaItemView({
 
   return (
     <figure className={className}>
-      <video
-        controls={!isHero}
-        autoPlay={isHero}
-        muted={isHero}
-        loop={isHero}
-        playsInline
+      <ViewportAutoplayVideo
+        src={playableUrl}
+        mimeType={item.videoFile?.mimeType ?? undefined}
         preload={isHero ? "auto" : "metadata"}
         poster={posterProps?.asset?.url}
         className={
@@ -153,12 +156,7 @@ export function ProjectMediaItemView({
             ? "h-[calc(100vh-var(--project-hero-offset,0px))] w-full bg-black object-cover"
             : "h-auto w-full bg-black"
         }
-      >
-        <source
-          src={playableUrl}
-          type={item.videoFile?.mimeType ?? undefined}
-        />
-      </video>
+      />
       {!isHero && <MediaCaption caption={item.caption} />}
     </figure>
   );
