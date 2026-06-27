@@ -71,6 +71,7 @@ type MediaItemProps = {
   sizes?: string;
   priority?: boolean;
   variant?: "default" | "hero";
+  frame?: "natural" | "fill";
 };
 
 export function ProjectMediaItemView({
@@ -79,8 +80,10 @@ export function ProjectMediaItemView({
   sizes,
   priority,
   variant = "default",
+  frame = "natural",
 }: MediaItemProps) {
   const isHero = variant === "hero";
+  const shouldFillFrame = frame === "fill";
 
   if (item.mediaType === "image") {
     if (!hasImageAsset(item.image)) return null;
@@ -105,8 +108,29 @@ export function ProjectMediaItemView({
       );
     }
 
+    if (shouldFillFrame) {
+      return (
+        <figure
+          className={[
+            "relative h-full w-full overflow-hidden bg-[var(--color-bg-muted)]",
+            className,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
+          <SanityImage
+            image={item.image}
+            fill
+            sizes={sizes}
+            priority={priority}
+            className="object-cover"
+          />
+        </figure>
+      );
+    }
+
     return (
-      <figure>
+      <figure className={className}>
         <SanityImage
           image={item.image}
           sizes={sizes}
@@ -133,10 +157,12 @@ export function ProjectMediaItemView({
           className={
             isHero
               ? "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-black"
+              : shouldFillFrame
+                ? "relative h-full w-full overflow-hidden bg-black"
               : "relative aspect-video w-full overflow-hidden bg-black"
           }
         />
-        {!isHero && <MediaCaption caption={item.caption} />}
+        {!isHero && !shouldFillFrame && <MediaCaption caption={item.caption} />}
       </figure>
     );
   }
@@ -154,10 +180,12 @@ export function ProjectMediaItemView({
         className={
           isHero
             ? "h-[calc(100vh-var(--project-hero-offset,0px))] w-full bg-black object-cover"
+            : shouldFillFrame
+              ? "h-full w-full bg-black object-cover"
             : "h-auto w-full bg-black"
         }
       />
-      {!isHero && <MediaCaption caption={item.caption} />}
+      {!isHero && !shouldFillFrame && <MediaCaption caption={item.caption} />}
     </figure>
   );
 }
@@ -171,6 +199,22 @@ function renderItems(
   return items.map((item) => (
     <ProjectMediaItemView key={item._key} item={item} sizes={sizes} />
   ));
+}
+
+const MOSAIC_ITEM_CLASSES = [
+  "md:col-span-5 md:aspect-[10/7]",
+  "md:col-span-3 md:aspect-[6/7]",
+  "md:col-span-3 md:aspect-square",
+  "md:col-span-5 md:aspect-[14/9]",
+] as const;
+
+function mosaicItemClass(index: number): string {
+  return [
+    "aspect-[4/3] overflow-hidden bg-[var(--color-bg-muted)]",
+    MOSAIC_ITEM_CLASSES[index % MOSAIC_ITEM_CLASSES.length],
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function LayoutBody({ section }: { section: ProjectMediaSection }) {
@@ -199,15 +243,16 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
 
     case "masonry":
       return (
-        <div className="columns-1 grid-gap-md md:columns-2 lg:columns-3">
-          {items.map((item) => (
-            <div key={item._key} className="mb-[var(--space-grid-md)] break-inside-avoid">
+        <div className="grid grid-cols-1 gap-[clamp(20px,2vw,32px)] md:grid-cols-8">
+          {items.map((item, index) => (
+            <div key={item._key} className={mosaicItemClass(index)}>
               <ProjectMediaItemView
                 item={item}
+                frame="fill"
                 sizes={
                   isFullWidth
-                    ? "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                    : "(min-width: 1024px) 29vw, (min-width: 768px) 42vw, 100vw"
+                    ? "(min-width: 768px) 63vw, 100vw"
+                    : "(min-width: 768px) 58vw, 100vw"
                 }
               />
             </div>
