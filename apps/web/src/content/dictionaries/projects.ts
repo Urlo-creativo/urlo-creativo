@@ -27,6 +27,7 @@ function sectionHeading(
 
 const projectsIt = {
   title: "PROGETTI",
+  filterLabel: "Filtri",
   emptyAll: "Nessun progetto ancora.",
   emptyCategory: "Nessun progetto in questa categoria.",
   categoryLabels: categoryLabelsFor("it"),
@@ -46,6 +47,7 @@ const projectsIt = {
 // EN — English copy.
 const projectsEn = {
   title: "PROJECTS",
+  filterLabel: "Filters",
   emptyAll: "No projects yet.",
   emptyCategory: "No projects in this category.",
   categoryLabels: categoryLabelsFor("en"),

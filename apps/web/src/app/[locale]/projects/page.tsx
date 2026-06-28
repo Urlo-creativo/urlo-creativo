@@ -43,6 +43,7 @@ export default async function ProjectsPage({
         <ProjectsListing
           projects={items}
           locale={locale}
+          filterLabel={projects.filterLabel}
           emptyAllLabel={projects.emptyAll}
           emptyCategoryLabel={projects.emptyCategory}
           categoryLabels={projects.categoryLabels}

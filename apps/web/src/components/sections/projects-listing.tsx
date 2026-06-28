@@ -17,6 +17,7 @@ import {
 type ProjectsListingProps = {
   projects: ProjectListItem[];
   locale: Locale;
+  filterLabel: string;
   emptyAllLabel: string;
   emptyCategoryLabel: string;
   categoryLabels: CategoryLabels;
@@ -25,6 +26,7 @@ type ProjectsListingProps = {
 export function ProjectsListing({
   projects,
   locale,
+  filterLabel,
   emptyAllLabel,
   emptyCategoryLabel,
   categoryLabels,
@@ -89,6 +91,7 @@ export function ProjectsListing({
   return (
     <>
       <ProjectFilterButtons
+        label={filterLabel}
         options={options}
         selected={selectedCategories}
         onToggle={toggleCategory}
@@ -123,7 +126,7 @@ export function ProjectsListing({
         </div>
       </div>
 
-      <div className="mt-20 border-t border-black md:mt-[102px]">
+      <div className="mt-10 md:mt-[102px] md:border-t md:border-black">
         {visibleProjects.map((project) => (
           <article key={project._id} className="border-b border-black">
             <Link
