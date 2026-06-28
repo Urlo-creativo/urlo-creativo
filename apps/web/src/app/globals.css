@@ -266,8 +266,10 @@ button {
     transition: opacity var(--dur-fast) var(--ease-out);
   }
 
-  .site-nav-icon:hover {
-    opacity: 0.7;
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav-icon:hover {
+      opacity: 0.7;
+    }
   }
 
   .site-nav-link {
@@ -280,8 +282,10 @@ button {
     transition: background-color var(--dur-fast) var(--ease-out);
   }
 
-  .site-nav-link:hover {
-    background: var(--color-interactive-hover);
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav-link:hover {
+      background: var(--color-interactive-hover);
+    }
   }
 
   .site-nav-link:active {
@@ -308,8 +312,10 @@ button {
     transition: background-color var(--dur-fast) var(--ease-out);
   }
 
-  .site-locale-link:hover {
-    background: var(--color-hover-soft);
+  @media (hover: hover) and (pointer: fine) {
+    .site-locale-link:hover {
+      background: var(--color-hover-soft);
+    }
   }
 
   .site-locale-link:active {
@@ -320,9 +326,14 @@ button {
     transition: opacity var(--dur-medium) var(--ease-out);
   }
 
-  .subtle-link:hover,
   .subtle-link:focus-visible {
     opacity: 0.6;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .subtle-link:hover {
+      opacity: 0.6;
+    }
   }
 
   .service-expand-button {
@@ -406,8 +417,10 @@ button {
     transition: background-color var(--dur-fast) ease;
   }
 
-  .role-item:hover {
-    background-color: var(--color-hover-soft);
+  @media (hover: hover) and (pointer: fine) {
+    .role-item:hover {
+      background-color: var(--color-hover-soft);
+    }
   }
 
   .pill-button {
@@ -462,7 +475,6 @@ button {
       transform var(--dur-slow) var(--ease-out);
   }
 
-  .pill-button:hover::before,
   .pill-button:focus-visible::before,
   .pill-button[aria-pressed="true"]::before {
     background: var(--pill-button-fill-hover);
@@ -470,10 +482,23 @@ button {
     transform: translate(-24%, -50%) scale(2.35);
   }
 
-  .pill-button:hover,
   .pill-button:focus-visible,
   .pill-button[aria-pressed="true"] {
     color: var(--pill-button-hover-text);
+  }
+
+  /* Hover preview only on hover-capable pointers — on touch a tap would
+     otherwise leave the fill stuck "open" on CTAs until the next tap. */
+  @media (hover: hover) and (pointer: fine) {
+    .pill-button:hover::before {
+      background: var(--pill-button-fill-hover);
+      opacity: 1;
+      transform: translate(-24%, -50%) scale(2.35);
+    }
+
+    .pill-button:hover {
+      color: var(--pill-button-hover-text);
+    }
   }
 
   .pill-button[aria-pressed="true"]::before {
@@ -521,10 +546,16 @@ button {
     transform: translate(-24%, -50%) scale(2.35);
   }
 
-  .pill-button-reverse:hover::before,
   .pill-button-reverse:focus-visible::before {
     opacity: 0;
     transform: translate(-60%, -50%) scale(0.04);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pill-button-reverse:hover::before {
+      opacity: 0;
+      transform: translate(-60%, -50%) scale(0.04);
+    }
   }
 
   /* The highlight is painted as a wrapping background rather than a single

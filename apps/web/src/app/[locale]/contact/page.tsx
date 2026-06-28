@@ -31,7 +31,7 @@ export default async function ContactPage({
 
         <div className="grid-gap-lg mt-16 grid border-t border-black pt-8 md:mt-[142px] md:grid-cols-2 md:pt-10">
           <div>
-            <p className="type-body-lg whitespace-pre-line">
+            <p className="type-body-lg whitespace-pre-line break-words">
               {contact.address}
             </p>
 

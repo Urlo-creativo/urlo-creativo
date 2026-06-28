@@ -13,7 +13,7 @@ export function SiteFooter({ footer }: SiteFooterProps) {
         </h2>
 
         <div className="grid gap-12 md:grid-cols-2">
-          <p className="type-body-lg whitespace-pre-line">
+          <p className="type-body-lg whitespace-pre-line break-words">
             {footer.address}
           </p>
           <div className="type-body-lg flex flex-col gap-8 font-bold">

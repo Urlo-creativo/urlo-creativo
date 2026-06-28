@@ -2,6 +2,12 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
+  // Touch devices report no real hover, so apply every `hover:` / `group-hover:`
+  // utility only on hover-capable pointers. Prevents tap-and-stick hover states
+  // on mobile while leaving desktop behaviour unchanged.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
