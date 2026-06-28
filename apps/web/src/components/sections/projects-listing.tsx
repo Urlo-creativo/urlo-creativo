@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 
 import { ProjectFilterButtons } from "@/components/sections/project-filter-buttons";
 import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
+import { ServiceExpandButton } from "@/components/ui/service-expand-button";
 import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { localizedPath, type Locale } from "@/i18n/config";
 import {
@@ -127,7 +128,7 @@ export function ProjectsListing({
           <article key={project._id} className="border-b border-black">
             <Link
               href={localizedPath(locale, `/projects/${project.slug}`)}
-              className="focus-ring group grid gap-6 py-8 md:grid-cols-[104px_minmax(0,1fr)] md:items-center md:gap-16 md:py-12"
+              className="focus-ring project-card-link group grid gap-6 py-8 lg:grid-cols-[104px_minmax(0,1fr)] lg:items-center lg:gap-16 lg:py-12"
               onPointerEnter={(event) => {
                 if (event.pointerType === "touch") {
                   return;
@@ -169,7 +170,7 @@ export function ProjectsListing({
                   </p>
                 )}
 
-                <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] md:hidden">
+                <div className="relative mt-6 aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-muted)] lg:hidden">
                   <SanityImageOrPlaceholder
                     image={project.coverImage}
                     alt=""
@@ -177,6 +178,11 @@ export function ProjectsListing({
                     fill
                     sizes="100vw"
                     className="object-cover"
+                  />
+                  <ServiceExpandButton
+                    isOpen={false}
+                    variant="filled"
+                    className="absolute bottom-4 right-4"
                   />
                 </div>
               </div>

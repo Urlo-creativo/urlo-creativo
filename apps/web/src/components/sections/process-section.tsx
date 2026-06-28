@@ -49,11 +49,11 @@ export function ProcessSection({
   }
 
   return (
-    <section className="page-shell py-20 md:pb-[136px] md:pt-[96px]">
+    <section className="page-shell py-20 lg:pb-[136px] lg:pt-[96px]">
       <h2 className="type-display uppercase">
         {title}
       </h2>
-      <div className="mt-9 space-y-3 md:hidden">
+      <div className="mt-9 space-y-3 lg:hidden">
         {stages.map((stage, i) => (
           <div key={`process-mobile-${i}`} className="border-t border-black pt-3">
             <div className="flex gap-3">
@@ -74,7 +74,7 @@ export function ProcessSection({
           </div>
         ))}
       </div>
-      <div className="mt-10 hidden md:block md:mt-[58px]">
+      <div className="mt-10 hidden lg:block lg:mt-[58px]">
         <div className="type-caption grid grid-cols-6 pb-1 font-bold uppercase">
           {stages.map((stage, i) => (
             <span key={`process-label-${i}`}>{stage}</span>

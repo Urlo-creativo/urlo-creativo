@@ -105,10 +105,10 @@
   /* ===== Mobile typography overrides =====
      Desktop/tablet typography remains fluid. Below md, cap the largest
      editorial sizes so long headings stay readable on 390px-class screens. */
-  --mobile-type-display-xl: clamp(48px, 16vw, 64px);
-  --mobile-type-display: clamp(42px, 14vw, 56px);
-  --mobile-type-heading-xl: clamp(26px, 8vw, 34px);
-  --mobile-type-heading-md: clamp(20px, 6.4vw, 26px);
+  --mobile-type-display-xl: clamp(42px, 14vw, 54px);
+  --mobile-type-display: clamp(36px, 12.5vw, 50px);
+  --mobile-type-heading-xl: clamp(23px, 7vw, 30px);
+  --mobile-type-heading-md: clamp(18px, 5.4vw, 23px);
   --mobile-type-body-xl: clamp(21px, 6.1vw, 28px);
 
   /* ===== Layout scale =====

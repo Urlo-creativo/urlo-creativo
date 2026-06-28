@@ -62,7 +62,7 @@ export function SiteHeader({
         </Link>
 
         {/* Pages + language in one pill */}
-        <div className="site-nav-chrome hidden items-center rounded-pill px-3 md:flex">
+        <div className="site-nav-chrome hidden items-center rounded-pill px-3 lg:flex">
           <nav className="flex items-center" aria-label="Main navigation">
             {navItems.map((item) => (
               <NavLink key={item.href} href={localizedPath(locale, item.href)}>

@@ -32,7 +32,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <section className="page-shell py-20 md:pb-[148px] md:pt-[172px]">
+    <section className="page-shell py-20 lg:pb-[148px] lg:pt-[172px]">
       <h2 className="type-display uppercase">
         {title}
       </h2>
@@ -41,7 +41,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
         <AnimatedBar className="w-[18px] shrink-0 bg-[var(--color-rail-blue)]" />
 
         {/* Roles list */}
-        <div className="flex flex-col md:w-1/2">
+        <div className="flex flex-col lg:w-1/2">
           {roles.map((item, i) => (
             <div
               key={`${item.role}-${i}`}
@@ -57,7 +57,7 @@ export function TeamCoreSection({ title, roles }: TeamCoreSectionProps) {
         </div>
 
         {/* Image reveal area */}
-        <div className="pointer-events-none relative hidden flex-1 md:block">
+        <div className="pointer-events-none relative hidden flex-1 lg:block">
           {roles.map((item, i) => {
             const s = imageStyles[i % imageStyles.length]!;
             return (

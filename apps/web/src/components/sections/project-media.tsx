@@ -202,10 +202,10 @@ function renderItems(
 }
 
 const MOSAIC_ITEM_CLASSES = [
-  "md:col-span-5 md:aspect-[10/7]",
-  "md:col-span-3 md:aspect-[6/7]",
-  "md:col-span-3 md:aspect-square",
-  "md:col-span-5 md:aspect-[14/9]",
+  "lg:col-span-5 lg:aspect-[10/7]",
+  "lg:col-span-3 lg:aspect-[6/7]",
+  "lg:col-span-3 lg:aspect-square",
+  "lg:col-span-5 lg:aspect-[14/9]",
 ] as const;
 
 function mosaicItemClass(index: number): string {
@@ -243,7 +243,7 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
 
     case "masonry":
       return (
-        <div className="grid grid-cols-1 gap-[clamp(20px,2vw,32px)] md:grid-cols-8">
+        <div className="grid grid-cols-1 gap-[clamp(20px,2vw,32px)] lg:grid-cols-8">
           {items.map((item, index) => (
             <div key={item._key} className={mosaicItemClass(index)}>
               <ProjectMediaItemView
@@ -251,8 +251,8 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
                 frame="fill"
                 sizes={
                   isFullWidth
-                    ? "(min-width: 768px) 63vw, 100vw"
-                    : "(min-width: 768px) 58vw, 100vw"
+                    ? "(min-width: 1024px) 63vw, 100vw"
+                    : "(min-width: 1024px) 58vw, 100vw"
                 }
               />
             </div>
@@ -262,12 +262,12 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
 
     case "compactThreeColumnGrid":
       return (
-        <div className="grid grid-cols-2 grid-gap-md md:grid-cols-3">
+        <div className="grid grid-cols-2 grid-gap-md lg:grid-cols-3">
           {renderItems(
             items,
             isFullWidth
-              ? "(min-width: 768px) 33vw, 50vw"
-              : "(min-width: 768px) 29vw, 50vw",
+              ? "(min-width: 1024px) 33vw, 50vw"
+              : "(min-width: 1024px) 29vw, 50vw",
           )}
         </div>
       );
@@ -275,10 +275,12 @@ function LayoutBody({ section }: { section: ProjectMediaSection }) {
     case "twoColumnGrid":
     default:
       return (
-        <div className="grid grid-cols-1 grid-gap-md md:grid-cols-2">
+        <div className="grid grid-cols-1 grid-gap-md lg:grid-cols-2">
           {renderItems(
             items,
-            isFullWidth ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 42vw, 100vw",
+            isFullWidth
+              ? "(min-width: 1024px) 50vw, 100vw"
+              : "(min-width: 1024px) 42vw, 100vw",
           )}
         </div>
       );

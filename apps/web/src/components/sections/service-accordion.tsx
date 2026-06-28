@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { PortableRichText } from "@/components/ui/portable-rich-text";
 import { StructuredRichText, type RichTextToken } from "@/components/ui/rich-text";
 import { SanityImageOrPlaceholder } from "@/components/ui/sanity-image";
+import { ServiceExpandButton } from "@/components/ui/service-expand-button";
 import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import type {
   ServiceDetail,
@@ -172,10 +173,10 @@ export function ServiceAccordion({
               aria-expanded={isOpen}
               aria-controls={panelId}
               className={[
-                "focus-ring grid w-full items-center text-left transition-[gap,padding] duration-500 ease-out md:grid-cols-[1fr_minmax(0,471px)]",
+                "focus-ring service-trigger grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-5 text-left transition-[row-gap,padding] duration-500 ease-out lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,471px)] lg:items-center lg:gap-x-10",
                 hasActiveService
-                  ? "gap-0 py-8 md:gap-0 md:py-10"
-                  : "gap-6 py-10 md:gap-16 md:py-14",
+                  ? "gap-y-0 py-8 lg:py-10"
+                  : "gap-y-6 py-10 lg:gap-y-0 lg:py-14",
               ]
                 .filter(Boolean)
                 .join(" ")}
@@ -184,14 +185,15 @@ export function ServiceAccordion({
               <h2 className="type-heading-xl font-bold uppercase">
                 {item.number} {item.title}
               </h2>
+              <ServiceExpandButton isOpen={isOpen} className="mt-1 lg:mt-0" />
 
               <div
                 aria-hidden={hasActiveService}
                 className={[
-                  "w-full overflow-hidden transition-[max-height,transform] duration-500 ease-out",
+                  "col-span-2 w-full overflow-hidden transition-[max-height,transform] duration-500 ease-out lg:col-span-1 lg:col-start-3",
                   hasActiveService
                     ? "pointer-events-none max-h-0 scale-[0.98]"
-                    : "max-h-[420px] scale-100 md:max-h-[248px]",
+                    : "max-h-[420px] scale-100 lg:max-h-[248px]",
                 ]
                   .filter(Boolean)
                   .join(" ")}
@@ -239,19 +241,19 @@ export function ServiceAccordion({
                   .filter(Boolean)
                   .join(" ")}
               >
-                <div className="pb-20 pt-6 md:pb-[92px] md:pt-8">
+                <div className="pb-20 pt-6 lg:pb-[92px] lg:pt-8">
                   {isGalleryServiceItem(item) ? (
-                    <div className="md:max-w-[1080px]">
+                    <div className="lg:max-w-[1080px]">
                       <ServiceRichText
                         as="p"
                         value={item.statement}
                         className="type-heading-md mb-12 max-w-[430px]"
                       />
-                      <div className="space-y-20 md:space-y-[112px]">
+                      <div className="space-y-20 lg:space-y-[112px]">
                         {item.gallery.map((galleryItem, galleryIndex) => (
                           <div
                             key={`${item.number}-gallery-${galleryIndex}`}
-                            className="grid gap-6 md:grid-cols-[minmax(260px,430px)_minmax(220px,1fr)] md:gap-16"
+                            className="grid gap-6 lg:grid-cols-[minmax(260px,430px)_minmax(220px,1fr)] lg:gap-16"
                           >
                             <div
                               className={[
@@ -284,12 +286,12 @@ export function ServiceAccordion({
                       </div>
                     </div>
                   ) : isMediaServiceItem(item) ? (
-                    <div className="grid gap-12 md:grid-cols-[minmax(0,760px)_minmax(320px,520px)] md:items-start md:gap-[120px]">
+                    <div className="grid gap-12 lg:grid-cols-[minmax(0,760px)_minmax(320px,520px)] lg:items-start lg:gap-[120px]">
                       <div className="divide-y divide-[var(--color-border-muted)]">
                         {item.details.map((detail, detailIndex) => (
                           <p
                             key={`${item.number}-media-detail-${detailIndex}`}
-                            className="type-heading-md py-7 font-bold uppercase md:py-9"
+                            className="type-heading-md py-7 font-bold uppercase lg:py-9"
                           >
                             {String(detail)}
                           </p>
@@ -297,7 +299,7 @@ export function ServiceAccordion({
                       </div>
                       <div
                         className={[
-                          "transition-[opacity,transform] duration-500 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 md:pt-5",
+                          "transition-[opacity,transform] duration-500 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 lg:pt-5",
                           isOpen
                             ? "translate-y-0 opacity-100"
                             : "translate-y-6 opacity-0",
@@ -332,7 +334,7 @@ export function ServiceAccordion({
                         isStructuredDetail(detail) ? (
                           <div
                             key={`${item.number}-structured-detail-${detailIndex}`}
-                            className="grid gap-8 py-9 md:grid-cols-[minmax(260px,430px)_minmax(0,1fr)] md:gap-[116px] md:py-12"
+                            className="grid gap-8 py-9 lg:grid-cols-[minmax(260px,430px)_minmax(0,1fr)] lg:gap-[116px] lg:py-12"
                           >
                             <ServiceRichText
                               as="h3"
@@ -366,7 +368,7 @@ export function ServiceAccordion({
                         ) : (
                           <p
                             key={`${item.number}-plain-detail-${detailIndex}`}
-                            className="type-body-md py-7 font-bold uppercase md:py-9"
+                            className="type-body-md py-7 font-bold uppercase lg:py-9"
                           >
                             {detail}
                           </p>
@@ -378,13 +380,13 @@ export function ServiceAccordion({
 
                 {index === 0 && item.statement ? (
                   <div
-                    className="bg-yellow py-20 md:py-[96px]"
+                    className="bg-yellow py-20 lg:py-[96px]"
                     style={{
                       marginInline:
                         "calc((((100vw - min(100vw, var(--page-max))) / 2) + var(--page-gutter)) * -1)",
                     }}
                   >
-                    <div className="page-shell grid gap-12 md:grid-cols-[minmax(220px,430px)_minmax(0,560px)] md:items-center md:gap-[116px]">
+                    <div className="page-shell grid gap-12 lg:grid-cols-[minmax(220px,430px)_minmax(0,560px)] lg:items-center lg:gap-[116px]">
                       <div className="relative aspect-[357/248] w-full max-w-[357px] overflow-hidden">
                         <SanityImageOrPlaceholder
                           image={item.statementImage?.image}
