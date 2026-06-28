@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Analytics } from "@vercel/analytics/react";
 
 import { SiteHeader } from "@/components/sections/site-header";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -75,6 +76,7 @@ export default async function LocaleLayout({
           localeLabel={localeLabels[locale]}
         />
         <div id="main-content">{children}</div>
+        <Analytics />
       </body>
     </html>
   );

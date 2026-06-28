@@ -25,7 +25,6 @@ const homeIt = {
   contactCta: "Prenota una consulenza >",
   discoverServices: "Scopri i servizi >",
   seeAllProjects: "Guarda tutti i progetti >",
-  whatWeDo: "What we do",
   learnMore: "Scopri di più >",
   // Sanity fallbacks
   heroKicker: placeholderTwoLineRichText,
@@ -47,7 +46,6 @@ const homeEn = {
   contactCta: "Contact >",
   discoverServices: "Discover our services >",
   seeAllProjects: "See all projects >",
-  whatWeDo: "What we do",
   learnMore: "Learn More >",
   // Sanity fallbacks
   heroKicker: placeholderTwoLineRichText,
