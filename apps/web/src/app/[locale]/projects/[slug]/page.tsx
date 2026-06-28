@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Fragment } from "react";
 
 import {
   ProjectMediaItemView,
@@ -37,6 +38,7 @@ import {
   projectMediaSectionsByPlacement,
   projectResponsibilities,
 } from "@/lib/project-content";
+import { nonEmptyLines } from "@/lib/text";
 
 export const revalidate = 60;
 
@@ -115,6 +117,43 @@ function MediaZone({
       ))}
     </div>
   );
+}
+
+type CreditPerson = {
+  name: string | null;
+  handles: string[];
+};
+
+function creditPeople(name: string | null, handle: string | null): CreditPerson[] {
+  const names = nonEmptyLines(name);
+  const handles = nonEmptyLines(handle);
+
+  if (names.length === 0) {
+    return handles.length > 0 ? [{ name: null, handles }] : [];
+  }
+
+  if (handles.length === 0) {
+    return names.map((personName) => ({ name: personName, handles: [] }));
+  }
+
+  if (handles.length >= names.length && handles.length % names.length === 0) {
+    const handlesPerName = handles.length / names.length;
+    return names.map((personName, index) => ({
+      name: personName,
+      handles: handles.slice(
+        index * handlesPerName,
+        index * handlesPerName + handlesPerName,
+      ),
+    }));
+  }
+
+  return names.map((personName, index) => ({
+    name: personName,
+    handles:
+      index === names.length - 1
+        ? handles.slice(index)
+        : handles.slice(index, index + 1),
+  }));
 }
 
 export default async function ProjectDetailPage({
@@ -318,25 +357,72 @@ export default async function ProjectDetailPage({
                   const roleLabel = credit.role.trim().endsWith(":")
                     ? credit.role
                     : `${credit.role}:`;
+                  const people = creditPeople(credit.name, credit.handle);
+
                   return (
                     <div
                       key={credit._key}
-                      className="grid gap-5 border-b border-[var(--color-border-muted)] py-8 md:grid-cols-2 md:gap-16"
+                      className="grid gap-4 border-b border-[var(--color-border-muted)] py-8 md:grid-cols-2 md:gap-16"
                     >
                       <dt className="type-body-lg">
                         <span className="font-bold uppercase">
                           {roleLabel}
                         </span>
-                        {credit.name && (
-                          <span className="block whitespace-pre-line font-normal text-[var(--color-text-primary)]">
-                            {credit.name}
+                        {people.length > 0 && (
+                          <span className="hidden space-y-8 pt-1 font-normal text-[var(--color-text-primary)] md:block">
+                            {people.map((person, personIndex) =>
+                              person.name ? (
+                                <span
+                                  key={`${credit._key}-desktop-name-${personIndex}`}
+                                  className="block"
+                                >
+                                  {person.name}
+                                </span>
+                              ) : null,
+                            )}
                           </span>
                         )}
                       </dt>
-                      {credit.handle && (
-                        <dd className="type-body-lg whitespace-pre-line text-[var(--color-text-muted)]">
-                          {credit.handle}
-                        </dd>
+
+                      {people.length > 0 && (
+                        <>
+                          <dd className="type-body-lg hidden space-y-8 pt-[1.44em] text-[var(--color-text-muted)] md:block">
+                            {people.map((person, personIndex) => (
+                              <span
+                                key={`${credit._key}-desktop-handles-${personIndex}`}
+                                className="block"
+                              >
+                                {person.handles.map((personHandle) => (
+                                  <span key={personHandle} className="block">
+                                    {personHandle}
+                                  </span>
+                                ))}
+                              </span>
+                            ))}
+                          </dd>
+
+                          <dd className="type-body-lg space-y-7 md:hidden">
+                            {people.map((person, personIndex) => (
+                              <div key={`${credit._key}-mobile-person-${personIndex}`}>
+                                {person.name && (
+                                  <p className="text-[var(--color-text-primary)]">
+                                    {person.name}
+                                  </p>
+                                )}
+                                {person.handles.length > 0 && (
+                                  <p className="mt-3 text-[var(--color-text-muted)]">
+                                    {person.handles.map((personHandle) => (
+                                      <Fragment key={personHandle}>
+                                        {personHandle}
+                                        <br />
+                                      </Fragment>
+                                    ))}
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+                          </dd>
+                        </>
                       )}
                     </div>
                   );
