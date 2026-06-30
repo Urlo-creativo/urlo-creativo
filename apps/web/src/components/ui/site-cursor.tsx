@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const CLICKABLE_SELECTOR =
@@ -17,6 +18,8 @@ const SCALE_EASE = 0.18;
 export function SiteCursor() {
   const [enabled, setEnabled] = useState(false);
   const dotRef = useRef<HTMLDivElement>(null);
+  const targetScaleRef = useRef(REST_SCALE);
+  const pathname = usePathname();
 
   useEffect(() => {
     const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -40,6 +43,13 @@ export function SiteCursor() {
     };
   }, []);
 
+  // Reset the hover state on client-side navigation. The element under the
+  // pointer (e.g. a project card link) unmounts mid-hover, so its `mouseout`
+  // never fires and the dot would otherwise stay grown until the next hover.
+  useEffect(() => {
+    targetScaleRef.current = REST_SCALE;
+  }, [pathname]);
+
   useEffect(() => {
     if (!enabled) return;
     const dot = dotRef.current;
@@ -48,14 +58,13 @@ export function SiteCursor() {
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const pos = { x: target.x, y: target.y };
     let scale = REST_SCALE;
-    let targetScale = REST_SCALE;
     let visible = false;
     let frame = 0;
 
     function render() {
       pos.x += (target.x - pos.x) / TRAILING;
       pos.y += (target.y - pos.y) / TRAILING;
-      scale += (targetScale - scale) * SCALE_EASE;
+      scale += (targetScaleRef.current - scale) * SCALE_EASE;
       dot!.style.transform = `translate3d(${pos.x - DOT_SIZE / 2}px, ${
         pos.y - DOT_SIZE / 2
       }px, 0) scale(${scale})`;
@@ -63,9 +72,16 @@ export function SiteCursor() {
     }
     frame = requestAnimationFrame(render);
 
+    // Source of truth for hover state: recompute on every move from whatever is
+    // actually under the pointer. This self-heals after navigation or async
+    // content changes — no reliance on matched mouseover/mouseout pairs.
     function onMove(event: MouseEvent) {
       target.x = event.clientX;
       target.y = event.clientY;
+      const el = event.target as Element | null;
+      targetScaleRef.current = el?.closest?.(CLICKABLE_SELECTOR)
+        ? 1
+        : REST_SCALE;
       if (!visible) {
         visible = true;
         dot!.style.opacity = "1";
@@ -77,30 +93,12 @@ export function SiteCursor() {
       dot!.style.opacity = "0";
     }
 
-    // Event delegation: works for every current and future clickable element,
-    // including async (Sanity) content and client-side route changes.
-    function onOver(event: MouseEvent) {
-      const el = event.target as Element | null;
-      if (el?.closest?.(CLICKABLE_SELECTOR)) targetScale = 1;
-    }
-
-    function onOut(event: MouseEvent) {
-      const el = event.target as Element | null;
-      if (!el?.closest?.(CLICKABLE_SELECTOR)) return;
-      const next = event.relatedTarget as Element | null;
-      if (!next?.closest?.(CLICKABLE_SELECTOR)) targetScale = REST_SCALE;
-    }
-
     document.addEventListener("mousemove", onMove);
-    document.addEventListener("mouseover", onOver);
-    document.addEventListener("mouseout", onOut);
     document.addEventListener("mouseleave", onLeave);
 
     return () => {
       cancelAnimationFrame(frame);
       document.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseover", onOver);
-      document.removeEventListener("mouseout", onOut);
       document.removeEventListener("mouseleave", onLeave);
     };
   }, [enabled]);
