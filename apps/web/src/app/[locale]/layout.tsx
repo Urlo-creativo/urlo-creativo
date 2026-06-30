@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { SiteHeader } from "@/components/sections/site-header";
+import { SiteCursor } from "@/components/ui/site-cursor";
 import { getDictionary } from "@/i18n/dictionaries";
 import {
   defaultLocale,
@@ -79,6 +80,7 @@ export default async function LocaleLayout({
         <div id="main-content">{children}</div>
         <Analytics />
         <SpeedInsights />
+        <SiteCursor />
       </body>
     </html>
   );
