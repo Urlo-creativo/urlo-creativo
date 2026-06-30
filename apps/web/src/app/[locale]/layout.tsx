@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { SiteHeader } from "@/components/sections/site-header";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -77,6 +78,7 @@ export default async function LocaleLayout({
         />
         <div id="main-content">{children}</div>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
