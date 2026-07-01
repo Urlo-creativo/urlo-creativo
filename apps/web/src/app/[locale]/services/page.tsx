@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: "Services",
 };
 
+export const revalidate = 3600;
+
 const serviceImages = [PLACEHOLDER_IMAGE] as const;
 
 export default async function ServicesPage({
@@ -37,6 +39,7 @@ export default async function ServicesPage({
   const servicesContent = await client.fetch<ServicesPageContent | null>(
     servicesPageQuery,
     localeParams(locale),
+    { next: { tags: ["servicesPage"] } },
   );
 
   const serviceItems = servicesContent?.items?.length

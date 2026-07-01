@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Projects",
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function ProjectsPage({
   params,
@@ -33,6 +33,7 @@ export default async function ProjectsPage({
   const items = await client.fetch<ProjectListItem[]>(
     projectsListQuery,
     localeParams(locale),
+    { next: { tags: ["project"] } },
   );
 
   return (

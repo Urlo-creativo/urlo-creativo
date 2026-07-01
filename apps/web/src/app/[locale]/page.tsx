@@ -29,6 +29,8 @@ import {
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
+export const revalidate = 3600;
+
 export default async function Home({
   params,
 }: {
@@ -44,9 +46,13 @@ export default async function Home({
   const dictionary = getDictionary(locale);
 
   const [featuredProjects, homeContent, selectedClients] = await Promise.all([
-    client.fetch<ProjectListItem[]>(featuredProjectsQuery, localeParams(locale)),
-    client.fetch<HomePageContent | null>(homePageQuery, localeParams(locale)),
-    client.fetch<SanityClient[]>(clientsQuery),
+    client.fetch<ProjectListItem[]>(featuredProjectsQuery, localeParams(locale), {
+      next: { tags: ["project"] },
+    }),
+    client.fetch<HomePageContent | null>(homePageQuery, localeParams(locale), {
+      next: { tags: ["homePage"] },
+    }),
+    client.fetch<SanityClient[]>(clientsQuery, {}, { next: { tags: ["client"] } }),
   ]);
 
   const fallbackMethodSteps = [

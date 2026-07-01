@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   title: "About Us",
 };
 
+export const revalidate = 3600;
+
 export default async function AboutPage({
   params,
 }: {
@@ -45,8 +47,12 @@ export default async function AboutPage({
   const { about, footer } = dictionary;
 
   const [aboutContent, people] = await Promise.all([
-    client.fetch<AboutPageContent | null>(aboutPageQuery, localeParams(locale)),
-    client.fetch<PersonListItem[]>(peopleQuery, localeParams(locale)),
+    client.fetch<AboutPageContent | null>(aboutPageQuery, localeParams(locale), {
+      next: { tags: ["aboutPage"] },
+    }),
+    client.fetch<PersonListItem[]>(peopleQuery, localeParams(locale), {
+      next: { tags: ["person"] },
+    }),
   ]);
 
   const coreRoles: TeamCoreRole[] = aboutContent?.coreRoles?.length

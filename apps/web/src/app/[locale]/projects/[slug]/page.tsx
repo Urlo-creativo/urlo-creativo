@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Fragment } from "react";
+import { Fragment, cache } from "react";
 
 import {
   ProjectMediaItemView,
@@ -40,22 +40,21 @@ import {
 } from "@/lib/project-content";
 import { nonEmptyLines } from "@/lib/text";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(projectSlugsQuery);
   return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
-async function getProject(
-  slug: string,
-  locale: Locale,
-): Promise<Project | null> {
-  return client.fetch<Project | null>(projectBySlugQuery, {
-    slug,
-    ...localeParams(locale),
-  });
-}
+const getProject = cache(
+  (slug: string, locale: Locale): Promise<Project | null> =>
+    client.fetch<Project | null>(
+      projectBySlugQuery,
+      { slug, ...localeParams(locale) },
+      { next: { tags: ["project"] } },
+    ),
+);
 
 export async function generateMetadata({
   params,
