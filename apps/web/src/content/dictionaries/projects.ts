@@ -36,7 +36,7 @@ const projectsIt = {
     challenge: sectionHeading("Sfida", "challenge"),
     concept: sectionHeading("Concept", "concept"),
     process: sectionHeading("Processo", "process"),
-    responsibilities: sectionHeading("Responsabilita", "responsibilities"),
+    responsibilities: sectionHeading("Responsabilità", "responsibilities"),
     outcome: sectionHeading("Risultato", "outcome"),
     credits: "Crediti",
     behindTheScenes: "Dietro le quinte",
