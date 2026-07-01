@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    revalidateTag(body._type, "max");
+    revalidateTag(body._type, { expire: 0 });
 
     return NextResponse.json({ revalidated: true, tag: body._type, now: Date.now() });
   } catch (error) {
