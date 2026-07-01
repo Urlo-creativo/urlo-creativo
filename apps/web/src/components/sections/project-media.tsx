@@ -88,10 +88,16 @@ export function ProjectMediaItemView({
   if (item.mediaType === "image") {
     if (!hasImageAsset(item.image)) return null;
     if (isHero) {
+      // Tailwind's `relative` utility outranks `absolute` in the compiled
+      // stylesheet regardless of class order, so a caller-provided
+      // `className` asking for absolute positioning (e.g. a full-bleed
+      // background) would otherwise be silently overridden.
+      const callerPositionsIt = className?.includes("absolute");
       return (
         <figure
           className={[
-            "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]",
+            callerPositionsIt ? undefined : "relative",
+            "h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]",
             className,
           ]
             .filter(Boolean)
