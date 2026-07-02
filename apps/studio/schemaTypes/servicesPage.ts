@@ -95,7 +95,7 @@ export const servicesPageType = defineType({
               title: "Gruppi di dettagli strutturati",
               type: "array",
               description:
-                "For services that show grouped lists of details inside the open row.",
+                "Per i servizi che mostrano elenchi di dettagli raggruppati nella voce aperta.",
               hidden: ({ parent }) => parent?.variant !== "structured",
               validation: (Rule) =>
                 Rule.custom((value, context) => {

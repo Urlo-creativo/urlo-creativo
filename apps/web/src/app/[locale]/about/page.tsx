@@ -24,10 +24,20 @@ import {
 } from "@/lib/sanity/queries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
+import { localizedAlternates } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "About Us",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return { title: "About Us" };
+  return {
+    title: getDictionary(locale).nav.about,
+    alternates: localizedAlternates(locale, "/about"),
+  };
+}
 
 export const revalidate = 3600;
 

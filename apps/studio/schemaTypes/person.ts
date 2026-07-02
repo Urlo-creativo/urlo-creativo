@@ -25,7 +25,7 @@ export const personType = defineType({
       name: "photo",
       title: "Foto",
       type: "image",
-      description: "Portrait used in the About page People grid.",
+      description: "Ritratto usato nella griglia Persone della pagina About.",
       options: { hotspot: true },
       fields: [
         defineField({

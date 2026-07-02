@@ -161,7 +161,7 @@ export const aboutPageType = defineType({
               name: "color",
               title: "Colore accento",
               type: "string",
-              description: "Accent color used for this process step.",
+              description: "Colore di accento per questo step del processo.",
               initialValue: "pink",
               options: {
                 layout: "radio",
@@ -288,7 +288,7 @@ export const aboutPageType = defineType({
               title: "Descrizione al passaggio del mouse",
               type: "localizedRichText",
               description:
-                "Text revealed when the visitor hovers or focuses this row.",
+                "Testo mostrato al passaggio del mouse o alla selezione della riga.",
             }),
           ],
           preview: {

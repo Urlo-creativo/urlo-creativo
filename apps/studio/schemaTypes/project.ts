@@ -62,7 +62,7 @@ export const projectType = defineType({
       name: "projectName",
       title: "Nome progetto",
       type: "localizedString",
-      description: "Second project title line shown below the client name.",
+      description: "Seconda riga del titolo progetto, sotto il nome cliente.",
       group: "hero",
     }),
     defineField({
@@ -72,7 +72,7 @@ export const projectType = defineType({
       group: "hero",
       options: { hotspot: true },
       description:
-        "Small graphic, badge, or logo beside the title. This is not the hero media.",
+        "Piccola grafica, badge o logo accanto al titolo. Non è il media iniziale.",
       fields: [
         defineField({
           name: "alt",
@@ -87,7 +87,7 @@ export const projectType = defineType({
       title: "Categorie",
       type: "array",
       group: "hero",
-      description: "Category tags shown below the project title.",
+      description: "Categorie mostrate sotto il titolo progetto.",
       of: [defineArrayMember({ type: "string" })],
       options: { list: [...CATEGORY_OPTIONS] },
       validation: (Rule) => Rule.max(3),
@@ -111,7 +111,7 @@ export const projectType = defineType({
       title: "Ruoli / servizi",
       type: "array",
       group: "hero",
-      description: "Tags shown in the Roles / Services row on the detail page.",
+      description: "Etichette mostrate nella riga Ruoli / Servizi della pagina dettaglio.",
       of: [defineArrayMember({ type: "localizedString" })],
       validation: (Rule) => Rule.max(8),
     }),
@@ -122,21 +122,21 @@ export const projectType = defineType({
       title: "Sfida",
       type: "localizedRichText",
       group: "copy",
-      description: "First text section on the project detail page.",
+      description: "Prima sezione di testo della pagina progetto.",
     }),
     defineField({
       name: "concept",
       title: "Concetto",
       type: "localizedRichText",
       group: "copy",
-      description: "Second text section, before media placed after Concept.",
+      description: "Seconda sezione di testo, prima dei media posizionati dopo Concetto.",
     }),
     defineField({
       name: "process",
       title: "Processo",
       type: "localizedRichText",
       group: "copy",
-      description: "Text section after the media placed after Concept.",
+      description: "Sezione di testo dopo i media posizionati dopo Concetto.",
     }),
     defineField({
       name: "responsibilities",
@@ -171,7 +171,7 @@ export const projectType = defineType({
       title: "Risultato",
       type: "localizedRichText",
       group: "copy",
-      description: "Final text section before Credits.",
+      description: "Ultima sezione di testo prima dei Crediti.",
     }),
 
     // ===== Media =====
@@ -183,7 +183,7 @@ export const projectType = defineType({
       type: "array",
       group: "media",
       description:
-        "Reusable media sections. Each section chooses where it appears in the detail page flow.",
+        "Sezioni media riutilizzabili. Ogni sezione sceglie dove appare nella pagina dettaglio.",
       of: [defineArrayMember({ type: "projectMediaSection" })],
       validation: (Rule) => Rule.max(12),
     }),
@@ -194,7 +194,7 @@ export const projectType = defineType({
       title: "Crediti",
       type: "array",
       group: "credits",
-      description: "Credit rows shown near the bottom of the detail page.",
+      description: "Righe di crediti mostrate in fondo alla pagina dettaglio.",
       of: [defineArrayMember({ type: "projectCredit" })],
       validation: (Rule) => Rule.max(24),
     }),
@@ -230,7 +230,7 @@ export const projectType = defineType({
       title: "URL slug",
       type: "slug",
       group: "listing",
-      description: "Used in the public project URL.",
+      description: "Usato nell'indirizzo pubblico della pagina progetto.",
       options: {
         source: (doc) => {
           const clientName = doc.clientName as
@@ -253,7 +253,7 @@ export const projectType = defineType({
       name: "featured",
       title: "In evidenza in homepage",
       type: "boolean",
-      description: "Show this project in the homepage projects grid.",
+      description: "Mostra questo progetto nella griglia progetti della home.",
       initialValue: false,
       group: "listing",
     }),

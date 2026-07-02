@@ -3,10 +3,20 @@ import { notFound } from "next/navigation";
 
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
+import { localizedAlternates } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return { title: "Contact" };
+  return {
+    title: getDictionary(locale).nav.contact,
+    alternates: localizedAlternates(locale, "/contact"),
+  };
+}
 
 export default async function ContactPage({
   params,

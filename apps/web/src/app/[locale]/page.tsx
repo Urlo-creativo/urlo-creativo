@@ -28,8 +28,19 @@ import {
 } from "@/lib/project-content";
 import { isLocale, localizedPath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { localizedAlternates } from "@/lib/site";
 
 export const revalidate = 3600;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  return { alternates: localizedAlternates(locale) };
+}
 
 export default async function Home({
   params,

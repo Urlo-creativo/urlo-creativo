@@ -14,6 +14,10 @@ const commonIt = {
     projects: "Progetti",
     about: "Chi siamo",
     contact: "Contatti",
+    skipToContent: "Vai al contenuto",
+    menuOpen: "Apri il menu",
+    menuClose: "Chiudi il menu",
+    mainNav: "Navigazione principale",
   },
   footer: {
     title: "CONTATTI",
@@ -40,6 +44,10 @@ const commonEn = {
     projects: "Projects",
     about: "About Us",
     contact: "Contact",
+    skipToContent: "Skip to content",
+    menuOpen: "Open menu",
+    menuClose: "Close menu",
+    mainNav: "Main navigation",
   },
   footer: {
     title: "CONTACT",

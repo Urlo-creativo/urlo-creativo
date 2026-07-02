@@ -3,5 +3,3 @@ export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "rj63sc4z";
 export const readToken = process.env.SANITY_API_READ_TOKEN;
 export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET;
-
-export const hasSanityConfig = Boolean(projectId && dataset);

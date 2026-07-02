@@ -60,7 +60,7 @@ export const projectMediaSectionType = defineType({
       name: "internalLabel",
       title: "Etichetta interna",
       type: "string",
-      description: "For Studio organization only. Not shown on the website.",
+      description: "Solo per organizzarsi nello Studio. Non appare sul sito.",
     }),
     defineField({
       name: "heading",

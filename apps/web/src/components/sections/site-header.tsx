@@ -63,7 +63,7 @@ export function SiteHeader({
 
         {/* Pages + language in one pill */}
         <div className="site-nav-chrome hidden items-center rounded-pill px-3 lg:flex">
-          <nav className="flex items-center" aria-label="Main navigation">
+          <nav className="flex items-center" aria-label={dictionary.mainNav}>
             {navItems.map((item) => (
               <NavLink key={item.href} href={localizedPath(locale, item.href)}>
                 {dictionary[item.key]}
@@ -88,7 +88,13 @@ export function SiteHeader({
         </div>
 
         {/* Mobile: hamburger + full-screen menu */}
-        <MobileMenu navLinks={navLinks} localeLinks={localeLinks} />
+        <MobileMenu
+          navLinks={navLinks}
+          localeLinks={localeLinks}
+          openLabel={dictionary.menuOpen}
+          closeLabel={dictionary.menuClose}
+          navLabel={dictionary.mainNav}
+        />
       </div>
     </header>
   );

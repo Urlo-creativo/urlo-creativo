@@ -9,7 +9,11 @@ import type { PortableRichTextValue } from "@/lib/sanity/queries";
 export function hasPortableText(
   value: PortableRichTextValue | undefined,
 ): value is Exclude<PortableRichTextValue, null> {
-  return Boolean(value && (!Array.isArray(value) || value.length > 0));
+  // Whitespace-only legacy strings must fall through to the fallback:
+  // PortableRichText renders them as null, which would show nothing at all.
+  return Boolean(
+    value && (Array.isArray(value) ? value.length > 0 : value.trim().length > 0),
+  );
 }
 
 type PageRichTextProps = {

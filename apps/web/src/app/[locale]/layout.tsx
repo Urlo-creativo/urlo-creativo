@@ -7,7 +7,6 @@ import { SiteHeader } from "@/components/sections/site-header";
 import { SiteCursor } from "@/components/ui/site-cursor";
 import { getDictionary } from "@/i18n/dictionaries";
 import {
-  defaultLocale,
   isLocale,
   localeLabels,
   locales,
@@ -37,18 +36,13 @@ export async function generateMetadata({
       template: "%s | Urlo Creativo",
     },
     description: dictionary.metadata.description,
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        ...Object.fromEntries(locales.map((item) => [item, `/${item}`])),
-        "x-default": `/${defaultLocale}`,
-      },
-    },
+    // No `alternates` here: layout metadata cascades to every child page, so a
+    // layout-level canonical would wrongly point subpages at the locale root.
+    // Each page sets its own via `localizedAlternates`.
     openGraph: {
       type: "website",
       siteName: "Urlo Creativo",
       locale,
-      url: `/${locale}`,
     },
   };
 }
@@ -72,6 +66,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} data-scroll-behavior="smooth">
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-black focus:px-4 focus:py-2 focus:text-white"
+        >
+          {dictionary.nav.skipToContent}
+        </a>
         <SiteHeader
           dictionary={dictionary.nav}
           locale={locale}

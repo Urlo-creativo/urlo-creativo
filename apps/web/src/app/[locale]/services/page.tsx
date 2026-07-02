@@ -8,6 +8,7 @@ import { PLACEHOLDER_IMAGE } from "@/content/placeholders";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 import { client } from "@/lib/sanity/client";
+import { localizedAlternates } from "@/lib/site";
 import { localeParams } from "@/lib/sanity/locale";
 import { serviceItemsFromSanity } from "@/lib/service-items";
 import {
@@ -15,9 +16,18 @@ import {
   type ServicesPageContent,
 } from "@/lib/sanity/queries";
 
-export const metadata: Metadata = {
-  title: "Services",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return { title: "Services" };
+  return {
+    title: getDictionary(locale).nav.services,
+    alternates: localizedAlternates(locale, "/services"),
+  };
+}
 
 export const revalidate = 3600;
 

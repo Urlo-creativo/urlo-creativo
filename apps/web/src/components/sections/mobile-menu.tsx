@@ -13,9 +13,18 @@ type LocaleItem = { label: string; hrefLang: Locale };
 type MobileMenuProps = {
   navLinks: LinkItem[];
   localeLinks: LocaleItem[];
+  openLabel: string;
+  closeLabel: string;
+  navLabel: string;
 };
 
-export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
+export function MobileMenu({
+  navLinks,
+  localeLinks,
+  openLabel,
+  closeLabel,
+  navLabel,
+}: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -37,7 +46,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
     <div className="lg:hidden">
       <button
         type="button"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? closeLabel : openLabel}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className="site-nav-icon site-nav-chrome focus-ring"
@@ -65,7 +74,7 @@ export function MobileMenu({ navLinks, localeLinks }: MobileMenuProps) {
         <div className="fixed inset-0 z-[var(--z-overlay)] overscroll-contain bg-paper text-black">
           <nav
             className="page-shell page-top flex h-full flex-col gap-1 pb-16"
-            aria-label="Mobile navigation"
+            aria-label={navLabel}
           >
             {navLinks.map((item) => {
               const active = pathname === item.href;

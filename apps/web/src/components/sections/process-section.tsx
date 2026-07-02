@@ -75,15 +75,24 @@ export function ProcessSection({
         ))}
       </div>
       <div className="mt-10 hidden lg:block lg:mt-[58px]">
-        <div className="type-caption grid grid-cols-6 pb-1 font-bold uppercase">
+        {/* Column count follows the Sanity `processSteps` array so an added or
+            removed step keeps labels and panels aligned. */}
+        <div
+          className="type-caption grid pb-1 font-bold uppercase"
+          style={{ gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))` }}
+        >
           {stages.map((stage, i) => (
             <span key={`process-label-${i}`}>{stage}</span>
           ))}
         </div>
         {/* Fixed height so expansion overlaps content below without pushing it */}
         <div
-          className="mt-1 grid grid-cols-6 border-t border-black pt-2"
-          style={{ height: "48px", overflow: "visible" }}
+          className="mt-1 grid border-t border-black pt-2"
+          style={{
+            height: "48px",
+            overflow: "visible",
+            gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))`,
+          }}
         >
           {stages.map((stage, i) => (
             <button

@@ -39,6 +39,7 @@ import {
   projectResponsibilities,
 } from "@/lib/project-content";
 import { nonEmptyLines } from "@/lib/text";
+import { localizedAlternates } from "@/lib/site";
 
 export const revalidate = 3600;
 
@@ -68,6 +69,7 @@ export async function generateMetadata({
   return {
     title: projectDisplayTitle(project),
     description: project.excerpt ?? undefined,
+    alternates: localizedAlternates(locale, `/projects/${slug}`),
   };
 }
 

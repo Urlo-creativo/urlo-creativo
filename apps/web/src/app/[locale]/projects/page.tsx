@@ -4,14 +4,24 @@ import { notFound } from "next/navigation";
 import { ProjectsListing } from "@/components/sections/projects-listing";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { client } from "@/lib/sanity/client";
+import { localizedAlternates } from "@/lib/site";
 import { localeParams } from "@/lib/sanity/locale";
 import { projectsListQuery, type ProjectListItem } from "@/lib/sanity/queries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 
-export const metadata: Metadata = {
-  title: "Projects",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return { title: "Projects" };
+  return {
+    title: getDictionary(locale).nav.projects,
+    alternates: localizedAlternates(locale, "/projects"),
+  };
+}
 
 export const revalidate = 3600;
 
