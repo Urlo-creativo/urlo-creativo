@@ -204,10 +204,16 @@ export default async function Home({
                 className="focus-ring group relative isolate block bg-paper"
               >
 
-                {/* Image grows from the top-left anchor on hover */}
+                {/* Image grows from the top-left anchor on hover.
+                    `will-change-transform` keeps this on a compositor layer
+                    from the start: Safari otherwise promotes it only when the
+                    hover transition begins, and that re-compositing briefly
+                    breaks the title's mix-blend-difference (black → white →
+                    black flash). */}
                 <div
                   className="relative aspect-square overflow-hidden md:media-portrait
                              origin-top-left transition-transform duration-500 ease-out
+                             will-change-transform
                              motion-reduce:transition-none
                              md:group-hover:scale-[1.1] md:motion-reduce:group-hover:scale-100"
                 >
@@ -231,9 +237,11 @@ export default async function Home({
                     scale drives the change), so the title never flashes. Mobile
                     keeps plain dark text. */}
                 <div className="relative mt-4">
+                  {/* transform-gpu pins the blended text to its own layer so
+                      Safari keeps blending it while sibling layers change. */}
                   <h3
                     className="type-heading-md font-bold uppercase text-ink
-                               md:text-white md:mix-blend-difference"
+                               md:text-white md:mix-blend-difference md:transform-gpu"
                   >
                     <span className="block">{project.clientName}</span>
                     {project.projectName && (
