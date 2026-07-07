@@ -22,10 +22,10 @@ const placeholderMethod = {
 
 const homeIt = {
   // UI labels
-  contactCta: "Prenota una consulenza >",
-  discoverServices: "Scopri i servizi >",
-  seeAllProjects: "Guarda tutti i progetti >",
-  learnMore: "Scopri di più >",
+  contactCta: "Prenota una consulenza",
+  discoverServices: "Scopri i servizi",
+  seeAllProjects: "Guarda tutti i progetti",
+  learnMore: "Scopri di più",
   // Sanity fallbacks
   heroKicker: placeholderTwoLineRichText,
   heroTitle: placeholderRichText,
@@ -43,10 +43,10 @@ const homeIt = {
 
 const homeEn = {
   // UI labels
-  contactCta: "Contact >",
-  discoverServices: "Discover our services >",
-  seeAllProjects: "See all projects >",
-  learnMore: "Learn More >",
+  contactCta: "Contact",
+  discoverServices: "Discover our services",
+  seeAllProjects: "See all projects",
+  learnMore: "Learn More",
   // Sanity fallbacks
   heroKicker: placeholderTwoLineRichText,
   heroTitle: placeholderRichText,
