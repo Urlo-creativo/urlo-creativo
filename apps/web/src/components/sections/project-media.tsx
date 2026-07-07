@@ -97,7 +97,7 @@ export function ProjectMediaItemView({
         <figure
           className={[
             callerPositionsIt ? undefined : "relative",
-            "h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]",
+            "h-[calc(var(--viewport-stable-height)-var(--project-hero-offset,0px))] w-full overflow-hidden bg-[var(--color-bg-muted)]",
             className,
           ]
             .filter(Boolean)
@@ -162,7 +162,7 @@ export function ProjectMediaItemView({
           title={item.caption ?? "Project video"}
           className={
             isHero
-              ? "relative h-[calc(100vh-var(--project-hero-offset,0px))] w-full overflow-hidden bg-black"
+              ? "relative h-[calc(var(--viewport-stable-height)-var(--project-hero-offset,0px))] w-full overflow-hidden bg-black"
               : shouldFillFrame
                 ? "relative h-full w-full overflow-hidden bg-black"
               : "relative aspect-video w-full overflow-hidden bg-black"
@@ -185,7 +185,7 @@ export function ProjectMediaItemView({
         poster={posterProps?.asset?.url}
         className={
           isHero
-            ? "h-[calc(100vh-var(--project-hero-offset,0px))] w-full bg-black object-cover"
+            ? "h-[calc(var(--viewport-stable-height)-var(--project-hero-offset,0px))] w-full bg-black object-cover"
             : shouldFillFrame
               ? "h-full w-full bg-black object-cover"
             : "h-auto w-full bg-black"

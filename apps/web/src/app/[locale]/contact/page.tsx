@@ -33,7 +33,7 @@ export default async function ContactPage({
   const { contact } = getDictionary(locale);
 
   return (
-    <main className="page-top min-h-screen bg-yellow text-black">
+    <main className="page-top min-h-[var(--viewport-stable-height)] bg-yellow text-black">
       <section className="page-shell pb-20 md:pb-[126px]">
         <h1 className="type-display font-bold uppercase">
           {contact.title}

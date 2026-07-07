@@ -16,7 +16,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-height: var(--viewport-stable-height);
   margin: 0;
   background: var(--color-bg-page);
   color: var(--color-text-primary);

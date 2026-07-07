@@ -84,6 +84,7 @@
   --page-gutter: clamp(24px, 4.8vw, 96px);
   --content-max: 1164px;
   --mobile-page-gutter: 28px;
+  --viewport-stable-height: 100vh;
 
   /* ===== Spacing scale =====
      Vertical page rhythm. Section paddings that are symmetric map to
@@ -160,4 +161,10 @@
   --dur-reveal: 900ms;
   --dur-highlight: 1200ms;
   --dur-highlight-delay: 220ms;
+}
+
+@supports (height: 100svh) {
+  :root {
+    --viewport-stable-height: 100svh;
+  }
 }

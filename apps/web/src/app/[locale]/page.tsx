@@ -85,7 +85,7 @@ export default async function Home({
 
   return (
     <main className="overflow-hidden bg-paper">
-      <section className="relative h-dvh bg-black text-[var(--color-text-on-hero)]">
+      <section className="relative h-[var(--viewport-stable-height)] bg-black text-[var(--color-text-on-hero)]">
         {isRenderableProjectMediaItem(heroMedia) ? (
           <ProjectMediaItemView
             item={heroMedia}

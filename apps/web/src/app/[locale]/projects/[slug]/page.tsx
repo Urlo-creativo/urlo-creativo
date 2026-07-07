@@ -202,7 +202,7 @@ export default async function ProjectDetailPage({
             variant="hero"
           />
         ) : (
-          <div className="relative h-[calc(100vh-var(--project-hero-offset))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
+          <div className="relative h-[calc(var(--viewport-stable-height)-var(--project-hero-offset))] w-full overflow-hidden bg-[var(--color-bg-muted)]">
             <SanityImageOrPlaceholder
               image={project.coverImage}
               fallbackSrc={PLACEHOLDER_IMAGE}
