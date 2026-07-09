@@ -27,7 +27,7 @@ const commonIt = {
       { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
       { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },
     ],
-    ctaLabel: "Prenota una consulenza >",
+    ctaLabel: "Prenota una consulenza",
     emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };
@@ -57,7 +57,7 @@ const commonEn = {
       { label: "LinkedIn", href: "https://www.linkedin.com/in/urlo-creativo-clothing-design-studio-b72629329/?skipRedirect=true" },
       { label: "Instagram", href: "https://www.instagram.com/urlocreativo/" },
     ],
-    ctaLabel: "Book a consultation >",
+    ctaLabel: "Book a consultation",
     emailHref: "mailto:info@consulenzecreativeperetto.com",
   },
 };

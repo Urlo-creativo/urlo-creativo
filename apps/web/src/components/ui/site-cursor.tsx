@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 const CLICKABLE_SELECTOR =
   'a, button, input[type="button"], input[type="submit"], label[for], select, textarea, [role="button"]';
 
-const REST_SIZE = 0; // visible diameter at rest
+const REST_SIZE = 30; // visible diameter at rest
 const HOVER_SCALE = 2.2; // growth factor over clickables
 // Rasterize the dot at its largest size and only ever scale DOWN to the resting
 // size. Scaling a layer up blurs/aliases its bitmap; scaling down stays crisp.
