@@ -215,14 +215,14 @@ export default async function ProjectDetailPage({
         )}
         <a
           href="#project-detail-content"
-          className="focus-ring type-caption absolute bottom-[clamp(20px,4vh,44px)] left-1/2 z-20 flex -translate-x-1/2 items-center justify-center rounded-full bg-black/60 px-5 py-3 text-center font-bold uppercase text-white shadow-[0_12px_36px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors duration-200 hover:bg-black/75 motion-reduce:transition-none"
+          className="focus-ring project-scroll-cue-text type-caption absolute bottom-[clamp(20px,4vh,44px)] left-1/2 z-20 -translate-x-1/2 px-2 py-2 text-center font-bold uppercase transition-opacity duration-200 hover:opacity-70 motion-reduce:transition-none"
           aria-label={detailLabels.scrollDown}
         >
           <span className="project-scroll-cue-motion flex flex-col items-center gap-2">
             <span>{detailLabels.scrollDown}</span>
             <span
               aria-hidden="true"
-              className="h-2.5 w-2.5 rotate-45 border-b border-r border-current"
+              className="project-scroll-cue-arrow h-2.5 w-2.5 rotate-45 border-b border-r border-current"
             />
           </span>
         </a>
