@@ -234,9 +234,9 @@ export default async function Home({
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className="object-cover transition-[filter] duration-500 ease-out
-                               md:grayscale md:blur-[3px]
+                               md:blur-[3px]
                                motion-reduce:transition-none
-                               md:group-hover:grayscale-0 md:group-hover:blur-0"
+                               md:group-hover:blur-0"
                   />
                 </div>
 
