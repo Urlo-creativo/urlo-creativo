@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from "react";
 const CLICKABLE_SELECTOR =
   'a, button, input[type="button"], input[type="submit"], label[for], select, textarea, [role="button"]';
 
-const REST_SIZE = 32; // visible diameter at rest
+const REST_SIZE = 0; // visible diameter at rest
 const HOVER_SCALE = 2.2; // growth factor over clickables
 // Rasterize the dot at its largest size and only ever scale DOWN to the resting
 // size. Scaling a layer up blurs/aliases its bitmap; scaling down stays crisp.
 const DOT_SIZE = Math.round(REST_SIZE * HOVER_SCALE);
 const REST_SCALE = REST_SIZE / DOT_SIZE;
-const TRAILING = 8; // higher = more lag behind the pointer
+const TRAILING = 1; // higher = more lag behind the pointer
 const SCALE_EASE = 0.18;
 
 export function SiteCursor() {
@@ -65,9 +65,8 @@ export function SiteCursor() {
       pos.x += (target.x - pos.x) / TRAILING;
       pos.y += (target.y - pos.y) / TRAILING;
       scale += (targetScaleRef.current - scale) * SCALE_EASE;
-      dot!.style.transform = `translate3d(${pos.x - DOT_SIZE / 2}px, ${
-        pos.y - DOT_SIZE / 2
-      }px, 0) scale(${scale})`;
+      dot!.style.transform = `translate3d(${pos.x - DOT_SIZE / 2}px, ${pos.y - DOT_SIZE / 2
+        }px, 0) scale(${scale})`;
       frame = requestAnimationFrame(render);
     }
     frame = requestAnimationFrame(render);

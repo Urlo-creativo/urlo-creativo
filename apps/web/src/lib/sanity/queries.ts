@@ -116,6 +116,8 @@ export type ProjectCredit = {
 
 export type HomePageContent = {
   heroMedia: ProjectMediaItem | null;
+  heroGradientOverlayEnabled: boolean;
+  heroTextColor: "black" | "white";
   heroKicker: PortableRichTextValue;
   heroTitle: PortableRichTextValue;
   heroSubheading: PortableRichTextValue;
@@ -348,6 +350,8 @@ export const projectSlugsQuery = `*[_type == "project" && defined(slug.current)]
 
 export const homePageQuery = `*[_id == "homePage"][0]{
   heroMedia ${mediaItemFragment},
+  "heroGradientOverlayEnabled": coalesce(heroGradientOverlayEnabled, true),
+  "heroTextColor": coalesce(heroTextColor, "white"),
   ${localizedValue("heroKicker")},
   ${localizedValue("heroTitle")},
   ${localizedValue("heroSubheading")},

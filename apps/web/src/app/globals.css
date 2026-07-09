@@ -68,6 +68,17 @@ button {
   }
 }
 
+@keyframes project-scroll-cue-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, 8px, 0);
+  }
+}
+
 @layer components {
   .focus-ring:focus-visible {
     outline: 2px solid var(--color-focus-ring);
@@ -656,6 +667,11 @@ button {
     width: calc(var(--method-text-progress, 0) * 100%);
     color: var(--color-text-inverse);
   }
+
+  .project-scroll-cue-motion {
+    animation: project-scroll-cue-float 1.6s ease-in-out infinite;
+    will-change: transform;
+  }
 }
 
 @media (max-width: 767px) {
@@ -711,6 +727,10 @@ button {
   .highlight-text-load.highlight-text-revealed {
     animation: none;
     background-size: 100% 0.5em;
+  }
+
+  .project-scroll-cue-motion {
+    animation: none;
   }
 
   /* Service accordion resizes instantly so a single scroll correction suffices. */

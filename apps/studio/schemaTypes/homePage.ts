@@ -8,6 +8,10 @@ export const homePageType = defineType({
   title: "Pagina home",
   type: "document",
   icon: HomeIcon,
+  initialValue: {
+    heroGradientOverlayEnabled: true,
+    heroTextColor: "white",
+  },
   groups: [
     { name: "hero", title: "Sezione iniziale", default: true },
     { name: "mission", title: "Missione" },
@@ -32,6 +36,32 @@ export const homePageType = defineType({
       group: "hero",
       description:
         "Immagine o video di sfondo nella prima sezione. I video partono senza audio.",
+    }),
+    defineField({
+      name: "heroGradientOverlayEnabled",
+      title: "Mostra gradiente nero",
+      type: "boolean",
+      group: "hero",
+      description:
+        "Attiva o disattiva il livello gradiente nero sopra il media iniziale.",
+      initialValue: true,
+    }),
+    defineField({
+      name: "heroTextColor",
+      title: "Colore testo iniziale",
+      type: "string",
+      group: "hero",
+      description:
+        "Scegli se il testo sopra il media iniziale usa il nero o il bianco del sito.",
+      initialValue: "white",
+      options: {
+        list: [
+          { title: "Bianco", value: "white" },
+          { title: "Nero", value: "black" },
+        ],
+        layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "heroTitle",

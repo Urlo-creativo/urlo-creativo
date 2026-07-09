@@ -41,6 +41,7 @@ const projectsIt = {
     credits: "Crediti",
     behindTheScenes: "Dietro le quinte",
     seeOtherProjects: "Vedi altri progetti",
+    scrollDown: "Scorri giù",
   },
 };
 
@@ -61,6 +62,7 @@ const projectsEn = {
     credits: "Credits",
     behindTheScenes: "Behind the Scenes",
     seeOtherProjects: "See other projects",
+    scrollDown: "Scroll down",
   },
 };
 

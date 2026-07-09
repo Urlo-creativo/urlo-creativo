@@ -193,7 +193,7 @@ export default async function ProjectDetailPage({
   return (
     <main className="bg-paper text-black">
       {/* 1. Hero */}
-      <section className="[--project-hero-offset:96px] pt-[var(--project-hero-offset)] md:[--project-hero-offset:112px]">
+      <section className="relative [--project-hero-offset:96px] pt-[var(--project-hero-offset)] md:[--project-hero-offset:112px]">
         {isRenderableProjectMediaItem(hero) ? (
           <ProjectMediaItemView
             item={hero}
@@ -213,11 +213,27 @@ export default async function ProjectDetailPage({
             />
           </div>
         )}
+        <a
+          href="#project-detail-content"
+          className="focus-ring type-caption absolute bottom-[clamp(20px,4vh,44px)] left-1/2 z-20 flex -translate-x-1/2 items-center justify-center rounded-full bg-black/60 px-5 py-3 text-center font-bold uppercase text-white shadow-[0_12px_36px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors duration-200 hover:bg-black/75 motion-reduce:transition-none"
+          aria-label={detailLabels.scrollDown}
+        >
+          <span className="project-scroll-cue-motion flex flex-col items-center gap-2">
+            <span>{detailLabels.scrollDown}</span>
+            <span
+              aria-hidden="true"
+              className="h-2.5 w-2.5 rotate-45 border-b border-r border-current"
+            />
+          </span>
+        </a>
       </section>
 
       <div className="page-shell">
         {/* 2–6. Title, graphic, category, season, roles */}
-        <section className="border-b border-[var(--color-border-muted)] py-20 md:pb-[72px] md:pt-[92px]">
+        <section
+          id="project-detail-content"
+          className="border-b border-[var(--color-border-muted)] py-20 md:pb-[72px] md:pt-[92px]"
+        >
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div>
               <h1 className="type-display font-bold uppercase">

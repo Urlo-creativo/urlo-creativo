@@ -135,6 +135,8 @@ const content = {
     mediaType: "image",
     image: await uploadedImage("placeholder-image.png"),
   },
+  heroGradientOverlayEnabled: true,
+  heroTextColor: "white",
   heroTitle: localizedRichText({
     it: [[{ text: "URLO CREATIVO" }]],
     en: [[{ text: "URLO CREATIVO" }]],

@@ -19,6 +19,8 @@ const topLevelFields = {
   homePage: new Set([
     "heroKicker",
     "heroMedia",
+    "heroGradientOverlayEnabled",
+    "heroTextColor",
     "heroTitle",
     "heroSubheading",
     "mission",

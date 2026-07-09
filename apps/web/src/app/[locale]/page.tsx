@@ -82,10 +82,18 @@ export default async function Home({
     ? selectedClients
     : [{ name: placeholderText.name, logo: PLACEHOLDER_IMAGE, url: null }];
   const heroMedia = homeContent?.heroMedia;
+  const showHeroGradientOverlay =
+    homeContent?.heroGradientOverlayEnabled ?? true;
+  const heroTextColorClass =
+    homeContent?.heroTextColor === "black"
+      ? "text-[var(--uc-black)]"
+      : "text-[var(--uc-white)]";
 
   return (
     <main className="overflow-hidden bg-paper">
-      <section className="relative h-[var(--viewport-stable-height)] bg-black text-[var(--color-text-on-hero)]">
+      <section
+        className={`relative h-[var(--viewport-stable-height)] bg-black ${heroTextColorClass}`}
+      >
         {isRenderableProjectMediaItem(heroMedia) ? (
           <ProjectMediaItemView
             item={heroMedia}
@@ -104,13 +112,15 @@ export default async function Home({
             className="z-0 object-cover"
           />
         )}
-        <div
-          className="absolute inset-0 z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.48) 38%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0) 100%), linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.24) 42%, rgba(0,0,0,0) 100%)",
-          }}
-        />
+        {showHeroGradientOverlay ? (
+          <div
+            className="absolute inset-0 z-10"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.48) 38%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0) 100%), linear-gradient(90deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.24) 42%, rgba(0,0,0,0) 100%)",
+            }}
+          />
+        ) : null}
 
         <div className="page-shell relative z-20 flex h-full flex-col justify-center pb-20 pt-28">
           <PageRichText
